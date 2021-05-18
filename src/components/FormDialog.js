@@ -83,6 +83,15 @@ const FormDialog = ({ open, handleClickOpen }) => {
           type='text'
           fullWidth
         />
+        <TextField
+          className={classes.textField}
+          autoFocus
+          margin='dense'
+          id='students'
+          label='Students'
+          type='text'
+          fullWidth
+        />
       </DialogContent>
       <DialogActions>
         <Button
