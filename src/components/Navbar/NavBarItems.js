@@ -49,9 +49,9 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
       section: 'Manage',
       routes: [
         {
-          name: 'Attendance',
+          name: 'Classes',
           icon: () => (
-            <PlaylistAddCheckIcon
+            <ClassIcon
               style={{
                 fill:
                   tabIndex === 1
@@ -60,13 +60,13 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/attendance',
+          route: '/classes',
           index: 1
         },
         {
-          name: 'Classes',
+          name: 'Schedule',
           icon: () => (
-            <ClassIcon
+            <ScheduleIcon
               style={{
                 fill:
                   tabIndex === 2
@@ -75,13 +75,18 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/classes',
+          route: '/schedule',
           index: 2
-        },
+        }
+      ]
+    },
+    {
+      section: 'Monitor',
+      routes: [
         {
-          name: 'Assignments',
+          name: 'Attendance',
           icon: () => (
-            <AssignmentIndIcon
+            <PlaylistAddCheckIcon
               style={{
                 fill:
                   tabIndex === 3
@@ -90,13 +95,14 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/assignments',
+          route: '/attendance',
           index: 3
         },
+
         {
-          name: 'Schedule',
+          name: 'Assignments',
           icon: () => (
-            <ScheduleIcon
+            <AssignmentIndIcon
               style={{
                 fill:
                   tabIndex === 4
@@ -105,7 +111,7 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/schedule',
+          route: '/assignments',
           index: 4
         }
       ]
