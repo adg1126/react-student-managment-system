@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setTabIndex } from '../redux/tabs/tabsActions';
-import NavBarItems from '../components/Navbar/NavBarItems';
+import NavBarItems from '../components/navbar/NavBarItems';
 
 const mapStateToProps = ({ tabs: { tabIndex, drawerOpen } }) => ({
   tabIndex,

@@ -1,4 +1,17 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
+
+const customBreakpointValues = {
+  values: {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200
+  }
+};
+
+const breakpoints = createBreakpoints({ ...customBreakpointValues });
 
 // Shades of grey
 const white = '#ffffff',
@@ -37,5 +50,35 @@ export default createMuiTheme({
   },
   typography: {
     fontFamily: ['Open Sans', 'sans-serif'].join(',')
+  },
+  button: {
+    borderRadius: 0,
+    padding: '0.3em 1em',
+    [breakpoints.down('sm')]: {
+      padding: '1em 1.8em',
+      width: '85vw'
+    }
+  },
+  buttonFillIndigoAnimation: {
+    position: 'relative',
+    zIndex: 1,
+    '&:hover': {
+      color: 'white',
+      border: `1px solid ${mainIndigo}`
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      background: mainIndigo,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: '100%',
+      zIndex: '-1',
+      transition: 'top 0.2s ease-in'
+    },
+    '&:hover::before': {
+      top: 0
+    }
   }
 });
