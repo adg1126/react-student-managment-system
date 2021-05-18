@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -7,11 +7,12 @@ import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import ClassListTable from '../components/table/ClassListTable';
+import FormDialog from '../components/FormDialog';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    width: '100%',
-    height: '100vh',
+    // width: '100%',
+    // height: '100vh',
     margin: '1em'
   },
   headerContainer: {
@@ -19,16 +20,28 @@ const useStyles = makeStyles(theme => ({
   },
   addClassButton: {
     ...theme.button,
-    ...theme.buttonFillIndigoAnimation,
-    fontSize: '1em'
+    ...theme.buttonGreenAnimation,
+    fontSize: '1em',
+    marginBottom: '1.5em'
   }
 }));
 
-const Classes = () => {
+const Classes = ({ drawerOpen }) => {
   const classes = useStyles();
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = state => {
+    setOpen(state);
+  };
+
   return (
-    <Grid container className={classes.mainContainer} direction='column'>
+    <Grid
+      container
+      className={classes.mainContainer}
+      direction='column'
+      // style={{ width: drawerOpen ? '83vw' : '92vw' }}
+    >
       <Grid item container className={classes.headerContainer}>
         <Grid item>
           <Typography variant='h3'>Classes List</Typography>
@@ -36,10 +49,12 @@ const Classes = () => {
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
+          <FormDialog open={open} handleClickOpen={handleClickOpen} />
           <Button
             variant='outlined'
             className={classes.addClassButton}
             startIcon={<PostAddIcon />}
+            onClick={() => handleClickOpen(true)}
           >
             Add Class
           </Button>

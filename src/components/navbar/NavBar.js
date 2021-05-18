@@ -2,19 +2,20 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
-
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRighttIcon from '@material-ui/icons/ChevronRight';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import NavBarItemsContainer from '../../containers/NavBarItemsContainer';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex'
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -47,11 +48,13 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1)
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(1)
+    padding: theme.spacing(5)
   }
 }));
 
@@ -59,45 +62,40 @@ const NavBar = ({ children, drawerOpen, setDrawerOpen }) => {
   const classes = useStyles();
 
   return (
-    <Grid container>
-      <Grid item>
-        <Drawer
-          variant='permanent'
-          className={clsx(classes.drawer, {
+    <div className={classes.root}>
+      <CssBaseline />
+      <Drawer
+        variant='permanent'
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: drawerOpen,
+          [classes.drawerClose]: !drawerOpen
+        })}
+        classes={{
+          paper: clsx({
             [classes.drawerOpen]: drawerOpen,
             [classes.drawerClose]: !drawerOpen
-          })}
-          classes={{
-            paper: clsx({
-              [classes.drawerOpen]: drawerOpen,
-              [classes.drawerClose]: !drawerOpen
-            })
-          }}
+          })
+        }}
+      >
+        <NavBarItemsContainer />
+        <div
+          className={classes.toolbar}
+          style={{ justifyContent: drawerOpen ? 'flex-end' : 'center' }}
         >
-          <Divider />
-          <NavBarItemsContainer />
-          <div
-            className={classes.toolbar}
-            style={{ justifyContent: drawerOpen ? 'flex-end' : 'center' }}
-          >
-            <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
-              {drawerOpen ? (
-                <ChevronLeftIcon className={classes.icon} />
-              ) : (
-                <ChevronRighttIcon className={classes.icon} />
-              )}
-            </IconButton>
-          </div>
-        </Drawer>
-      </Grid>
-      <Grid item>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          {children}
-        </main>
-      </Grid>
-    </Grid>
+          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+            {drawerOpen ? (
+              <ChevronLeftIcon className={classes.icon} />
+            ) : (
+              <ChevronRightIcon className={classes.icon} />
+            )}
+          </IconButton>
+        </div>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {children}
+      </main>
+    </div>
   );
 };
-
 export default NavBar;

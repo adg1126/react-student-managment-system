@@ -26,19 +26,23 @@ const white = '#ffffff',
 const grey = '#ebf4f6',
   mainIndigo = 'rgba(2, 31, 56, 1)',
   lightIndigo = 'rgba(2, 31, 56, 0.8)',
-  highlightedIndigo = '#669df6';
+  highlightedIndigo = '#669df6',
+  red = '#c40d2e',
+  green = '#008000';
 
 export default createMuiTheme({
   palette: {
     common: {
-      white: white,
-      grey500: grey500,
-      grey600: grey600,
-      grey800: grey800,
-      grey900: grey900,
-      dark: dark,
-      black: black,
-      highlightedIndigo: highlightedIndigo
+      white,
+      grey500,
+      grey600,
+      grey800,
+      grey900,
+      dark,
+      black,
+      highlightedIndigo,
+      red,
+      green
     },
     primary: {
       main: grey
@@ -59,7 +63,7 @@ export default createMuiTheme({
       width: '85vw'
     }
   },
-  buttonFillIndigoAnimation: {
+  buttonIndigoAnimation: {
     position: 'relative',
     zIndex: 1,
     '&:hover': {
@@ -70,6 +74,54 @@ export default createMuiTheme({
       content: '""',
       position: 'absolute',
       background: mainIndigo,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: '100%',
+      zIndex: '-1',
+      transition: 'top 0.2s ease-in'
+    },
+    '&:hover::before': {
+      top: 0
+    }
+  },
+  buttonGreenAnimation: {
+    position: 'relative',
+    color: green,
+    border: `1px solid ${green}`,
+    zIndex: 1,
+    '&:hover': {
+      color: white,
+      border: `1px solid ${green}`
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      background: green,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: '100%',
+      zIndex: '-1',
+      transition: 'top 0.2s ease-in'
+    },
+    '&:hover::before': {
+      top: 0
+    }
+  },
+  buttonRedAnimation: {
+    position: 'relative',
+    color: red,
+    border: `1px solid ${red}`,
+    zIndex: 1,
+    '&:hover': {
+      color: white,
+      border: `1px solid ${red}`
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      background: red,
       bottom: 0,
       left: 0,
       right: 0,

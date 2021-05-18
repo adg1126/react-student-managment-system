@@ -5,7 +5,7 @@ import theme from './ui/Theme';
 import NavBarContainer from './containers/NavBarContainer';
 import Dashboard from './pages/Dashboard';
 import Attendance from './pages/Attendance';
-import Classes from './pages/Classes';
+import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
 
@@ -17,7 +17,7 @@ export default function App() {
           <Switch>
             <Route exact path='/' component={Dashboard} />
             <Route path='/attendance' component={Attendance} />
-            <Route path='/classes' component={Classes} />
+            <Route path='/classes' component={ClassesContainer} />
             <Route path='/assignments' component={Assignments} />
             <Route path='/schedule' component={Schedule} />
           </Switch>
