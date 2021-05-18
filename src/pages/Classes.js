@@ -6,13 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import ClassListTable from '../components/table/ClassListTable';
+import ClassListContainer from '../containers/ClassListContainer';
 import FormDialog from '../components/FormDialog';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    // width: '100%',
-    // height: '100vh',
     margin: '1em'
   },
   headerContainer: {
@@ -36,12 +34,7 @@ const Classes = ({ drawerOpen }) => {
   };
 
   return (
-    <Grid
-      container
-      className={classes.mainContainer}
-      direction='column'
-      // style={{ width: drawerOpen ? '83vw' : '92vw' }}
-    >
+    <Grid container className={classes.mainContainer} direction='column'>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
           <Typography variant='h3'>Classes List</Typography>
@@ -60,7 +53,7 @@ const Classes = ({ drawerOpen }) => {
           </Button>
         </Grid>
         <Grid item>
-          <ClassListTable />
+          <ClassListContainer />
         </Grid>
       </Grid>
     </Grid>
