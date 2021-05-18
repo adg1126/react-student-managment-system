@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './ui/Theme';
@@ -9,7 +10,11 @@ import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
 
-export default function App() {
+const App = ({ fetchClasses }) => {
+  useEffect(() => {
+    fetchClasses();
+  }, [fetchClasses]);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -25,4 +30,6 @@ export default function App() {
       </BrowserRouter>
     </ThemeProvider>
   );
-}
+};
+
+export default App;
