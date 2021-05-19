@@ -59,8 +59,7 @@ export default createMuiTheme({
     borderRadius: 0,
     padding: '0.3em 1em',
     [breakpoints.down('sm')]: {
-      padding: '1em 1.8em',
-      width: '85vw'
+      padding: '0.5em 1.8em'
     }
   },
   buttonIndigoAnimation: {
