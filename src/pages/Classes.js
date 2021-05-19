@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import ClassListContainer from '../containers/ClassListContainer';
-import FormDialog from '../components/FormDialog';
+import AddClassModalContainer from '../containers/AddClassModalContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -42,7 +42,10 @@ const Classes = ({ drawerOpen }) => {
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
-          <FormDialog open={open} handleClickOpen={handleClickOpen} />
+          <AddClassModalContainer
+            open={open}
+            handleClickOpen={handleClickOpen}
+          />
           <Button
             variant='outlined'
             className={classes.addClassButton}
