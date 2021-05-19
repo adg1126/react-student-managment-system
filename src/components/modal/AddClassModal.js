@@ -65,7 +65,7 @@ const AddClassModal = ({ open, handleClickOpen, addClass }) => {
   const handleSubmit = e => {
     e.preventDefault();
     handleClickOpen(false);
-    addClass(courseCode, { courseCode, courseName, units });
+    addClass({ courseCode, courseName, units });
   };
 
   const handleChange = e => {
