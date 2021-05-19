@@ -1,6 +1,6 @@
 import {
   firestore,
-  convertCollectionsSnapshotToMap
+  convertClassesToSnapshotToMap
 } from '../../config/firebase';
 
 import {
@@ -13,21 +13,21 @@ import {
 } from './classesActionTypes';
 
 export const fetchClasses = () => async dispatch => {
-  const collectionRef = firestore.collection('classes');
-  const snapshot = await collectionRef.get();
+  const classRef = firestore.collection('classes');
+  const snapshot = await classRef.get();
   dispatch({ type: FETCH_CLASSES_START });
 
   try {
-    const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-    dispatch({ type: FETCH_CLASSES_SUCCESS, payload: collectionsMap });
+    const classMap = convertClassesToSnapshotToMap(snapshot);
+    dispatch({ type: FETCH_CLASSES_SUCCESS, payload: classMap });
   } catch (err) {
     dispatch({ type: FETCH_CLASSES_FAILURE, payload: err.message });
   }
 };
 
 export const addClass = (key, classObj) => dispatch => {
-  const collectionRef = firestore.collection('classes');
-  collectionRef.add({ ...classObj });
+  const classRef = firestore.collection('classes');
+  // classRef.add({ ...classObj });
 
   dispatch({ type: ADD_CLASS });
 };
