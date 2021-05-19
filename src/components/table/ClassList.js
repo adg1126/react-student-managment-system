@@ -49,7 +49,41 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassList = ({ classList }) => {
+const renderClassInfo = (arr, classes, deleteClass) => {
+  return arr.map((c, i) => {
+    const { courseCode, courseName, units, students } = c;
+
+    return (
+      <StyledTableRow key={i}>
+        <StyledTableCell align='left' component='th' scope='row'>
+          {courseCode}
+        </StyledTableCell>
+        <StyledTableCell align='left'>{courseName}</StyledTableCell>
+        <StyledTableCell align='center'>{units}</StyledTableCell>
+        <StyledTableCell align='center'>{students}</StyledTableCell>
+        <StyledTableCell align='center'>
+          <Button
+            variant='outlined'
+            className={classes.redButton}
+            startIcon={<HighlightOffIcon />}
+            onClick={() => deleteClass(courseCode)}
+          >
+            Remove
+          </Button>
+          <Button
+            variant='outlined'
+            className={classes.indigoButton}
+            startIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
+        </StyledTableCell>
+      </StyledTableRow>
+    );
+  });
+};
+
+const ClassList = ({ classList, deleteClass }) => {
   const classes = useStyles();
 
   return (
@@ -66,34 +100,7 @@ const ClassList = ({ classList }) => {
         </TableHead>
         <TableBody>
           {classList.length
-            ? classList.map(
-                ({ courseCode, courseName, units, students }, i) => (
-                  <StyledTableRow key={i}>
-                    <StyledTableCell align='left' component='th' scope='row'>
-                      {courseCode}
-                    </StyledTableCell>
-                    <StyledTableCell align='left'>{courseName}</StyledTableCell>
-                    <StyledTableCell align='center'>{units}</StyledTableCell>
-                    <StyledTableCell align='center'>{students}</StyledTableCell>
-                    <StyledTableCell align='center'>
-                      <Button
-                        variant='outlined'
-                        className={classes.redButton}
-                        startIcon={<HighlightOffIcon />}
-                      >
-                        Remove
-                      </Button>
-                      <Button
-                        variant='outlined'
-                        className={classes.indigoButton}
-                        startIcon={<EditIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )
-              )
+            ? renderClassInfo(classList, classes, deleteClass)
             : null}
         </TableBody>
       </Table>

@@ -8,7 +8,7 @@ import {
 } from './classesActionTypes';
 
 const INITIAL_STATE = {
-  classList: null,
+  classList: [],
   isFetching: false,
   errMeassage: ''
 };
@@ -23,7 +23,16 @@ const classesReducer = (state = INITIAL_STATE, action) => {
       return { ...state, isFetching: false, errMeassage: action.payload };
     case ADD_CLASS:
       return {
-        ...state.classList
+        ...state,
+        classList: [...state.classList, action.payload]
+      };
+    case DELETE_CLASS:
+      return {
+        ...state
+        // classList: [
+        //   state.classList,
+        //   state.classList.filter(c => c !== action.payload)
+        // ]
       };
     default:
       return state;
