@@ -9,7 +9,7 @@ import {
   EDIT_CLASS
 } from './classesActionTypes';
 
-import { convertClassesToSnapshotToMap } from './cartUtils';
+import { convertClassesToSnapshotToMap } from './classUtils';
 
 export const fetchClasses = () => async dispatch => {
   dispatch({ type: FETCH_CLASSES_START });
@@ -35,9 +35,15 @@ export const addClass = (uid, classObj) => async dispatch => {
   }
 };
 
-export const editClass = classObj => dispatch => {
-  console.log(...classObj);
-  dispatch({ type: EDIT_CLASS });
+export const editClass = (uid, classObj) => async dispatch => {
+  try {
+    const classesRef = firestore.collection('classes');
+    const classRefToEdit = classesRef.doc(uid).update({ ...classObj });
+    await classRefToEdit;
+    dispatch({ type: EDIT_CLASS, payload: classObj });
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 export const deleteClass = courseCode => async dispatch => {

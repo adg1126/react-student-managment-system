@@ -30,6 +30,14 @@ const classesReducer = (state = INITIAL_STATE, action) => {
           [action.payload.courseCode]: action.payload
         }
       };
+    case EDIT_CLASS:
+      return {
+        ...state,
+        classList: {
+          ...state.classList,
+          [action.payload.courseCode]: action.payload
+        }
+      };
     case DELETE_CLASS:
       return { ...state, classList: _.omit(state.classList, action.payload) };
     default:
