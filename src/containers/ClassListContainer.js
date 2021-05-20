@@ -1,13 +1,22 @@
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectClassList } from '../redux/classes/classesSelectors';
+import {
+  selectClassesClassList,
+  selectIsClassesFetching
+} from '../redux/classes/classesSelectors';
 
 import { deleteClass } from '../redux/classes/classesActions';
 
 import ClassList from '../components/table/ClassList';
+import WithSpinner from './WithSpinner';
 
 const mapStateToProps = createStructuredSelector({
-  classList: selectClassList
+  classList: selectClassesClassList,
+  isFetching: selectIsClassesFetching
 });
 
-export default connect(mapStateToProps, { deleteClass })(ClassList);
+export default compose(
+  connect(mapStateToProps, { deleteClass }),
+  WithSpinner
+)(ClassList);
