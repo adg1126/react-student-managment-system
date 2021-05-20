@@ -35,7 +35,10 @@ export const addClass = (uid, classObj) => async dispatch => {
   }
 };
 
-export const editClass = courseCode => dispatch => {};
+export const editClass = classObj => dispatch => {
+  console.log(...classObj);
+  dispatch({ type: EDIT_CLASS });
+};
 
 export const deleteClass = courseCode => async dispatch => {
   try {

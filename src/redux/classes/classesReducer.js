@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   FETCH_CLASSES_START,
   FETCH_CLASSES_SUCCESS,
@@ -6,8 +7,6 @@ import {
   DELETE_CLASS,
   EDIT_CLASS
 } from './classesActionTypes';
-
-import { removeClassFromClassList } from './cartUtils';
 
 const INITIAL_STATE = {
   classList: [],
@@ -26,13 +25,13 @@ const classesReducer = (state = INITIAL_STATE, action) => {
     case ADD_CLASS:
       return {
         ...state,
-        classList: [...state.classList, action.payload]
+        classList: {
+          ...state.classList,
+          [action.payload.courseCode]: action.payload
+        }
       };
     case DELETE_CLASS:
-      return {
-        ...state,
-        classList: removeClassFromClassList(state.classList, action.payload)
-      };
+      return { ...state, classList: _.omit(state.classList, action.payload) };
     default:
       return state;
   }
