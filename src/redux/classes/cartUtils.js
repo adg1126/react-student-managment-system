@@ -1,5 +1,5 @@
-export const convertClassesToSnapshotToMap = collection =>
-  collection.docs.map(doc => {
+export const convertClassesToSnapshotToMap = collection => {
+  const transformedCollection = collection.docs.map(doc => {
     const { courseCode, courseName, units, students } = doc.data();
 
     return {
@@ -9,6 +9,12 @@ export const convertClassesToSnapshotToMap = collection =>
       students
     };
   });
+
+  return transformedCollection.reduce((acc, collection) => {
+    acc[collection.courseCode] = collection;
+    return acc;
+  }, {});
+};
 
 export const removeClassFromClassList = (classList, courseCode) => {
   const existingClass = classList.find(
