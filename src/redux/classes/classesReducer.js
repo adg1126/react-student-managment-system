@@ -7,6 +7,8 @@ import {
   EDIT_CLASS
 } from './classesActionTypes';
 
+import { removeClassFromClassList } from './cartUtils';
+
 const INITIAL_STATE = {
   classList: [],
   isFetching: false,
@@ -28,11 +30,8 @@ const classesReducer = (state = INITIAL_STATE, action) => {
       };
     case DELETE_CLASS:
       return {
-        ...state
-        // classList: [
-        //   state.classList,
-        //   state.classList.filter(c => c !== action.payload)
-        // ]
+        ...state,
+        classList: removeClassFromClassList(state.classList, action.payload)
       };
     default:
       return state;

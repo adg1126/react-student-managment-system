@@ -1,7 +1,4 @@
-import {
-  firestore,
-  convertClassesToSnapshotToMap
-} from '../../config/firebase';
+import { firestore } from '../../config/firebase';
 
 import {
   FETCH_CLASSES_START,
@@ -12,40 +9,41 @@ import {
   EDIT_CLASS
 } from './classesActionTypes';
 
+import { convertClassesToSnapshotToMap } from './cartUtils';
+
 export const fetchClasses = () => async dispatch => {
-  const classRef = firestore.collection('classes');
-  const snapshot = await classRef.get();
   dispatch({ type: FETCH_CLASSES_START });
 
   try {
-    const classMap = convertClassesToSnapshotToMap(snapshot);
-    dispatch({ type: FETCH_CLASSES_SUCCESS, payload: classMap });
+    const classesRef = firestore.collection('classes');
+    const snapshot = await classesRef.get();
+    const clasessArr = convertClassesToSnapshotToMap(snapshot);
+    dispatch({ type: FETCH_CLASSES_SUCCESS, payload: clasessArr });
   } catch (err) {
     dispatch({ type: FETCH_CLASSES_FAILURE, payload: err.message });
   }
 };
 
-export const addClass = classObj => dispatch => {
-  const classRef = firestore.collection('classes');
-  classRef.add({ ...classObj });
-
+export const addClass = (uid, classObj) => async dispatch => {
   try {
+    const classesRef = firestore.collection('classes');
+    const classToAdd = classesRef.doc(uid).set({ ...classObj });
+    await classToAdd;
     dispatch({ type: ADD_CLASS, payload: classObj });
   } catch (err) {
     console.log(err.message);
   }
 };
 
-export const editClass = item => dispatch => {};
+export const editClass = courseCode => dispatch => {};
 
 export const deleteClass = courseCode => async dispatch => {
-  const classToDeleteRef = firestore
-    .collection('classes')
-    .where('courseCode', '==', courseCode);
-
-  const snapshot = await classToDeleteRef.get();
-  snapshot.forEach(doc => {
-    doc.ref.delete();
-    dispatch({ type: DELETE_CLASS });
-  });
+  try {
+    const classesRef = firestore.collection('classes');
+    const classToDeleteDoc = classesRef.doc(courseCode);
+    await classToDeleteDoc.delete();
+    dispatch({ type: DELETE_CLASS, payload: courseCode });
+  } catch (err) {
+    console.log(err.message);
+  }
 };

@@ -86,6 +86,27 @@ const renderClassInfo = (arr, classes, deleteClass) => {
 const ClassList = ({ classList, deleteClass }) => {
   const classes = useStyles();
 
+  // return (
+  //   <TableContainer component={Paper}>
+  //     <Table className={classes.table} aria-label='customized table'>
+  //       <TableHead>
+  //         <TableRow>
+  //           <StyledTableCell align='left'>Course Code</StyledTableCell>
+  //           <StyledTableCell align='left'>Course Name</StyledTableCell>
+  //           <StyledTableCell align='center'>Units</StyledTableCell>
+  //           <StyledTableCell align='center'># Students</StyledTableCell>
+  //           <StyledTableCell align='center'>Tools</StyledTableCell>
+  //         </TableRow>
+  //       </TableHead>
+  //       <TableBody>
+  //         {classList.length
+  //           ? renderClassInfo(classList, classes, deleteClass)
+  //           : null}
+  //       </TableBody>
+  //     </Table>
+  //   </TableContainer>
+  // );
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='customized table'>

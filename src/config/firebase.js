@@ -13,18 +13,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export const convertClassesToSnapshotToMap = collection =>
-  collection.docs.map(doc => {
-    const { courseCode, courseName, units, students } = doc.data();
-
-    return {
-      courseCode,
-      courseName,
-      units,
-      students
-    };
-  });
-
 export const firestore = firebase.firestore();
 
 export default firebase;
