@@ -9,6 +9,7 @@ import Attendance from './pages/Attendance';
 import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
+import EditClassContainer from './containers/EditClassContiner';
 
 const App = ({ fetchClasses }) => {
   useEffect(() => {
@@ -22,7 +23,12 @@ const App = ({ fetchClasses }) => {
           <Switch>
             <Route exact path='/' component={Dashboard} />
             <Route path='/attendance' component={Attendance} />
-            <Route path='/classes' component={ClassesContainer} />
+            <Route exact path='/classes' component={ClassesContainer} />
+            <Route
+              exact
+              path='/classes/edit/:classId'
+              component={EditClassContainer}
+            />
             <Route path='/assignments' component={Assignments} />
             <Route path='/schedule' component={Schedule} />
           </Switch>
