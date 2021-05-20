@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -9,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
@@ -49,7 +51,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const renderClassInfo = (arr, classes, deleteClass) => {
+const renderClassInfo = (
+  arr,
+  classes,
+  deleteClass,
+  editClass,
+  open,
+  handleClickOpen
+) => {
   return arr.map((c, i) => {
     const { courseCode, courseName, units, students } = c;
 
@@ -74,6 +83,8 @@ const renderClassInfo = (arr, classes, deleteClass) => {
             variant='outlined'
             className={classes.indigoButton}
             startIcon={<EditIcon />}
+            component={Link}
+            to={`/classes/edit/${courseCode}`}
           >
             Edit
           </Button>
@@ -83,31 +94,15 @@ const renderClassInfo = (arr, classes, deleteClass) => {
   });
 };
 
-const ClassList = ({ classList, deleteClass }) => {
+const ClassList = ({ classList, deleteClass, editClass }) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
 
-  // return (
-  //   <TableContainer component={Paper}>
-  //     <Table className={classes.table} aria-label='customized table'>
-  //       <TableHead>
-  //         <TableRow>
-  //           <StyledTableCell align='left'>Course Code</StyledTableCell>
-  //           <StyledTableCell align='left'>Course Name</StyledTableCell>
-  //           <StyledTableCell align='center'>Units</StyledTableCell>
-  //           <StyledTableCell align='center'># Students</StyledTableCell>
-  //           <StyledTableCell align='center'>Tools</StyledTableCell>
-  //         </TableRow>
-  //       </TableHead>
-  //       <TableBody>
-  //         {classList.length
-  //           ? renderClassInfo(classList, classes, deleteClass)
-  //           : null}
-  //       </TableBody>
-  //     </Table>
-  //   </TableContainer>
-  // );
+  const handleClickOpen = state => {
+    setOpen(state);
+  };
 
-  return (
+  return classList.length ? (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='customized table'>
         <TableHead>
@@ -120,12 +115,19 @@ const ClassList = ({ classList, deleteClass }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {classList.length
-            ? renderClassInfo(classList, classes, deleteClass)
-            : null}
+          {renderClassInfo(
+            classList,
+            classes,
+            deleteClass,
+            editClass,
+            open,
+            handleClickOpen
+          )}
         </TableBody>
       </Table>
     </TableContainer>
+  ) : (
+    <Typography>You currently have no classes, add some now.</Typography>
   );
 };
 

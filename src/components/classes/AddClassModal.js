@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Modal from './Modal';
-import ClassForm from '../form/ClassForm';
+import Modal from '../modal/Modal';
+import ClassForm from './ClassForm';
 
 const AddClassModal = ({ open, handleClickOpen, addClass }) => {
   const onSubmit = formValues => {
