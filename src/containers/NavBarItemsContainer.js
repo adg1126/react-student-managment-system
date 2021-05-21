@@ -1,10 +1,15 @@
 import { connect } from 'react-redux';
-import { setTabIndex } from '../redux/tabs/tabsActions';
+import { setTabIndex } from '../redux/navbar/navbarActions';
+import { createStructuredSelector } from 'reselect';
+import {
+  selectTabIndex,
+  selectDrawerOpen
+} from '../redux/navbar/navbarSelectors';
 import NavBarItems from '../components/navbar/NavBarItems';
 
-const mapStateToProps = ({ tabs: { tabIndex, drawerOpen } }) => ({
-  tabIndex,
-  drawerOpen
+const mapStateToProps = createStructuredSelector({
+  tabIndex: selectTabIndex,
+  drawerOpen: selectDrawerOpen
 });
 
 export default connect(mapStateToProps, {

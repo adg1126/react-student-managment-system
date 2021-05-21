@@ -1,11 +1,11 @@
-import { SET_TAB_INDEX, SET_DRAWER_OPEN } from './tabsActionTypes';
+import { SET_TAB_INDEX, SET_DRAWER_OPEN } from './navbarActionTypes';
 
 const INITIAL_STATE = {
   tabIndex: 0,
   drawerOpen: true
 };
 
-const tabsReducer = (state = INITIAL_STATE, action) => {
+const navbarReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_TAB_INDEX:
       return { ...state, tabIndex: action.payload };
@@ -16,4 +16,4 @@ const tabsReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default tabsReducer;
+export default navbarReducer;

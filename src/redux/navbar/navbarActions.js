@@ -1,4 +1,4 @@
-import { SET_TAB_INDEX, SET_DRAWER_OPEN } from './tabsActionTypes';
+import { SET_TAB_INDEX, SET_DRAWER_OPEN } from './navbarActionTypes';
 
 export const setTabIndex = i => ({
   type: SET_TAB_INDEX,
