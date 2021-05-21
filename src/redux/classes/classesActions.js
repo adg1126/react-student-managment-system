@@ -24,10 +24,10 @@ export const fetchClasses = () => async dispatch => {
   }
 };
 
-export const addClass = (uid, classObj) => async dispatch => {
+export const addClass = classObj => async dispatch => {
   try {
     const classesRef = firestore.collection('classes');
-    const classToAdd = classesRef.doc(uid).set({ ...classObj });
+    const classToAdd = classesRef.doc().set({ ...classObj });
     await classToAdd;
     dispatch({ type: ADD_CLASS, payload: classObj });
   } catch (err) {
