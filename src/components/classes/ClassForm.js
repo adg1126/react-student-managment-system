@@ -81,18 +81,20 @@ const ClassForm = props => {
       <Field name='units' component={renderTextField} label='Units' />
       <Grid
         container
-        justify='space-between'
+        justify={handleClickOpen ? 'space-between' : undefined}
         style={{ width: matchesXS ? '100%' : '36%', marginTop: '1.2em' }}
       >
         <Grid item>
-          <Button
-            variant='outlined'
-            className={classes.redButton}
-            onClick={() => handleClickOpen(false)}
-            color='primary'
-          >
-            Cancel
-          </Button>
+          {handleClickOpen ? (
+            <Button
+              variant='outlined'
+              className={classes.redButton}
+              onClick={() => handleClickOpen(false)}
+              color='primary'
+            >
+              Cancel
+            </Button>
+          ) : null}
         </Grid>
         <Grid item>
           <Button
