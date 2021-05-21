@@ -13,7 +13,17 @@ export const selectClassListForPreview = createSelector(
     classList ? Object.keys(classList).map(key => classList[key]) : []
 );
 
+export const selectClass = classId =>
+  createSelector([selectClassList], classes =>
+    classes ? classes[classId] : null
+  );
+
 export const selectIsClassesFetching = createSelector(
   [selectClasses],
   classes => classes.isFetching
+);
+
+export const selectClassesStatus = createSelector(
+  [selectClasses],
+  classes => classes.status
 );
