@@ -5,7 +5,8 @@ import EditClass from '../components/classes/EditClass';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    classObj: state.classes.classList[ownProps.match.params.classId]
+    classObj: state.classes.classList[ownProps.match.params.classId],
+    status: state.classes.status
   };
 };
 

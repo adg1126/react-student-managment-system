@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -8,6 +8,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import ClassListContainer from '../containers/ClassListContainer';
 import AddClassModalContainer from '../containers/AddClassModalContainer';
+import Notification from '../components/notification/Notification';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -24,13 +25,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Classes = ({ drawerOpen }) => {
+const Classes = ({ drawerOpen, status }) => {
   const classes = useStyles();
 
-  const [open, setOpen] = useState(false);
+  const [open, setDrawerOpen] = useState(false);
 
   const handleClickOpen = state => {
-    setOpen(state);
+    setDrawerOpen(state);
+  };
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+
+  useEffect(() => {
+    setNotificationOpen(true);
+    setTimeout(() => {
+      setNotificationOpen(false);
+    }, 3000);
+  }, [status]);
+
+  const handleNotificationClose = e => {
+    setNotificationOpen(false);
   };
 
   return (
@@ -59,6 +73,13 @@ const Classes = ({ drawerOpen }) => {
           <ClassListContainer />
         </Grid>
       </Grid>
+      {status.success || status.err ? (
+        <Notification
+          status={status}
+          notificationOpen={notificationOpen}
+          handleNotificationClose={handleNotificationClose}
+        />
+      ) : null}
     </Grid>
   );
 };
