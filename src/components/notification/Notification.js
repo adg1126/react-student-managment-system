@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -17,12 +17,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Notification = ({
-  status,
-  notificationOpen,
-  handleNotificationClose
-}) => {
+const Notification = ({ status, notificationOpen, setNotificationOpen }) => {
   const classes = useStyles();
+
+  console.log(status);
+  useEffect(() => {
+    if (status.success.length || status.err.length) {
+      setNotificationOpen(true);
+      setTimeout(() => {
+        setNotificationOpen(false);
+      }, 3000);
+    }
+  }, [status, setNotificationOpen]);
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
 
   return (
     <div className={classes.root}>

@@ -5,7 +5,7 @@ const INITIAL_STATE = { notificationOpen: false };
 const notificationReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_NOTIFICATION_OPEN:
-      return { ...state, tabIndex: action.payload };
+      return { ...state, notificationOpen: action.payload };
     default:
       return state;
   }
