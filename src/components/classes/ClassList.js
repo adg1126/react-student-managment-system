@@ -51,14 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const renderClassInfo = (
-  arr,
-  classes,
-  deleteClass,
-  editClass,
-  open,
-  handleClickOpen
-) => {
+const renderClassInfo = (arr, classes, deleteClass) => {
   return arr.map((c, i) => {
     const { courseCode, courseName, units, students } = c;
 
@@ -94,13 +87,8 @@ const renderClassInfo = (
   });
 };
 
-const ClassList = ({ classList, deleteClass, editClass }) => {
+const ClassList = ({ classList, deleteClass }) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = state => {
-    setOpen(state);
-  };
 
   return classList.length ? (
     <TableContainer component={Paper}>
@@ -115,14 +103,7 @@ const ClassList = ({ classList, deleteClass, editClass }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {renderClassInfo(
-            classList,
-            classes,
-            deleteClass,
-            editClass,
-            open,
-            handleClickOpen
-          )}
+          {renderClassInfo(classList, classes, deleteClass)}
         </TableBody>
       </Table>
     </TableContainer>
