@@ -51,40 +51,39 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const renderClassInfo = (arr, classes, deleteClass) => {
-  return arr.map((c, i) => {
-    const { courseCode, courseName, units, students } = c;
-
-    return (
-      <StyledTableRow key={i}>
-        <StyledTableCell align='left' component='th' scope='row'>
-          {courseCode}
-        </StyledTableCell>
-        <StyledTableCell align='left'>{courseName}</StyledTableCell>
-        <StyledTableCell align='center'>{units}</StyledTableCell>
-        <StyledTableCell align='center'>{students}</StyledTableCell>
-        <StyledTableCell align='center'>
-          <Button
-            variant='outlined'
-            className={classes.redButton}
-            startIcon={<HighlightOffIcon />}
-            onClick={() => deleteClass(courseCode)}
-          >
-            Remove
-          </Button>
-          <Button
-            variant='outlined'
-            className={classes.indigoButton}
-            startIcon={<EditIcon />}
-            component={Link}
-            to={`/classes/edit/${courseCode}`}
-          >
-            Edit
-          </Button>
-        </StyledTableCell>
-      </StyledTableRow>
-    );
-  });
+const Row = ({
+  row: { courseCode, courseName, units, students },
+  classes,
+  deleteClass
+}) => {
+  return (
+    <StyledTableRow>
+      <StyledTableCell align='left'>{courseCode}</StyledTableCell>
+      <StyledTableCell align='left'>{courseName}</StyledTableCell>
+      <StyledTableCell align='center'>{units}</StyledTableCell>
+      <StyledTableCell align='center'>{students}</StyledTableCell>
+      <StyledTableCell align='center'>
+        <Button
+          variant='outlined'
+          className={classes.redButton}
+          startIcon={<HighlightOffIcon />}
+          onClick={() => deleteClass(courseCode)}
+        >
+          Remove
+        </Button>
+        <Button
+          variant='outlined'
+          className={classes.indigoButton}
+          startIcon={<EditIcon />}
+          component={Link}
+          to={`/classes/edit/${courseCode}`}
+        >
+          Edit
+        </Button>
+      </StyledTableCell>
+    </StyledTableRow>
+  );
+  // });
 };
 
 const ClassList = ({ classList, deleteClass }) => {
@@ -103,7 +102,14 @@ const ClassList = ({ classList, deleteClass }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {renderClassInfo(classList, classes, deleteClass)}
+          {classList.map(row => (
+            <Row
+              key={row.courseCode}
+              row={row}
+              classes={classes}
+              deleteClass={deleteClass}
+            />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

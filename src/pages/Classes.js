@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -8,7 +9,6 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import ClassListContainer from '../containers/ClassListContainer';
 import AddClassModalContainer from '../containers/AddClassModalContainer';
-import Notification from '../components/notification/Notification';
 import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +28,8 @@ const useStyles = makeStyles(theme => ({
 
 const Classes = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const [open, setModalOpen] = useState(false);
 
@@ -57,7 +59,10 @@ const Classes = () => {
             Add Class
           </Button>
         </Grid>
-        <Grid item>
+        <Grid
+          item
+          style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
+        >
           <ClassListContainer />
         </Grid>
       </Grid>

@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
 const Notification = ({ status, notificationOpen, setNotificationOpen }) => {
   const classes = useStyles();
 
-  console.log(status);
   useEffect(() => {
     if (status.success.length || status.err.length) {
       setNotificationOpen(true);
