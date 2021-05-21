@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import _ from 'lodash';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -7,27 +7,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import ClassForm from './ClassForm';
-import Notification from '../notification/Notification';
 
-const EditClass = ({ classObj, editClass, status }) => {
+const EditClass = ({ classObj, editClass }) => {
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const onSubmit = formValues => {
     editClass(classObj.courseCode, formValues);
-  };
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-
-  useEffect(() => {
-    setNotificationOpen(true);
-    setTimeout(() => {
-      setNotificationOpen(false);
-    }, 3000);
-  }, [status]);
-
-  const handleNotificationClose = e => {
-    setNotificationOpen(false);
   };
 
   return classObj ? (
@@ -45,13 +31,6 @@ const EditClass = ({ classObj, editClass, status }) => {
           onSubmit={onSubmit}
         />
       </Grid>
-      {status.success || status.err ? (
-        <Notification
-          status={status}
-          notificationOpen={notificationOpen}
-          handleNotificationClose={handleNotificationClose}
-        />
-      ) : null}
     </Grid>
   ) : null;
 };

@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
+
+import { selectClass } from '../redux/classes/classesSelectors';
+
 import { editClass } from '../redux/classes/classesActions';
-import {
-  selectClass,
-  selectClassesStatus
-} from '../redux/classes/classesSelectors';
+
 import EditClass from '../components/classes/EditClass';
 
 const mapStateToProps = (state, ownProps) => ({
-  classObj: selectClass(ownProps.match.params.classId)(state),
-  status: selectClassesStatus(state)
+  classObj: selectClass(ownProps.match.params.classId)(state)
 });
 
 export default connect(mapStateToProps, { editClass })(EditClass);
