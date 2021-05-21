@@ -1,12 +1,19 @@
 import { connect } from 'react-redux';
-import { selectDrawerOpen } from '../redux/navbar/navbarSelectors';
-import { selectClassesStatus } from '../redux/classes/classesSelectors';
+
 import { createStructuredSelector } from 'reselect';
+import { selectClassesStatus } from '../redux/classes/classesSelectors';
+import { selectNotificationOpen } from '../redux/notification/notificationSelectors';
+
+import { setDrawerOpen } from '../redux/navbar/navbarActions';
+import { setNotificationOpen } from '../redux/notification/notificationActions';
+
 import Classes from '../pages/Classes';
 
 const mapStateToProps = createStructuredSelector({
-  drawerOpen: selectDrawerOpen,
-  status: selectClassesStatus
+  status: selectClassesStatus,
+  notificationOpen: selectNotificationOpen
 });
 
-export default connect(mapStateToProps)(Classes);
+export default connect(mapStateToProps, { setDrawerOpen, setNotificationOpen })(
+  Classes
+);

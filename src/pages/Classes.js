@@ -9,6 +9,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import ClassListContainer from '../containers/ClassListContainer';
 import AddClassModalContainer from '../containers/AddClassModalContainer';
 import Notification from '../components/notification/Notification';
+import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -25,26 +26,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Classes = ({ drawerOpen, status }) => {
+const Classes = () => {
   const classes = useStyles();
 
-  const [open, setDrawerOpen] = useState(false);
+  const [open, setModalOpen] = useState(false);
 
   const handleClickOpen = state => {
-    setDrawerOpen(state);
-  };
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-
-  useEffect(() => {
-    setNotificationOpen(true);
-    setTimeout(() => {
-      setNotificationOpen(false);
-    }, 3000);
-  }, [status]);
-
-  const handleNotificationClose = e => {
-    setNotificationOpen(false);
+    setModalOpen(state);
   };
 
   return (
@@ -73,13 +61,7 @@ const Classes = ({ drawerOpen, status }) => {
           <ClassListContainer />
         </Grid>
       </Grid>
-      {status.success || status.err ? (
-        <Notification
-          status={status}
-          notificationOpen={notificationOpen}
-          handleNotificationClose={handleNotificationClose}
-        />
-      ) : null}
+      <NotificationContainer />
     </Grid>
   );
 };
