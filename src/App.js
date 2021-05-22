@@ -9,7 +9,7 @@ import Attendance from './pages/Attendance';
 import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
-import EditClassContainer from './containers/EditClassContiner';
+import ClassEditContiner from './containers/ClassEditContiner';
 import ClassShowContainer from './containers/ClassShowContainer';
 
 const App = ({ fetchClasses }) => {
@@ -28,7 +28,7 @@ const App = ({ fetchClasses }) => {
             <Route
               exact
               path='/classes/edit/:classId'
-              component={EditClassContainer}
+              component={ClassEditContiner}
             />
             <Route
               exact

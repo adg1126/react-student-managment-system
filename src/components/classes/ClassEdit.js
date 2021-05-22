@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import ClassForm from './ClassForm';
 
-const EditClass = ({ classObj, editClass }) => {
+const ClassEdit = ({ classObj, editClass }) => {
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -35,4 +35,4 @@ const EditClass = ({ classObj, editClass }) => {
   ) : null;
 };
 
-export default EditClass;
+export default ClassEdit;
