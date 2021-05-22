@@ -41,7 +41,7 @@ const Classes = () => {
     <Grid container className={classes.mainContainer} direction='column'>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
-          <Typography variant='h3'>Classes List</Typography>
+          <Typography variant='h4'>Class List</Typography>
         </Grid>
       </Grid>
       <Grid item container direction='column'>

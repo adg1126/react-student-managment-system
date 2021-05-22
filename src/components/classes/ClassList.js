@@ -48,6 +48,17 @@ const useStyles = makeStyles(theme => ({
     ...theme.buttonIndigoAnimation,
     fontSize: '1em',
     marginBottom: '1.5em'
+  },
+  linkButton: {
+    color: theme.palette.secondary.main,
+    borderRadius: 0,
+    borderBottom: `1px solid ${theme.palette.secondary.main}`,
+    zIndex: 1,
+    '&:hover': {
+      color: theme.palette.secondary.light,
+      borderBottom: `1px solid ${theme.palette.secondary.light}`,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)'
+    }
   }
 }));
 
@@ -58,7 +69,15 @@ const Row = ({
 }) => {
   return (
     <StyledTableRow>
-      <StyledTableCell align='left'>{courseCode}</StyledTableCell>
+      <StyledTableCell align='left'>
+        <Button
+          className={classes.linkButton}
+          component={Link}
+          to={`/classes/${courseCode}`}
+        >
+          {courseCode}
+        </Button>
+      </StyledTableCell>
       <StyledTableCell align='left'>{courseName}</StyledTableCell>
       <StyledTableCell align='center'>{units}</StyledTableCell>
       <StyledTableCell align='center'>{students}</StyledTableCell>
