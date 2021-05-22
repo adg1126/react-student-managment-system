@@ -24,8 +24,8 @@ const white = '#ffffff',
 
 // Color Scheme
 const grey = '#ebf4f6',
-  mainIndigo = 'rgba(2, 31, 56, 1)',
-  lightIndigo = 'rgba(2, 31, 56, 0.8)',
+  mainIndigo = '#021F38',
+  lightIndigo = '#5885af',
   highlightedIndigo = '#669df6',
   red = '#c40d2e',
   green = '#008000';
