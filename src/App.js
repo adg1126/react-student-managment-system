@@ -10,6 +10,7 @@ import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
 import EditClassContainer from './containers/EditClassContiner';
+import ClassShowContainer from './containers/ClassShowContainer';
 
 const App = ({ fetchClasses }) => {
   useEffect(() => {
@@ -28,6 +29,11 @@ const App = ({ fetchClasses }) => {
               exact
               path='/classes/edit/:classId'
               component={EditClassContainer}
+            />
+            <Route
+              exact
+              path='/classes/:classId'
+              component={ClassShowContainer}
             />
             <Route path='/assignments' component={Assignments} />
             <Route path='/schedule' component={Schedule} />
