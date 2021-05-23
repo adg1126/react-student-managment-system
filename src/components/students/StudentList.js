@@ -10,7 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
@@ -62,19 +61,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ students }) => {
+const Row = ({ courseCode, student, deleteStudent }) => {
+  const classes = useStyles();
+
   return (
     <StyledTableRow>
-      {/* <StyledTableCell align='left'></StyledTableCell>
-      <StyledTableCell align='left'>{courseName}</StyledTableCell>
-      <StyledTableCell align='center'>{units}</StyledTableCell>
-      <StyledTableCell align='center'>{students}</StyledTableCell>
+      <StyledTableCell align='left'>{student.fullName}</StyledTableCell>
       <StyledTableCell align='center'>
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteClass(courseCode)}
+          onClick={() => deleteStudent(courseCode, student)}
         >
           Remove
         </Button>
@@ -82,18 +80,17 @@ const Row = ({ students }) => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          component={Link}
-          to={`/classes/edit/${courseCode}`}
+          // component={Link}
+          // to={`/classes/edit/${courseCode}`}
         >
           Edit
         </Button>
-      </StyledTableCell> */}
+      </StyledTableCell>
     </StyledTableRow>
   );
-  // });
 };
 
-const StudentList = ({ students }) => {
+const StudentList = ({ courseCode, students, deleteStudent }) => {
   const classes = useStyles();
 
   return (
@@ -106,14 +103,16 @@ const StudentList = ({ students }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {classList.map(row => (
-            <Row
-              key={row.courseCode}
-              row={row}
-              classes={classes}
-              deleteClass={deleteClass}
-            />
-          ))} */}
+          {students
+            ? students.map((student, i) => (
+                <Row
+                  key={i}
+                  courseCode={courseCode}
+                  student={student}
+                  deleteStudent={deleteStudent}
+                />
+              ))
+            : null}
         </TableBody>
       </Table>
     </TableContainer>
