@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 import StudentList from '../students/StudentList';
-import AddStudentModal from '../students/AddStudentModal';
+import AddStudentModalContainer from '../../containers/AddStudentModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -70,7 +70,11 @@ const ClassShow = ({ classObj }) => {
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
-          <AddStudentModal open={open} handleClickOpen={handleClickOpen} />
+          <AddStudentModalContainer
+            courseCode={classObj.courseCode}
+            open={open}
+            handleClickOpen={handleClickOpen}
+          />
           <Button
             variant='outlined'
             className={classes.addClassButton}
