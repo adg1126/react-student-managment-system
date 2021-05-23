@@ -19,15 +19,16 @@ import {
   EDIT_CLASS_START,
   EDIT_CLASS_SUCCESS,
   EDIT_CLASS_FAILURE,
-  ADD_STUDENT_SUCCESS,
+  ADD_STUDENT,
   ADD_STUDENT_FAILURE,
-  DELETE_STUDENT_SUCCESS,
+  DELETE_STUDENT,
   DELETE_STUDENT_FAILURE,
-  EDIT_STUDENT_SUCCESS,
+  EDIT_STUDENT,
   EDIT_STUDENT_FAILURE
 } from './classesActionTypes';
-import { firestore } from '../../config/firebase';
+import { firestore, getClassRef } from '../../config/firebase';
 import { convertClassesToSnapshotToMap } from './classUtils';
+import { selectClass, selectClassStudents } from './classesSelectors';
 
 export function* fetchClassesAsync() {
   const classesRef = firestore.collection('classes');
@@ -56,7 +57,7 @@ export function* addClassToFirebase({ payload: classObj }) {
         payload: 'Failed to add class, check your internet connection.'
       });
     }
-    yield classesRef.doc().set({ ...classObj });
+    yield classesRef.doc().set({ ...classObj, students: [], schedule: [] });
     yield put({ type: ADD_CLASS_SUCCESS, payload: classObj });
   } catch (err) {
     yield put({ type: ADD_CLASS_FAILURE, payload: err.message });
@@ -123,11 +124,50 @@ export function* onClassEdit() {
   yield takeLatest(EDIT_CLASS_START, editClassInFirebase);
 }
 
+export function* updateStudentsInFirebase({
+  type,
+  key: courseCode,
+  value: studentObj
+}) {
+  const currentClass = yield select(selectClass(courseCode));
+
+  if (currentClass) {
+    try {
+      const classRef = yield getClassRef(courseCode);
+      const students = yield select(selectClassStudents(courseCode));
+      yield classRef.update({ students });
+    } catch (err) {
+      type === ADD_STUDENT
+        ? yield put({
+            type: ADD_STUDENT_FAILURE,
+            payload: err.message
+          })
+        : type === DELETE_STUDENT
+        ? yield put({
+            type: EDIT_STUDENT_FAILURE,
+            payload: err.message
+          })
+        : yield put({
+            type: EDIT_STUDENT_FAILURE,
+            payload: err.message
+          });
+    }
+  }
+}
+
+export function* onStudentAdd() {
+  yield takeLatest(
+    [ADD_STUDENT, DELETE_STUDENT, EDIT_STUDENT],
+    updateStudentsInFirebase
+  );
+}
+
 export function* classesSagas() {
   yield all([
     call(fetchClassesStart),
     call(onClassAdd),
     call(onClassDelete),
-    call(onClassEdit)
+    call(onClassEdit),
+    call(onStudentAdd)
   ]);
 }
