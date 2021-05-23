@@ -12,10 +12,10 @@ import Schedule from './pages/Schedule';
 import ClassEditContiner from './containers/ClassEditContiner';
 import ClassShowContainer from './containers/ClassShowContainer';
 
-const App = ({ fetchClasses }) => {
+const App = ({ fetchClassesStart }) => {
   useEffect(() => {
-    fetchClasses();
-  }, [fetchClasses]);
+    fetchClassesStart();
+  }, [fetchClassesStart]);
 
   return (
     <ThemeProvider theme={theme}>
