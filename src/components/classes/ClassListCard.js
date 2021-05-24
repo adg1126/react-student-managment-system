@@ -42,6 +42,41 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const ClassCard = ({ courseCode, courseName, deleteClass }) => {
+  const classes = useStyles();
+
+  return (
+    <Card>
+      <CardActionArea>
+        <CardContent>
+          <Typography gutterBottom variant='body1' component='h2'>
+            {`${courseCode} - ${courseName}`}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button
+          variant='outlined'
+          className={classes.redButton}
+          startIcon={<HighlightOffIcon />}
+          onClick={() => deleteClass(courseCode)}
+        >
+          Remove
+        </Button>
+        <Button
+          variant='outlined'
+          className={classes.indigoButton}
+          startIcon={<EditIcon />}
+          component={Link}
+          to={`/classes/${courseCode}`}
+        >
+          Edit
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
 const ClassListCard = ({ classList, deleteClass }) => {
   const classes = useStyles();
 
@@ -52,36 +87,9 @@ const ClassListCard = ({ classList, deleteClass }) => {
       spacing={3}
       className={classes.mainContainer}
     >
-      {classList.map(({ courseCode, courseName, students }, i) => (
+      {classList.map((classObj, i) => (
         <Grid item key={i}>
-          <Card className={classes.root}>
-            <CardActionArea>
-              <CardContent>
-                <Typography gutterBottom variant='body1' component='h2'>
-                  {`${courseCode} - ${courseName}`}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button
-                variant='outlined'
-                className={classes.redButton}
-                startIcon={<HighlightOffIcon />}
-                onClick={() => deleteClass(courseCode)}
-              >
-                Remove
-              </Button>
-              <Button
-                variant='outlined'
-                className={classes.indigoButton}
-                startIcon={<EditIcon />}
-                component={Link}
-                to={`/classes/${courseCode}`}
-              >
-                Edit
-              </Button>
-            </CardActions>
-          </Card>
+          <ClassCard {...classObj} deleteClass={deleteClass} />
         </Grid>
       ))}
     </Grid>

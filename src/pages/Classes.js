@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
 const Classes = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const [open, setModalOpen] = useState(false);
@@ -71,7 +70,7 @@ const Classes = () => {
           item
           style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
         >
-          {matchesXS ? <ClassListCardContainer /> : <ClassListTableContainer />}
+          {matchesMD ? <ClassListCardContainer /> : <ClassListTableContainer />}
         </Grid>
       </Grid>
       <NotificationContainer />
