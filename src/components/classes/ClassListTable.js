@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Row = ({
-  row: { courseCode, courseName, units, students },
+  row: { courseCode, courseName, students },
   classes,
   deleteClass
 }) => {
@@ -79,8 +79,9 @@ const Row = ({
         </Button>
       </StyledTableCell>
       <StyledTableCell align='left'>{courseName}</StyledTableCell>
-      <StyledTableCell align='center'>{units}</StyledTableCell>
-      <StyledTableCell align='center'>{students}</StyledTableCell>
+      <StyledTableCell align='center'>
+        {students ? students.length : 0}
+      </StyledTableCell>
       <StyledTableCell align='center'>
         <Button
           variant='outlined'
@@ -95,17 +96,16 @@ const Row = ({
           className={classes.indigoButton}
           startIcon={<EditIcon />}
           component={Link}
-          to={`/classes/edit/${courseCode}`}
+          to={`/classes/${courseCode}`}
         >
           Edit
         </Button>
       </StyledTableCell>
     </StyledTableRow>
   );
-  // });
 };
 
-const ClassList = ({ classList, deleteClass }) => {
+const ClassListTable = ({ classList, deleteClass }) => {
   const classes = useStyles();
 
   return classList.length ? (
@@ -115,7 +115,6 @@ const ClassList = ({ classList, deleteClass }) => {
           <TableRow>
             <StyledTableCell align='left'>Course Code</StyledTableCell>
             <StyledTableCell align='left'>Course Name</StyledTableCell>
-            <StyledTableCell align='center'>Units</StyledTableCell>
             <StyledTableCell align='center'># Students</StyledTableCell>
             <StyledTableCell align='center'>Tools</StyledTableCell>
           </TableRow>
@@ -137,4 +136,4 @@ const ClassList = ({ classList, deleteClass }) => {
   );
 };
 
-export default ClassList;
+export default ClassListTable;

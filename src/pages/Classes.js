@@ -7,13 +7,20 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import ClassListContainer from '../containers/ClassListContainer';
+import ClassListCardContainer from '../containers/ClassListCardContainer';
+import ClassListTableContainer from '../containers/ClassListTableContainer';
 import AddClassModalContainer from '../containers/AddClassModalContainer';
 import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    margin: '1em'
+    margin: '1em',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 0
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 10
+    }
   },
   headerContainer: {
     marginBottom: '3em'
@@ -29,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 const Classes = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const [open, setModalOpen] = useState(false);
@@ -63,7 +71,7 @@ const Classes = () => {
           item
           style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
         >
-          <ClassListContainer />
+          {matchesXS ? <ClassListCardContainer /> : <ClassListTableContainer />}
         </Grid>
       </Grid>
       <NotificationContainer />

@@ -1,39 +1,17 @@
 import React, { useState } from 'react';
 
-import { withStyles, makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Card from '@material-ui/core/Card';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import StudentList from '../students/StudentList';
+import ClassEditContiner from '../../containers/ClassEditContiner';
 import AddStudentModalContainer from '../../containers/AddStudentModalContainer';
-
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
-
-const StyledTableRow = withStyles(theme => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover
-    }
-  }
-}))(TableRow);
+import StudentListContainer from '../../containers/StudentListContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -68,24 +46,36 @@ const ClassShow = ({ classObj }) => {
           <Typography variant='h5'>{`${classObj.courseCode}-${classObj.courseName}`}</Typography>
         </Grid>
       </Grid>
-      <Grid item container direction='column'>
-        <Grid item>
-          <AddStudentModalContainer
-            courseCode={classObj.courseCode}
-            open={open}
-            handleClickOpen={handleClickOpen}
-          />
-          <Button
-            variant='outlined'
-            className={classes.addClassButton}
-            startIcon={<PersonAddIcon />}
-            onClick={() => handleClickOpen(true)}
-          >
-            Add Class
-          </Button>
+      <Grid item container direction={matchesMD ? 'column' : 'row'}>
+        <Grid item container direction='column'>
+          <Grid item>
+            <AddStudentModalContainer
+              courseCode={classObj.courseCode}
+              open={open}
+              handleClickOpen={handleClickOpen}
+            />
+            <Button
+              variant='outlined'
+              className={classes.addClassButton}
+              startIcon={<PersonAddIcon />}
+              onClick={() => handleClickOpen(true)}
+            >
+              Add Student
+            </Button>
+          </Grid>
+          <Grid item style={{ width: matchesMD ? '100%' : '70%' }}>
+            <StudentListContainer
+              courseCode={classObj.courseCode}
+              students={classObj.students}
+            />
+          </Grid>
         </Grid>
-        <Grid item style={{ width: '70%' }}>
-          <StudentList students={classObj.students} />
+        <Grid item container direction='column'>
+          <Grid item>
+            <Card>
+              <Typography variant='body1'>General Info</Typography>
+            </Card>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

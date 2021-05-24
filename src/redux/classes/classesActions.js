@@ -31,7 +31,7 @@ export const editClass = (courseCode, classObj) => ({
 export const addStudent = (courseCode, studentObj) => ({
   type: ADD_STUDENT,
   key: courseCode,
-  value: studentObj
+  value: { ...studentObj, id: randomId() }
 });
 
 export const deleteStudent = (courseCode, studentObj) => ({
@@ -39,3 +39,17 @@ export const deleteStudent = (courseCode, studentObj) => ({
   key: courseCode,
   value: studentObj
 });
+
+export const editStudent = (courseCode, studentObj) => ({
+  type: EDIT_STUDENT,
+  key: courseCode,
+  value: studentObj
+});
+
+function randomId() {
+  return 'xxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}

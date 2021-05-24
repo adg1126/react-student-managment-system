@@ -13,6 +13,15 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+export const getClassRef = async courseCode => {
+  const classesRef = firestore
+    .collection('classes')
+    .where('courseCode', '==', courseCode);
+  const snapshot = await classesRef.get();
+
+  if (!snapshot.empty) return snapshot.docs[0].ref;
+};
+
 export const firestore = firebase.firestore();
 
 export default firebase;

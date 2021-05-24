@@ -8,7 +8,7 @@ import {
 
 import { deleteClass } from '../redux/classes/classesActions';
 
-import ClassList from '../components/classes/ClassList';
+import ClassListCard from '../components/classes/ClassListCard';
 import WithSpinner from './WithSpinner';
 
 const mapStateToProps = createStructuredSelector({
@@ -19,4 +19,4 @@ const mapStateToProps = createStructuredSelector({
 export default compose(
   connect(mapStateToProps, { deleteClass }),
   WithSpinner
-)(ClassList);
+)(ClassListCard);

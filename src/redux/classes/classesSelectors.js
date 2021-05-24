@@ -27,3 +27,8 @@ export const selectClassesStatus = createSelector(
   [selectClasses],
   classes => classes.status
 );
+
+export const selectClassStudents = classId =>
+  createSelector([selectClass(classId)], classObj =>
+    classObj ? classObj.students : null
+  );

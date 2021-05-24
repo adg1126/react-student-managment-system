@@ -9,11 +9,11 @@ import {
   DELETE_CLASS_FAILURE,
   EDIT_CLASS_SUCCESS,
   EDIT_CLASS_FAILURE,
-  ADD_STUDENT_SUCCESS,
+  ADD_STUDENT,
   ADD_STUDENT_FAILURE,
-  DELETE_STUDENT_SUCCESS,
+  DELETE_STUDENT,
   DELETE_STUDENT_FAILURE,
-  EDIT_STUDENT_SUCCESS,
+  EDIT_STUDENT,
   EDIT_STUDENT_FAILURE
 } from './classesActionTypes';
 
@@ -71,9 +71,57 @@ const classesReducer = (state = INITIAL_STATE, action) => {
           success: 'Successfully deleted class'
         }
       };
-    case ADD_STUDENT_SUCCESS:
-      return { ...state };
-    case [ADD_CLASS_FAILURE, EDIT_CLASS_FAILURE, DELETE_CLASS_FAILURE]:
+    case ADD_STUDENT:
+      return {
+        ...state,
+        classList: {
+          ...state.classList,
+          [action.key]: {
+            ...state.classList[action.key],
+            students: [...state.classList[action.key].students, action.value]
+          }
+        },
+        status: {
+          ...state.status,
+          success: 'Successfully added student'
+        }
+      };
+    case EDIT_STUDENT:
+      return {
+        ...state,
+        classList: {
+          ...state.classList[action.key],
+          students: [...state.classList[action.key].students, action.value]
+          // ...state.classList,
+          // [action.payload.courseCode]: action.payload
+        },
+        successMessage: 'Successfully edited student'
+      };
+    case DELETE_STUDENT:
+      return {
+        ...state,
+        classList: {
+          ...state.classList,
+          [action.key]: {
+            ...state.classList[action.key],
+            students: state.classList[action.key].students.filter(
+              student => student !== action.value
+            )
+          }
+        },
+        status: {
+          ...state.status,
+          success: 'Successfully deleted student'
+        }
+      };
+    case [
+      ADD_CLASS_FAILURE,
+      EDIT_CLASS_FAILURE,
+      DELETE_CLASS_FAILURE,
+      ADD_STUDENT_FAILURE,
+      EDIT_STUDENT_FAILURE,
+      DELETE_STUDENT_FAILURE
+    ]:
       return {
         ...state,
         status: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
+
+import EditStudentModalContainer from '../../containers/EditStudentModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -64,10 +66,21 @@ const useStyles = makeStyles(theme => ({
 const Row = ({ courseCode, student, deleteStudent }) => {
   const classes = useStyles();
 
+  const [open, setModalOpen] = useState(false);
+
+  const handleClickOpen = state => {
+    setModalOpen(state);
+  };
+
   return (
     <StyledTableRow>
       <StyledTableCell align='left'>{student.fullName}</StyledTableCell>
       <StyledTableCell align='center'>
+        <EditStudentModalContainer
+          courseCode={courseCode}
+          open={open}
+          handleClickOpen={handleClickOpen}
+        />
         <Button
           variant='outlined'
           className={classes.redButton}
@@ -80,8 +93,7 @@ const Row = ({ courseCode, student, deleteStudent }) => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          // component={Link}
-          // to={`/classes/edit/${courseCode}`}
+          onClick={() => handleClickOpen(true)}
         >
           Edit
         </Button>

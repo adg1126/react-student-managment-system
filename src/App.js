@@ -9,7 +9,7 @@ import Attendance from './pages/Attendance';
 import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
-import ClassEditContiner from './containers/ClassEditContiner';
+// import ClassEditContiner from './containers/ClassEditContiner';
 import ClassShowContainer from './containers/ClassShowContainer';
 
 const App = ({ fetchClassesStart }) => {
@@ -25,11 +25,11 @@ const App = ({ fetchClassesStart }) => {
             <Route exact path='/' component={Dashboard} />
             <Route path='/attendance' component={Attendance} />
             <Route exact path='/classes' component={ClassesContainer} />
-            <Route
+            {/* <Route
               exact
               path='/classes/edit/:classId'
               component={ClassEditContiner}
-            />
+            /> */}
             <Route
               exact
               path='/classes/:classId'

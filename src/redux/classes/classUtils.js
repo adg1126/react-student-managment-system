@@ -2,13 +2,13 @@ import _ from 'lodash';
 
 export const convertClassesToSnapshotToMap = collection => {
   const transformedCollection = collection.docs.map(doc => {
-    const { courseCode, courseName, units, students } = doc.data();
+    const { courseCode, courseName, students, schedule } = doc.data();
 
     return {
       courseCode,
       courseName,
-      units,
-      students
+      students,
+      schedule
     };
   });
 

@@ -78,7 +78,6 @@ const ClassForm = props => {
         component={renderTextField}
         label='Course Name'
       />
-      <Field name='units' component={renderTextField} label='Units' />
       <Grid
         container
         justify={handleClickOpen ? 'space-between' : undefined}
@@ -115,7 +114,7 @@ const ClassForm = props => {
 const validate = values => {
   const errors = {};
 
-  const requiredFields = ['courseCode', 'courseName', 'units'];
+  const requiredFields = ['courseCode', 'courseName'];
   requiredFields.forEach(field => {
     if (!values[field]) errors[field] = 'Required';
   });
