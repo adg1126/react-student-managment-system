@@ -25,11 +25,6 @@ const App = ({ fetchClassesStart }) => {
             <Route exact path='/' component={Dashboard} />
             <Route path='/attendance' component={Attendance} />
             <Route exact path='/classes' component={ClassesContainer} />
-            {/* <Route
-              exact
-              path='/classes/edit/:classId'
-              component={ClassEditContiner}
-            /> */}
             <Route
               exact
               path='/classes/:classId'
