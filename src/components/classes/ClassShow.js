@@ -3,13 +3,12 @@ import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import ClassEditContiner from '../../containers/ClassEditContiner';
+import ClassInfo from './ClassInfo';
 import AddStudentModalContainer from '../../containers/AddStudentModalContainer';
 import StudentListContainer from '../../containers/StudentListContainer';
 
@@ -19,6 +18,18 @@ const useStyles = makeStyles(theme => ({
   },
   headerContainer: {
     marginBottom: '3em'
+  },
+  redButton: {
+    ...theme.button,
+    ...theme.buttonRedAnimation,
+    fontSize: '1em',
+    marginBottom: '1.5em'
+  },
+  indigoButton: {
+    ...theme.button,
+    ...theme.buttonIndigoAnimation,
+    fontSize: '1em',
+    marginBottom: '1.5em'
   },
   addClassButton: {
     ...theme.button,
@@ -40,41 +51,67 @@ const ClassShow = ({ classObj }) => {
   };
 
   return classObj ? (
+    // <Grid container direction='column' className={classes.mainContainer}>
+    //   <Grid item container className={classes.headerContainer}>
+    //     <Grid item>
+    //       <Typography variant='h5'>{`${classObj.courseCode}-${classObj.courseName}`}</Typography>
+    //     </Grid>
+    //   </Grid>
+    //   <Grid item container direction='column'>
+    //     <Grid item>
+    //       <AddStudentModalContainer
+    //         courseCode={classObj.courseCode}
+    //         open={open}
+    //         handleClickOpen={handleClickOpen}
+    //       />
+    //       <Button
+    //         variant='outlined'
+    //         className={classes.addClassButton}
+    //         startIcon={<PersonAddIcon />}
+    //         onClick={() => handleClickOpen(true)}
+    //       >
+    //         Add Student
+    //       </Button>
+    //     </Grid>
+    //     <Grid item style={{ width: matchesMD ? '100%' : '70%' }}>
+    //       <StudentListContainer
+    //         courseCode={classObj.courseCode}
+    //         students={classObj.students}
+    //       />
+    //     </Grid>
+    //   </Grid>
+    // </Grid>
     <Grid container direction='column' className={classes.mainContainer}>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
           <Typography variant='h5'>{`${classObj.courseCode}-${classObj.courseName}`}</Typography>
         </Grid>
       </Grid>
-      <Grid item container direction={matchesMD ? 'column' : 'row'}>
-        <Grid item container direction='column'>
-          <Grid item>
-            <AddStudentModalContainer
-              courseCode={classObj.courseCode}
-              open={open}
-              handleClickOpen={handleClickOpen}
-            />
-            <Button
-              variant='outlined'
-              className={classes.addClassButton}
-              startIcon={<PersonAddIcon />}
-              onClick={() => handleClickOpen(true)}
-            >
-              Add Student
-            </Button>
-          </Grid>
-          <Grid item style={{ width: matchesMD ? '100%' : '70%' }}>
+      <Grid item container direction='column'>
+        <Grid item>
+          <AddStudentModalContainer
+            courseCode={classObj.courseCode}
+            open={open}
+            handleClickOpen={handleClickOpen}
+          />
+          <Button
+            variant='outlined'
+            className={classes.addClassButton}
+            startIcon={<PersonAddIcon />}
+            onClick={() => handleClickOpen(true)}
+          >
+            Add Student
+          </Button>
+        </Grid>
+        <Grid item container spacing={4}>
+          <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
             <StudentListContainer
               courseCode={classObj.courseCode}
               students={classObj.students}
             />
           </Grid>
-        </Grid>
-        <Grid item container direction='column'>
-          <Grid item>
-            <Card>
-              <Typography variant='body1'>General Info</Typography>
-            </Card>
+          <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
+            <ClassInfo classObj={classObj} />
           </Grid>
         </Grid>
       </Grid>
