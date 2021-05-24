@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
@@ -63,6 +64,12 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = ({ children, drawerOpen, setDrawerOpen }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    if (matchesMD) setDrawerOpen(false);
+  }, [drawerOpen, setDrawerOpen, matchesMD]);
 
   return (
     <div className={classes.root}>
