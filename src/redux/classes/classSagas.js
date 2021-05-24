@@ -49,6 +49,7 @@ export function* fetchClassesStart() {
 
 export function* addClassToFirebase({ payload: classObj }) {
   const classesRef = firestore.collection('classes');
+
   try {
     const snapshot = yield classesRef.get();
     if (snapshot.empty) {
@@ -57,6 +58,7 @@ export function* addClassToFirebase({ payload: classObj }) {
         payload: 'Failed to add class, check your internet connection.'
       });
     }
+
     yield classesRef.doc().set({ ...classObj, students: [], schedule: [] });
     yield put({ type: ADD_CLASS_SUCCESS, payload: classObj });
   } catch (err) {
@@ -68,10 +70,8 @@ export function* onClassAdd() {
   yield takeLatest(ADD_CLASS_START, addClassToFirebase);
 }
 
-export function* deleteClassInFirebase({ payload: courseCode }) {
-  const classToDeleteRef = firestore
-    .collection('classes')
-    .where('courseCode', '==', courseCode);
+export function* deleteClassInFirebase({ payload: docId }) {
+  const classToDeleteRef = firestore.collection('classes').doc(docId);
 
   try {
     const snapshot = yield classToDeleteRef.get();
@@ -83,10 +83,8 @@ export function* deleteClassInFirebase({ payload: courseCode }) {
       });
     }
 
-    yield snapshot.forEach(doc => {
-      doc.ref.delete();
-    });
-    yield put({ type: DELETE_CLASS_SUCCESS, payload: courseCode });
+    yield classToDeleteRef.delete();
+    yield put({ type: DELETE_CLASS_SUCCESS, payload: docId });
   } catch (err) {
     yield put({ type: DELETE_CLASS_FAILURE, payload: err.message });
   }
@@ -96,10 +94,8 @@ export function* onClassDelete() {
   yield takeLatest(DELETE_CLASS_START, deleteClassInFirebase);
 }
 
-export function* editClassInFirebase({ key: courseCode, value: classObj }) {
-  const classToEditRef = firestore
-    .collection('classes')
-    .where('courseCode', '==', courseCode);
+export function* editClassInFirebase({ key: docId, value: classObj }) {
+  const classToEditRef = firestore.collection('classes').doc(docId);
 
   try {
     const snapshot = yield classToEditRef.get();
@@ -111,9 +107,7 @@ export function* editClassInFirebase({ key: courseCode, value: classObj }) {
       });
     }
 
-    yield snapshot.forEach(doc => {
-      doc.ref.update({ ...classObj });
-    });
+    yield classToEditRef.update({ ...classObj });
     yield put({ type: EDIT_CLASS_SUCCESS, payload: classObj });
   } catch (err) {
     yield put({ type: EDIT_CLASS_FAILURE, payload: err.message });

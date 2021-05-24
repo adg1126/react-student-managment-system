@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Row = ({
-  row: { courseCode, courseName, students },
+  row: { docId, courseCode, courseName, students },
   classes,
   deleteClass
 }) => {
@@ -73,7 +73,7 @@ const Row = ({
         <Button
           className={classes.linkButton}
           component={Link}
-          to={`/classes/${courseCode}`}
+          to={`/classes/${docId}`}
         >
           {courseCode}
         </Button>
@@ -87,7 +87,7 @@ const Row = ({
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteClass(courseCode)}
+          onClick={() => deleteClass(docId)}
         >
           Remove
         </Button>
@@ -96,7 +96,7 @@ const Row = ({
           className={classes.indigoButton}
           startIcon={<EditIcon />}
           component={Link}
-          to={`/classes/${courseCode}`}
+          to={`/classes/${docId}`}
         >
           Edit
         </Button>

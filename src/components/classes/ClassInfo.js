@@ -43,6 +43,7 @@ const ClassInfo = ({ classObj }) => {
             <EditClassModalContainer
               open={open}
               handleClickOpen={handleClickOpen}
+              docId={classObj.docId}
             />
             <Button
               variant='outlined'

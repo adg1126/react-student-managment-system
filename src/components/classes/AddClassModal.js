@@ -5,8 +5,7 @@ import ClassForm from './ClassForm';
 
 const AddClassModal = ({ open, handleClickOpen, addClass }) => {
   const onSubmit = formValues => {
-    const { courseCode, courseName } = formValues;
-    addClass({ courseCode, courseName });
+    addClass(formValues);
   };
 
   const modalContent = {

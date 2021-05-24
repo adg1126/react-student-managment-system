@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassCard = ({ courseCode, courseName, deleteClass }) => {
+const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
   const classes = useStyles();
 
   return (
@@ -59,7 +59,7 @@ const ClassCard = ({ courseCode, courseName, deleteClass }) => {
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteClass(courseCode)}
+          onClick={() => deleteClass(docId)}
         >
           Remove
         </Button>
@@ -68,7 +68,7 @@ const ClassCard = ({ courseCode, courseName, deleteClass }) => {
           className={classes.indigoButton}
           startIcon={<EditIcon />}
           component={Link}
-          to={`/classes/${courseCode}`}
+          to={`/classes/${docId}`}
         >
           Edit
         </Button>

@@ -13,9 +13,9 @@ export const selectClassListForPreview = createSelector(
     classList ? Object.keys(classList).map(key => classList[key]) : []
 );
 
-export const selectClass = classId =>
+export const selectClass = docId =>
   createSelector([selectClassList], classes =>
-    classes ? classes[classId] : null
+    classes ? classes[docId] : null
   );
 
 export const selectIsClassesFetching = createSelector(
@@ -28,7 +28,7 @@ export const selectClassesStatus = createSelector(
   classes => classes.status
 );
 
-export const selectClassStudents = classId =>
-  createSelector([selectClass(classId)], classObj =>
-    classObj ? classObj.students : null
+export const selectClassStudents = docId =>
+  createSelector([selectClass(docId)], classObj =>
+    classObj ? docId.students : null
   );

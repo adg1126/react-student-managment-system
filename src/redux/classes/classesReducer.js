@@ -58,7 +58,7 @@ const classesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         classList: {
           ...state.classList,
-          [action.payload.courseCode]: action.payload
+          [action.payload.docId]: action.payload
         },
         successMessage: 'Successfully edited class'
       };

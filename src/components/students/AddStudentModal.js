@@ -3,10 +3,10 @@ import React from 'react';
 import Modal from '../modal/Modal';
 import StudentForm from './StudentForm';
 
-const AddStudentModal = ({ open, handleClickOpen, addStudent, courseCode }) => {
+const AddStudentModal = ({ open, handleClickOpen, addStudent, docId }) => {
   const onSubmit = formValues => {
     const { fullName } = formValues;
-    addStudent(courseCode, { fullName });
+    addStudent(docId, { fullName });
   };
 
   const modalContent = {

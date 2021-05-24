@@ -17,14 +17,14 @@ export const addClass = classObj => ({
   payload: classObj
 });
 
-export const deleteClass = courseCode => ({
+export const deleteClass = docId => ({
   type: DELETE_CLASS_START,
-  payload: courseCode
+  payload: docId
 });
 
-export const editClass = (courseCode, classObj) => ({
+export const editClass = (docId, classObj) => ({
   type: EDIT_CLASS_START,
-  key: courseCode,
+  key: docId,
   value: classObj
 });
 

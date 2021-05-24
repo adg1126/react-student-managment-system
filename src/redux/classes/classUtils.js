@@ -5,6 +5,7 @@ export const convertClassesToSnapshotToMap = collection => {
     const { courseCode, courseName, students, schedule } = doc.data();
 
     return {
+      docId: doc.id,
       courseCode,
       courseName,
       students,
@@ -12,5 +13,5 @@ export const convertClassesToSnapshotToMap = collection => {
     };
   });
 
-  return _.mapKeys(transformedCollection, 'courseCode');
+  return _.mapKeys(transformedCollection, 'docId');
 };

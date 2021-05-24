@@ -51,36 +51,6 @@ const ClassShow = ({ classObj }) => {
   };
 
   return classObj ? (
-    // <Grid container direction='column' className={classes.mainContainer}>
-    //   <Grid item container className={classes.headerContainer}>
-    //     <Grid item>
-    //       <Typography variant='h5'>{`${classObj.courseCode}-${classObj.courseName}`}</Typography>
-    //     </Grid>
-    //   </Grid>
-    //   <Grid item container direction='column'>
-    //     <Grid item>
-    //       <AddStudentModalContainer
-    //         courseCode={classObj.courseCode}
-    //         open={open}
-    //         handleClickOpen={handleClickOpen}
-    //       />
-    //       <Button
-    //         variant='outlined'
-    //         className={classes.addClassButton}
-    //         startIcon={<PersonAddIcon />}
-    //         onClick={() => handleClickOpen(true)}
-    //       >
-    //         Add Student
-    //       </Button>
-    //     </Grid>
-    //     <Grid item style={{ width: matchesMD ? '100%' : '70%' }}>
-    //       <StudentListContainer
-    //         courseCode={classObj.courseCode}
-    //         students={classObj.students}
-    //       />
-    //     </Grid>
-    //   </Grid>
-    // </Grid>
     <Grid container direction='column' className={classes.mainContainer}>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
