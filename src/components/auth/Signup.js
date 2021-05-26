@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import {
+  signInWithGoogle,
+  auth,
+  createUserProfileDocument
+} from '../../config/firebase';
+import history from '../../history';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -93,14 +99,21 @@ const renderTextField = ({
   />
 );
 
-const Signup = ({ reset, handleSubmit, history }) => {
+const Signup = ({ reset, handleSubmit }) => {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = ({ fullName, email, password }) => {
-    // props.onSubmit(formValues);
-    console({ fullName, email, password });
+  const onSubmit = async ({ displayName, email, password }) => {
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      createUserProfileDocument(user, { displayName });
+    } catch (err) {
+      console.log(err.message);
+    }
     reset();
   };
 
@@ -120,7 +133,7 @@ const Signup = ({ reset, handleSubmit, history }) => {
             <Field
               className={classes.textField}
               variant='outlined'
-              name='fullName'
+              name='displayName'
               component={renderTextField}
               label='Full Name'
             />
@@ -195,7 +208,7 @@ const Signup = ({ reset, handleSubmit, history }) => {
               <Grid item>
                 <Button
                   className={classes.redButton}
-                  // onClick={signInWithGoogle}
+                  onClick={signInWithGoogle}
                   variant='outlined'
                 >
                   Sign in with google
@@ -224,7 +237,12 @@ const Signup = ({ reset, handleSubmit, history }) => {
 const validate = values => {
   const errors = {};
 
-  const requiredFields = ['fullName', 'email', 'password', 'confirmPassword'];
+  const requiredFields = [
+    'displayName',
+    'email',
+    'password',
+    'confirmPassword'
+  ];
 
   if (values.password !== values.confirmPassword) {
     errors.password = "Password don't match";

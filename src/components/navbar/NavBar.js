@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { auth } from '../../config/firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -7,6 +8,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import NavBarItemsContainer from '../../containers/NavBarItemsContainer';
 
@@ -61,7 +66,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavBar = ({ children, drawerOpen, setDrawerOpen }) => {
+const NavBar = ({ children, drawerOpen, setDrawerOpen, currentUser }) => {
   const classes = useStyles();
 
   return (
@@ -81,6 +86,14 @@ const NavBar = ({ children, drawerOpen, setDrawerOpen }) => {
         }}
       >
         <NavBarItemsContainer />
+        {currentUser ? (
+          <ListItem button onClick={() => auth.signOut()}>
+            <ListItemIcon>
+              <ExitToAppIcon style={{ fill: 'white' }} />
+            </ListItemIcon>
+            <ListItemText style={{ fontSize: 14 }}>Sign out</ListItemText>
+          </ListItem>
+        ) : null}
         <div
           className={classes.toolbar}
           style={{ justifyContent: drawerOpen ? 'flex-end' : 'center' }}
