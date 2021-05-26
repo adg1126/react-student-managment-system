@@ -64,6 +64,8 @@ export default createMuiTheme({
   },
   buttonIndigoAnimation: {
     position: 'relative',
+    color: mainIndigo,
+    border: `1px solid ${mainIndigo}`,
     zIndex: 1,
     '&:hover': {
       color: 'white',
