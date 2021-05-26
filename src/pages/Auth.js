@@ -7,30 +7,64 @@ import Grid from '@material-ui/core/Grid';
 import Signin from '../components/auth/Signin';
 import Signup from '../components/auth/Signup';
 
+const useStyles = makeStyles(theme => ({
+  mainContainer: {
+    width: '100vw',
+    minHeight: '90vh',
+    backgroundColor: '#f5f8fb'
+  },
+  rowContainer: {
+    width: '60%',
+    [theme.breakpoints.down('sm')]: {
+      width: '65%',
+      margin: '4em'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      margin: '1.5em'
+    }
+  },
+  itemContainer: {
+    background: 'white',
+    border: `1px solid ${theme.palette.common.grey500}`,
+    padding: '1em',
+    width: '45%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
+  }
+}));
+
 const Auth = () => {
+  const classes = useStyles();
   const theme = useTheme();
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Grid
       container
-      style={{ width: matchesSM ? '85%' : '60%' }}
-      direction={matchesSM ? 'column' : 'row'}
-      justify={matchesSM ? undefined : 'space-between'}
+      justify='center'
+      alignItems={matchesSM ? undefined : 'center'}
+      className={classes.mainContainer}
     >
       <Grid
         item
-        style={{
-          width: matchesSM ? '100%' : '45%',
-          marginBottom: matchesSM ? '5em' : 0
-        }}
+        container
+        justify={matchesSM ? 'center' : 'space-between'}
+        className={classes.rowContainer}
       >
-        <Signin />
-      </Grid>
-      <Grid item style={{ width: matchesSM ? '100%' : '45%' }}>
-        <Signup />
+        <Grid
+          item
+          style={{
+            marginBottom: matchesSM ? '5em' : 0
+          }}
+          className={classes.itemContainer}
+        >
+          <Signin />
+        </Grid>
+        <Grid item className={classes.itemContainer}>
+          <Signup />
+        </Grid>
       </Grid>
     </Grid>
   );
