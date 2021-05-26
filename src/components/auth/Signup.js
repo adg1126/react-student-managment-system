@@ -93,14 +93,14 @@ const renderTextField = ({
   />
 );
 
-const Signup = ({ reset, handleSubmit }) => {
+const Signup = ({ reset, handleSubmit, history }) => {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = formValues => {
+  const onSubmit = ({ fullName, email, password }) => {
     // props.onSubmit(formValues);
-    console.log(formValues);
+    console({ fullName, email, password });
     reset();
   };
 
@@ -200,6 +200,18 @@ const Signup = ({ reset, handleSubmit }) => {
                 >
                   Sign in with google
                 </Button>
+              </Grid>
+              <Grid item>
+                <Typography variant='body1'>
+                  Already have an account?
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => history.push('/signin')}
+                  >
+                    {' '}
+                    <strong>Login here</strong>
+                  </span>
+                </Typography>
               </Grid>
             </Grid>
           </form>

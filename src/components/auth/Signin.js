@@ -93,7 +93,7 @@ const renderTextField = ({
   />
 );
 
-const Signin = ({ reset, handleSubmit }) => {
+const Signin = ({ reset, handleSubmit, history }) => {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -172,6 +172,18 @@ const Signin = ({ reset, handleSubmit }) => {
                 >
                   Sign in with google
                 </Button>
+              </Grid>
+              <Grid item>
+                <Typography variant='body1'>
+                  Not yet registered?
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => history.push('/signup')}
+                  >
+                    {' '}
+                    <strong>Create an account</strong>
+                  </span>
+                </Typography>
               </Grid>
             </Grid>
           </form>
