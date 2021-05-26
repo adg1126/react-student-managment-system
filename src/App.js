@@ -9,9 +9,9 @@ import Attendance from './pages/Attendance';
 import ClassesContainer from './containers/ClassesContainer';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
-// import ClassEditContiner from './containers/ClassEditContiner';
 import ClassShowContainer from './containers/ClassShowContainer';
-import Auth from './pages/Auth';
+import Signin from './components/auth/Signin';
+import Signup from './components/auth/Signup';
 
 const App = ({ fetchClassesStart }) => {
   useEffect(() => {
@@ -35,7 +35,8 @@ const App = ({ fetchClassesStart }) => {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <Route exact path='/auth' component={Auth} />
+          <Route exact path='/signin' component={Signin} />
+          <Route exact path='/signup' component={Signup} />
           <Route component={withNavbar} />
         </Switch>
       </BrowserRouter>
