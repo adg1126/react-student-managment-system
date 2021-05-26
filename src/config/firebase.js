@@ -48,11 +48,19 @@ export const getClassRef = async courseCode => {
   if (!snapshot.empty) return snapshot.docs[0].ref;
 };
 
+export const getCurrentUser = () =>
+  new Promise((reseolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+      unsubscribe();
+      reseolve(userAuth);
+    }, reject);
+  });
+
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;

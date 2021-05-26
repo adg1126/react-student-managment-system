@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { auth } from '../../config/firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -66,7 +65,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavBar = ({ children, drawerOpen, setDrawerOpen, currentUser }) => {
+const NavBar = ({
+  children,
+  drawerOpen,
+  setDrawerOpen,
+  currentUser,
+  signOutStart
+}) => {
   const classes = useStyles();
 
   return (
@@ -87,7 +92,7 @@ const NavBar = ({ children, drawerOpen, setDrawerOpen, currentUser }) => {
       >
         <NavBarItemsContainer />
         {currentUser ? (
-          <ListItem button onClick={() => auth.signOut()}>
+          <ListItem button onClick={signOutStart}>
             <ListItemIcon>
               <ExitToAppIcon style={{ fill: 'white' }} />
             </ListItemIcon>

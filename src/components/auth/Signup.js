@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {
-  signInWithGoogle,
-  auth,
-  createUserProfileDocument
-} from '../../config/firebase';
 import history from '../../history';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -99,21 +94,13 @@ const renderTextField = ({
   />
 );
 
-const Signup = ({ reset, handleSubmit }) => {
+const Signup = ({ reset, handleSubmit, googleSignInStart, signUpStart }) => {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async ({ displayName, email, password }) => {
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      createUserProfileDocument(user, { displayName });
-    } catch (err) {
-      console.log(err.message);
-    }
+    signUpStart({ displayName, email, password });
     reset();
   };
 
@@ -208,7 +195,7 @@ const Signup = ({ reset, handleSubmit }) => {
               <Grid item>
                 <Button
                   className={classes.redButton}
-                  onClick={signInWithGoogle}
+                  onClick={googleSignInStart}
                   variant='outlined'
                 >
                   Sign in with google

@@ -1,6 +1,7 @@
 import { all, call } from 'redux-saga/effects';
 import { classesSagas } from './classes/classSagas';
+import { userSagas } from './user/userSagas';
 
 export default function* rootSaga() {
-  yield all([call(classesSagas)]);
+  yield all([call(classesSagas), call(userSagas)]);
 }
