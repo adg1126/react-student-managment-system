@@ -13,6 +13,7 @@ import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import ClassIcon from '@material-ui/icons/Class';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import PeopleIcon from '@material-ui/icons/People';
 
 const useStyles = makeStyles(theme => ({
   drawerItemSelected: {
@@ -64,9 +65,9 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
           index: 1
         },
         {
-          name: 'Schedule',
+          name: 'Students',
           icon: () => (
-            <ScheduleIcon
+            <PeopleIcon
               style={{
                 fill:
                   tabIndex === 2
@@ -75,8 +76,23 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/schedule',
+          route: '/students',
           index: 2
+        },
+        {
+          name: 'Schedule',
+          icon: () => (
+            <ScheduleIcon
+              style={{
+                fill:
+                  tabIndex === 3
+                    ? theme.palette.common.highlightedIndigo
+                    : 'white'
+              }}
+            />
+          ),
+          route: '/schedule',
+          index: 3
         }
       ]
     },
@@ -89,14 +105,14 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
             <PlaylistAddCheckIcon
               style={{
                 fill:
-                  tabIndex === 3
+                  tabIndex === 4
                     ? theme.palette.common.highlightedIndigo
                     : 'white'
               }}
             />
           ),
           route: '/attendance',
-          index: 3
+          index: 4
         },
 
         {
@@ -105,14 +121,14 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
             <AssignmentIndIcon
               style={{
                 fill:
-                  tabIndex === 4
+                  tabIndex === 5
                     ? theme.palette.common.highlightedIndigo
                     : 'white'
               }}
             />
           ),
           route: '/assignments',
-          index: 4
+          index: 5
         }
       ]
     }
