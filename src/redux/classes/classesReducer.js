@@ -91,9 +91,10 @@ const classesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         classList: {
           ...state.classList[action.key],
-          students: [...state.classList[action.key].students, action.value]
-          // ...state.classList,
-          // [action.payload.courseCode]: action.payload
+          students: [
+            ...state.classList[action.key].students,
+            { [action.key]: action.value }
+          ]
         },
         successMessage: 'Successfully edited student'
       };
