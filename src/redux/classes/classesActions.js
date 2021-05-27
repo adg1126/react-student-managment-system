@@ -28,21 +28,21 @@ export const editClass = (docId, classObj) => ({
   value: classObj
 });
 
-export const addStudent = (courseCode, studentObj) => ({
+export const addStudent = (docId, studentObj) => ({
   type: ADD_STUDENT,
-  key: courseCode,
+  key: docId,
   value: { ...studentObj, id: randomId() }
 });
 
-export const deleteStudent = (courseCode, studentObj) => ({
+export const deleteStudent = (docId, studentObj) => ({
   type: DELETE_STUDENT,
-  key: courseCode,
+  key: docId,
   value: studentObj
 });
 
-export const editStudent = (courseCode, studentObj) => ({
+export const editStudent = (docId, studentObj) => ({
   type: EDIT_STUDENT,
-  key: courseCode,
+  key: docId,
   value: studentObj
 });
 
