@@ -14,12 +14,19 @@ import ClassShowContainer from './containers/ClassShowContainer';
 import SigninContainer from './containers/SigninContainer';
 import SignupContainer from './containers/SignupContainer';
 import React from 'react';
+import Students from './pages/Students';
 
-const App = ({ fetchClassesStart, checkUserSession, currentUser }) => {
+const App = ({
+  fetchClassesStart,
+  checkUserSession,
+  currentUser,
+  fetchStudentsStart
+}) => {
   useEffect(() => {
     checkUserSession();
     fetchClassesStart();
-  }, [checkUserSession, fetchClassesStart]);
+    fetchStudentsStart();
+  }, [checkUserSession, fetchClassesStart, fetchStudentsStart]);
 
   const withNavbar = () => {
     return (
@@ -28,6 +35,7 @@ const App = ({ fetchClassesStart, checkUserSession, currentUser }) => {
         <Route path='/attendance' component={Attendance} />
         <Route exact path='/classes' component={ClassesContainer} />
         <Route exact path='/classes/:classId' component={ClassShowContainer} />
+        <Route exact path='/students' component={Students} />
         <Route path='/assignments' component={Assignments} />
         <Route path='/schedule' component={Schedule} />
       </NavBarContainer>
