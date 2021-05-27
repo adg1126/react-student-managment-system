@@ -60,7 +60,7 @@ const ClassShow = ({ classObj }) => {
       <Grid item container direction='column'>
         <Grid item>
           <AddStudentModalContainer
-            courseCode={classObj.courseCode}
+            docId={classObj.docId}
             open={open}
             handleClickOpen={handleClickOpen}
           />
@@ -76,7 +76,7 @@ const ClassShow = ({ classObj }) => {
         <Grid item container spacing={4}>
           <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
             <StudentListContainer
-              courseCode={classObj.courseCode}
+              docId={classObj.docId}
               students={classObj.students}
             />
           </Grid>
