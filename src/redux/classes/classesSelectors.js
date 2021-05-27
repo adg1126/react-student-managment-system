@@ -30,5 +30,5 @@ export const selectClassesStatus = createSelector(
 
 export const selectClassStudents = docId =>
   createSelector([selectClass(docId)], classObj =>
-    classObj ? docId.students : null
+    classObj ? classObj.students : null
   );
