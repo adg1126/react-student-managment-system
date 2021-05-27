@@ -29,6 +29,7 @@ import {
 import { firestore, getClassRef } from '../../config/firebase';
 import { convertClassesToSnapshotToMap } from './classUtils';
 import { selectClass, selectClassStudents } from './classesSelectors';
+import { selectCurrentUser } from '../user/userSelectors';
 
 export function* fetchClassesAsync() {
   const classesRef = firestore.collection('classes');
@@ -118,17 +119,13 @@ export function* onClassEdit() {
   yield takeLatest(EDIT_CLASS_START, editClassInFirebase);
 }
 
-export function* updateStudentsInFirebase({
-  type,
-  key: courseCode,
-  value: studentObj
-}) {
-  const currentClass = yield select(selectClass(courseCode));
+export function* addRemoveStudentsInFirebase({ type, key: docId }) {
+  const currentUser = yield select(selectCurrentUser);
 
-  if (currentClass) {
+  if (currentUser) {
     try {
-      const classRef = yield getClassRef(courseCode);
-      const students = yield select(selectClassStudents(courseCode));
+      const classRef = firestore.collection('classes').doc(docId);
+      const students = yield select(selectClassStudents(docId));
       yield classRef.update({ students });
     } catch (err) {
       type === ADD_STUDENT
@@ -149,11 +146,8 @@ export function* updateStudentsInFirebase({
   }
 }
 
-export function* onStudentAdd() {
-  yield takeLatest(
-    [ADD_STUDENT, DELETE_STUDENT, EDIT_STUDENT],
-    updateStudentsInFirebase
-  );
+export function* onStudentListChange() {
+  yield takeLatest([ADD_STUDENT, DELETE_STUDENT], addRemoveStudentsInFirebase);
 }
 
 export function* classesSagas() {
@@ -162,6 +156,6 @@ export function* classesSagas() {
     call(onClassAdd),
     call(onClassDelete),
     call(onClassEdit),
-    call(onStudentAdd)
+    call(onStudentListChange)
   ]);
 }
