@@ -14,11 +14,17 @@ const useStyles = makeStyles(theme => ({
     '& .MuiInput-underline:after': {
       borderBottomColor: 'blue'
     },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: theme.palette.common.grey
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: theme.palette.common.grey800
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.common.grey800
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'blue'
+      }
     },
-    '& .MuiFormLabel-root': { color: 'black' },
-    width: '100%',
     margin: '0.5em 0'
   },
   greenButton: {
@@ -65,7 +71,13 @@ const StudentForm = props => {
 
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
-      <Field name='fullName' component={renderTextField} label='Full Name' />
+      <Field
+        name='fullName'
+        variant='outlined'
+        component={renderTextField}
+        label='Full Name'
+        className={classes.textField}
+      />
       <Grid
         container
         justify={handleClickOpen ? 'space-between' : undefined}

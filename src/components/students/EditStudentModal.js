@@ -3,15 +3,10 @@ import React from 'react';
 import Modal from '../modal/Modal';
 import StudentForm from './StudentForm';
 
-const EditStudentModal = ({
-  open,
-  handleClickOpen,
-  editStudent,
-  courseCode
-}) => {
+const EditStudentModal = ({ open, handleClickOpen, editStudent, docId }) => {
   const onSubmit = formValues => {
-    console.log(formValues);
-    // editStudent(courseCode, formValues);
+    console.log(docId, { ...formValues });
+    // editStudent(docId, { ...formValues });
   };
 
   const modalContent = {

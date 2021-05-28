@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ courseCode, student, deleteStudent }) => {
+const Row = ({ docId, student, deleteStudent }) => {
   const classes = useStyles();
 
   const [open, setModalOpen] = useState(false);
@@ -77,7 +77,7 @@ const Row = ({ courseCode, student, deleteStudent }) => {
       <StyledTableCell align='left'>{student.fullName}</StyledTableCell>
       <StyledTableCell align='center'>
         <EditStudentModalContainer
-          courseCode={courseCode}
+          docId={docId}
           open={open}
           handleClickOpen={handleClickOpen}
         />
@@ -85,7 +85,7 @@ const Row = ({ courseCode, student, deleteStudent }) => {
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteStudent(courseCode, student)}
+          onClick={() => deleteStudent(docId, student)}
         >
           Remove
         </Button>
@@ -102,7 +102,7 @@ const Row = ({ courseCode, student, deleteStudent }) => {
   );
 };
 
-const StudentList = ({ courseCode, students, deleteStudent }) => {
+const StudentList = ({ docId, studentList, deleteStudent }) => {
   const classes = useStyles();
 
   return (
@@ -115,11 +115,11 @@ const StudentList = ({ courseCode, students, deleteStudent }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {students
-            ? students.map((student, i) => (
+          {studentList
+            ? studentList.map((student, i) => (
                 <Row
                   key={i}
-                  courseCode={courseCode}
+                  docId={docId}
                   student={student}
                   deleteStudent={deleteStudent}
                 />

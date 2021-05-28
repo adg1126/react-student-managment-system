@@ -5,7 +5,7 @@ import StudentForm from './StudentForm';
 
 const AddStudentModal = ({ open, handleClickOpen, addStudent, docId }) => {
   const onSubmit = formValues => {
-    addStudent(docId, formValues);
+    addStudent({ ...formValues, courses: [docId] });
   };
 
   const modalContent = {
