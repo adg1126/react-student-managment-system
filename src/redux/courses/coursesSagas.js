@@ -1,11 +1,5 @@
-import {
-  takeLatest,
-  takeEvery,
-  call,
-  put,
-  all,
-  select
-} from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import history from '../../history';
 import {
   FETCH_COURSES_START,
   FETCH_COURSES_SUCCESS,
@@ -25,7 +19,10 @@ import { convertCoursesSnapshotToMap } from './coursesUtils';
 import { selectCurrentUser } from '../user/userSelectors';
 
 export function* fetchCoursesAsync() {
-  const coursesRef = firestore.collection('courses');
+  const currentUser = yield select(selectCurrentUser);
+  const coursesRef = firestore
+    .collection('courses')
+    .where('userId', '==', currentUser.id);
 
   try {
     const snapshot = yield coursesRef.get();
@@ -43,24 +40,30 @@ export function* fetchCoursesStart() {
 
 export function* addCourseToFirebase({ payload: course }) {
   const coursesRef = firestore.collection('courses');
+  const currentUser = yield select(selectCurrentUser);
 
-  try {
-    const snapshot = yield coursesRef.get();
-    if (snapshot.empty) {
-      yield put({
-        type: ADD_COURSE_FAILURE,
-        payload: 'Failed to add course, check your internet connection.'
+  if (currentUser) {
+    try {
+      const snapshot = yield coursesRef.get();
+      if (snapshot.empty) {
+        yield put({
+          type: ADD_COURSE_FAILURE,
+          payload: 'Failed to add course, check your internet connection.'
+        });
+      }
+
+      const courseDocRef = yield coursesRef.add({
+        ...course,
+        userId: currentUser.id
       });
+      yield put({
+        type: ADD_COURSE_SUCCESS,
+        key: courseDocRef.id,
+        value: { userId: currentUser.id, ...course }
+      });
+    } catch (err) {
+      yield put({ type: ADD_COURSE_FAILURE, payload: err.message });
     }
-
-    const courseDocRef = yield coursesRef.add({ ...course });
-    yield put({
-      type: ADD_COURSE_SUCCESS,
-      key: courseDocRef.id,
-      value: { docId: courseDocRef.id, ...course }
-    });
-  } catch (err) {
-    yield put({ type: ADD_COURSE_FAILURE, payload: err.message });
   }
 }
 
@@ -70,21 +73,24 @@ export function* onCourseAdd() {
 
 export function* deleteCourseInFirebase({ payload: docId }) {
   const courseToDeleteRef = firestore.collection('courses').doc(docId);
+  const currentUser = yield select(selectCurrentUser);
 
-  try {
-    const snapshot = yield courseToDeleteRef.get();
+  if (currentUser) {
+    try {
+      const snapshot = yield courseToDeleteRef.get();
 
-    if (snapshot.empty) {
-      yield put({
-        type: DELETE_COURSE_FAILURE,
-        payload: 'Failed to delete course, check your internet connection.'
-      });
+      if (snapshot.empty) {
+        yield put({
+          type: DELETE_COURSE_FAILURE,
+          payload: 'Failed to delete course, check your internet connection.'
+        });
+      }
+
+      yield courseToDeleteRef.delete();
+      yield put({ type: DELETE_COURSE_SUCCESS, payload: docId });
+    } catch (err) {
+      yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
     }
-
-    yield courseToDeleteRef.delete();
-    yield put({ type: DELETE_COURSE_SUCCESS, payload: docId });
-  } catch (err) {
-    yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
   }
 }
 
@@ -94,21 +100,25 @@ export function* onCourseDelete() {
 
 export function* editCourseInFirebase({ key: docId, value: course }) {
   const courseToEditRef = firestore.collection('courses').doc(docId);
+  const currentUser = yield select(selectCurrentUser);
 
-  try {
-    const snapshot = yield courseToEditRef.get();
+  if (currentUser) {
+    try {
+      const snapshot = yield courseToEditRef.get();
 
-    if (snapshot.empty) {
-      yield put({
-        type: EDIT_COURSE_FAILURE,
-        payload: 'Failed to edit course, check your internet connection.'
-      });
+      if (snapshot.empty) {
+        yield put({
+          type: EDIT_COURSE_FAILURE,
+          payload: 'Failed to edit course, check your internet connection.'
+        });
+      }
+
+      yield courseToEditRef.update({ ...course });
+      yield put({ type: EDIT_COURSE_SUCCESS, payload: course });
+      history.push('/courses');
+    } catch (err) {
+      yield put({ type: EDIT_COURSE_FAILURE, payload: err.message });
     }
-
-    yield courseToEditRef.update({ ...course });
-    yield put({ type: EDIT_COURSE_SUCCESS, payload: course });
-  } catch (err) {
-    yield put({ type: EDIT_COURSE_FAILURE, payload: err.message });
   }
 }
 
