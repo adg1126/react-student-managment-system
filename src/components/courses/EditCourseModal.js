@@ -3,9 +3,9 @@ import React from 'react';
 import Modal from '../modal/Modal';
 import ClassForm from './ClassForm';
 
-const AddClassModal = ({ open, handleClickOpen, addClass }) => {
+const EditCourseModal = ({ open, handleClickOpen, editClass, docId }) => {
   const onSubmit = formValues => {
-    addClass(formValues);
+    editClass(docId, formValues);
   };
 
   const modalContent = {
@@ -21,4 +21,4 @@ const AddClassModal = ({ open, handleClickOpen, addClass }) => {
   );
 };
 
-export default AddClassModal;
+export default EditCourseModal;

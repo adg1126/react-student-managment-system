@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import ClassListCardContainer from '../containers/ClassListCardContainer';
-import ClassListTableContainer from '../containers/ClassListTableContainer';
-import AddClassModalContainer from '../containers/AddClassModalContainer';
+import CourseListCardContainer from '../containers/courses/CourseListCardContainer';
+import CourseListTableContainer from '../containers/courses/CourseListTableContainer';
+import AddCourseModalContainer from '../containers/courses/AddCourseModalContainer';
 import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   headerContainer: {
     marginBottom: '3em'
   },
-  addClassButton: {
+  addCourseButton: {
     ...theme.button,
     ...theme.buttonGreenAnimation,
     fontSize: '1em',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Classes = () => {
+const Courses = () => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -48,29 +48,33 @@ const Classes = () => {
     <Grid container className={classes.mainContainer} direction='column'>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
-          <Typography variant='h4'>Class List</Typography>
+          <Typography variant='h4'>Course List</Typography>
         </Grid>
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
-          <AddClassModalContainer
+          <AddCourseModalContainer
             open={open}
             handleClickOpen={handleClickOpen}
           />
           <Button
             variant='outlined'
-            className={classes.addClassButton}
+            className={classes.addCourseButton}
             startIcon={<PostAddIcon />}
             onClick={() => handleClickOpen(true)}
           >
-            Add Class
+            Add Course
           </Button>
         </Grid>
         <Grid
           item
           style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
         >
-          {matchesMD ? <ClassListCardContainer /> : <ClassListTableContainer />}
+          {matchesMD ? (
+            <CourseListCardContainer />
+          ) : (
+            <CourseListTableContainer />
+          )}
         </Grid>
       </Grid>
       <NotificationContainer />
@@ -78,4 +82,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default Courses;

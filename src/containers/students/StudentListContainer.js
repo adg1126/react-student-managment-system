@@ -4,13 +4,13 @@ import {
   selectStudentListForPreview,
   selectStudentsForClass,
   selectIsStudentsFetching
-} from '../redux/student/studentSelectors';
+} from '../../redux/student/studentSelectors';
 
-import { deleteStudent } from '../redux/student/studentActions';
-import history from '../history';
+import { deleteStudent } from '../../redux/student/studentActions';
+import history from '../../history';
 
-import StudentList from '../components/students/StudentList';
-import WithSpinner from './WithSpinner';
+import StudentList from '../../components/students/StudentList';
+import WithSpinner from '../WithSpinner';
 
 const mapStateToProps = state => {
   const path = history.location.pathname;

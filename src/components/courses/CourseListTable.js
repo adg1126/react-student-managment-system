@@ -63,9 +63,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Row = ({
-  classObj: { docId, courseCode, courseName },
+  course: { docId, courseCode, courseName },
   students,
-  deleteClass
+  deleteCourse
 }) => {
   const classes = useStyles();
 
@@ -75,7 +75,7 @@ const Row = ({
         <Button
           className={classes.linkButton}
           component={Link}
-          to={`/classes/${docId}`}
+          to={`/courses/${docId}`}
         >
           {courseCode}
         </Button>
@@ -87,7 +87,7 @@ const Row = ({
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteClass(docId)}
+          onClick={() => deleteCourse(docId)}
         >
           Remove
         </Button>
@@ -96,7 +96,7 @@ const Row = ({
           className={classes.indigoButton}
           startIcon={<EditIcon />}
           component={Link}
-          to={`/classes/${docId}`}
+          to={`/courses/${docId}`}
         >
           Edit
         </Button>
@@ -105,10 +105,10 @@ const Row = ({
   );
 };
 
-const ClassListTable = ({ classList, deleteClass, studentList }) => {
+const CourseListTable = ({ courseList, deleteCourse, studentList }) => {
   const classes = useStyles();
 
-  return classList.length && studentList ? (
+  return courseList.length && studentList ? (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='customized table'>
         <TableHead>
@@ -120,23 +120,22 @@ const ClassListTable = ({ classList, deleteClass, studentList }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {classList.map(classObj => (
+          {courseList.map(course => (
             <Row
-              key={classObj.courseCode}
-              classObj={classObj}
-              classes={classes}
+              key={course.courseCode}
+              course={course}
               students={studentList.filter(student =>
-                student.courses.every(course => course.includes(classObj.docId))
+                student.courses.every(c => c.includes(course.docId))
               )}
-              deleteClass={deleteClass}
+              deleteCourse={deleteCourse}
             />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   ) : (
-    <Typography>You currently have no classes, add some now.</Typography>
+    <Typography>You currently have no courses, add some now.</Typography>
   );
 };
 
-export default ClassListTable;
+export default CourseListTable;

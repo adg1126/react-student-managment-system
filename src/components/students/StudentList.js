@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
 
-import EditStudentModalContainer from '../../containers/EditStudentModalContainer';
+import EditStudentModalContainer from '../../containers/students/EditStudentModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {

@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import ClassInfo from './ClassInfo';
-import AddStudentModalContainer from '../../containers/AddStudentModalContainer';
-import StudentListContainer from '../../containers/StudentListContainer';
+import AddStudentModalContainer from '../../containers/students/AddStudentModalContainer';
+import StudentListContainer from '../../containers/students/StudentListContainer';
+import CourseInfoContainer from '../../containers/courses/CourseInfoContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassShow = ({ classObj, studentList }) => {
+const CourseShow = ({ course, studentList }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -50,17 +50,17 @@ const ClassShow = ({ classObj, studentList }) => {
     setModalOpen(state);
   };
 
-  return classObj && studentList ? (
+  return course && studentList ? (
     <Grid container direction='column' className={classes.mainContainer}>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
-          <Typography variant='h5'>{`${classObj.courseCode}-${classObj.courseName}`}</Typography>
+          <Typography variant='h5'>{`${course.courseCode} - ${course.courseName}`}</Typography>
         </Grid>
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
           <AddStudentModalContainer
-            docId={classObj.docId}
+            docId={course.docId}
             open={open}
             handleClickOpen={handleClickOpen}
           />
@@ -75,10 +75,10 @@ const ClassShow = ({ classObj, studentList }) => {
         </Grid>
         <Grid item container spacing={4}>
           <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
-            <StudentListContainer docId={classObj.docId} />
+            <StudentListContainer docId={course.docId} />
           </Grid>
           <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
-            <ClassInfo classObj={classObj} studentList={studentList} />
+            <CourseInfoContainer />
           </Grid>
         </Grid>
       </Grid>
@@ -86,4 +86,4 @@ const ClassShow = ({ classObj, studentList }) => {
   ) : null;
 };
 
-export default ClassShow;
+export default CourseShow;

@@ -7,10 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import ClassListCardContainer from '../containers/ClassListCardContainer';
-import AddClassModalContainer from '../containers/AddClassModalContainer';
 import NotificationContainer from '../containers/NotificationContainer';
-import StudentListContainer from '../containers/StudentListContainer';
+import StudentListContainer from '../containers/students/StudentListContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {

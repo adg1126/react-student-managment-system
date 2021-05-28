@@ -7,34 +7,38 @@ import history from './history';
 import NavBarContainer from './containers/NavBarContainer';
 import Dashboard from './pages/Dashboard';
 import Attendance from './pages/Attendance';
-import ClassesContainer from './containers/ClassesContainer';
+import Courses from './pages/Courses';
 import Assignments from './pages/Assignments';
 import Schedule from './pages/Schedule';
-import ClassShowContainer from './containers/ClassShowContainer';
+import CourseShowContainer from './containers/courses/CourseShowContainer';
 import SigninContainer from './containers/SigninContainer';
 import SignupContainer from './containers/SignupContainer';
 import React from 'react';
 import Students from './pages/Students';
 
 const App = ({
-  fetchClassesStart,
+  fetchCoursesStart,
   checkUserSession,
   currentUser,
   fetchStudentsStart
 }) => {
   useEffect(() => {
     checkUserSession();
-    fetchClassesStart();
+    fetchCoursesStart();
     fetchStudentsStart();
-  }, [checkUserSession, fetchClassesStart, fetchStudentsStart]);
+  }, [checkUserSession, fetchCoursesStart, fetchStudentsStart]);
 
   const withNavbar = () => {
     return (
       <NavBarContainer>
         <Route exact path='/' component={Dashboard} />
         <Route path='/attendance' component={Attendance} />
-        <Route exact path='/classes' component={ClassesContainer} />
-        <Route exact path='/classes/:classId' component={ClassShowContainer} />
+        <Route exact path='/courses' component={Courses} />
+        <Route
+          exact
+          path='/courses/:courseId'
+          component={CourseShowContainer}
+        />
         <Route exact path='/students' component={Students} />
         <Route path='/assignments' component={Assignments} />
         <Route path='/schedule' component={Schedule} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
+const CourseCard = ({ docId, courseCode, courseName, deleteCourse }) => {
   const classes = useStyles();
 
   return (
@@ -59,7 +59,7 @@ const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
         <Typography
           variant='body1'
           component='h2'
-          onClick={() => history.push(`/classes/${docId}`)}
+          onClick={() => history.push(`/courses/${docId}`)}
         >
           {`${courseCode} - ${courseName}`}
         </Typography>
@@ -69,7 +69,7 @@ const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteClass(docId)}
+          onClick={() => deleteCourse(docId)}
         >
           Remove
         </Button>
@@ -78,7 +78,7 @@ const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
           className={classes.indigoButton}
           startIcon={<EditIcon />}
           component={Link}
-          to={`/classes/${docId}`}
+          to={`/courses/${docId}`}
         >
           Edit
         </Button>
@@ -87,19 +87,19 @@ const ClassCard = ({ docId, courseCode, courseName, deleteClass }) => {
   );
 };
 
-const ClassListCard = ({ classList, deleteClass }) => {
+const CourseListCard = ({ courseList, deleteCourse }) => {
   const classes = useStyles();
 
-  return classList.length ? (
+  return courseList.length ? (
     <Grid
       container
       direction='column'
       spacing={3}
       className={classes.mainContainer}
     >
-      {classList.map((classObj, i) => (
+      {courseList.map((course, i) => (
         <Grid item key={i}>
-          <ClassCard {...classObj} deleteClass={deleteClass} />
+          <CourseCard {...course} deleteCourse={deleteCourse} />
         </Grid>
       ))}
     </Grid>
@@ -108,4 +108,4 @@ const ClassListCard = ({ classList, deleteClass }) => {
   );
 };
 
-export default ClassListCard;
+export default CourseListCard;

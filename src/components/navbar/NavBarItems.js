@@ -50,7 +50,7 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
       section: 'Manage',
       routes: [
         {
-          name: 'Classes',
+          name: 'Courses',
           icon: () => (
             <ClassIcon
               style={{
@@ -61,7 +61,7 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
               }}
             />
           ),
-          route: '/classes',
+          route: '/courses',
           index: 1
         },
         {

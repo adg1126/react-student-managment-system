@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 
 import EditIcon from '@material-ui/icons/Edit';
 
-import EditClassModalContainer from '../../containers/EditClassModalContainer';
+import EditCourseModalContainer from '../../containers/courses/EditCourseModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -65,8 +65,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClasInfoTable = ({
-  classObj: { courseCode, courseName },
+const CourseInfoTable = ({
+  course: { courseCode, courseName },
   studentList
 }) => {
   const classes = useStyles();
@@ -97,7 +97,7 @@ const ClasInfoTable = ({
   );
 };
 
-const ClassInfo = ({ classObj, studentList }) => {
+const CourseInfo = ({ course, studentList }) => {
   const classes = useStyles();
 
   const [open, setModalOpen] = useState(false);
@@ -116,10 +116,10 @@ const ClassInfo = ({ classObj, studentList }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <EditClassModalContainer
+            <EditCourseModalContainer
               open={open}
               handleClickOpen={handleClickOpen}
-              docId={classObj.docId}
+              docId={course.docId}
             />
             <Button
               variant='outlined'
@@ -132,9 +132,9 @@ const ClassInfo = ({ classObj, studentList }) => {
           </Grid>
         </Grid>
       </CardContent>
-      <ClasInfoTable classObj={classObj} studentList={studentList} />
+      <CourseInfoTable course={course} studentList={studentList} />
     </Card>
   );
 };
 
-export default ClassInfo;
+export default CourseInfo;
