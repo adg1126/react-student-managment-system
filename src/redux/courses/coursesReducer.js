@@ -40,7 +40,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         courseList: {
           ...state.courseList,
-          [action.payload.docId]: action.payload
+          [action.key]: action.value
         },
         status: {
           ...state.status,

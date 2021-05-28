@@ -42,10 +42,10 @@ export function* fetchCoursesStart() {
 }
 
 export function* addCourseToFirebase({ payload: course }) {
-  const CoursesRef = firestore.collection('courses');
+  const coursesRef = firestore.collection('courses');
 
   try {
-    const snapshot = yield CoursesRef.get();
+    const snapshot = yield coursesRef.get();
     if (snapshot.empty) {
       yield put({
         type: ADD_COURSE_FAILURE,
@@ -53,8 +53,12 @@ export function* addCourseToFirebase({ payload: course }) {
       });
     }
 
-    yield CoursesRef.doc().set({ ...course });
-    yield put({ type: ADD_COURSE_SUCCESS, payload: course });
+    const courseDocRef = yield coursesRef.add({ ...course });
+    yield put({
+      type: ADD_COURSE_SUCCESS,
+      key: courseDocRef.id,
+      value: { docId: courseDocRef.id, ...course }
+    });
   } catch (err) {
     yield put({ type: ADD_COURSE_FAILURE, payload: err.message });
   }
