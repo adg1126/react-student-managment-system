@@ -123,6 +123,6 @@ const validate = values => {
 };
 
 export default reduxForm({
-  form: 'classForm',
+  form: 'studentForm',
   validate
 })(StudentForm);

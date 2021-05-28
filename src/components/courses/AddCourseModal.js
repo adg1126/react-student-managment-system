@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Modal from '../modal/Modal';
-import ClassForm from './ClassForm';
+import CourseForm from './CourseForm';
 
 const AddCourseModal = ({ open, handleClickOpen, addCourse }) => {
   const onSubmit = formValues => {
@@ -11,7 +11,7 @@ const AddCourseModal = ({ open, handleClickOpen, addCourse }) => {
   const modalContent = {
     title: 'Course Information',
     content: () => (
-      <ClassForm onSubmit={onSubmit} handleClickOpen={handleClickOpen} />
+      <CourseForm onSubmit={onSubmit} handleClickOpen={handleClickOpen} />
     ),
     actions: () => <></>
   };

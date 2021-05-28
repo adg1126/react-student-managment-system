@@ -72,7 +72,7 @@ const renderTextField = ({
   />
 );
 
-const ClassForm = props => {
+const CourseForm = props => {
   const classes = useStyles();
 
   const { pristine, reset, handleClickOpen } = props;
@@ -161,6 +161,6 @@ const validate = values => {
 };
 
 export default reduxForm({
-  form: 'classForm',
+  form: 'courseForm',
   validate
-})(ClassForm);
+})(CourseForm);
