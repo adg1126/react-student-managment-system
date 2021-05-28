@@ -17,3 +17,12 @@ export const selectIsStudentsFetching = createSelector(
   [selectStudents],
   students => students.isFetching
 );
+
+export const selectStudentsForClass = classId =>
+  createSelector([selectStudentListForPreview], studentList =>
+    studentList
+      ? studentList.filter(student =>
+          student.courses.every(course => course.includes(classId))
+        )
+      : null
+  );
