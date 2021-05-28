@@ -2,6 +2,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
   selectStudentListForPreview,
+  selectStudentsForClass,
   selectIsStudentsFetching
 } from '../redux/student/studentSelectors';
 
@@ -14,14 +15,11 @@ import WithSpinner from './WithSpinner';
 const mapStateToProps = state => {
   const path = history.location.pathname;
   const classId = path.substring(path.lastIndexOf('/') + 1);
-  const studentsArr = selectStudentListForPreview(state);
 
   return {
     studentList: classId
-      ? studentsArr.filter(student =>
-          student.courses.every(course => course.includes(classId))
-        )
-      : studentsArr,
+      ? selectStudentsForClass(classId)(state)
+      : selectStudentListForPreview(state),
     isFetching: selectIsStudentsFetching(state)
   };
 };

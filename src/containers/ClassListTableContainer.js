@@ -5,6 +5,7 @@ import {
   selectClassListForPreview,
   selectIsClassesFetching
 } from '../redux/classes/classesSelectors';
+import { selectStudentListForPreview } from '../redux/student/studentSelectors';
 
 import { deleteClass } from '../redux/classes/classesActions';
 
@@ -13,7 +14,8 @@ import WithSpinner from './WithSpinner';
 
 const mapStateToProps = createStructuredSelector({
   classList: selectClassListForPreview,
-  isFetching: selectIsClassesFetching
+  isFetching: selectIsClassesFetching,
+  studentList: selectStudentListForPreview
 });
 
 export default compose(
