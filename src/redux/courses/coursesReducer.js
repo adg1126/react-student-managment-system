@@ -44,7 +44,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
         },
         status: {
           ...state.status,
-          success: 'Successfully added class'
+          success: 'Successfully added course'
         }
       };
     case EDIT_COURSE_SUCCESS:
@@ -54,7 +54,10 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
           ...state.courseList,
           [action.payload.docId]: action.payload
         },
-        successMessage: 'Successfully edited class'
+        status: {
+          ...state.status,
+          successMessage: 'Successfully edited course'
+        }
       };
     case DELETE_COURSE_SUCCESS:
       return {
@@ -62,7 +65,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
         courseList: _.omit(state.courseList, action.payload),
         status: {
           ...state.status,
-          success: 'Successfully deleted class'
+          success: 'Successfully deleted course'
         }
       };
     case [ADD_COURSE_FAILURE, EDIT_COURSE_FAILURE, DELETE_COURSE_FAILURE]:
