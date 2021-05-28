@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassShow = ({ classObj }) => {
+const ClassShow = ({ classObj, studentList }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -50,7 +50,7 @@ const ClassShow = ({ classObj }) => {
     setModalOpen(state);
   };
 
-  return classObj ? (
+  return classObj && studentList ? (
     <Grid container direction='column' className={classes.mainContainer}>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
@@ -75,13 +75,10 @@ const ClassShow = ({ classObj }) => {
         </Grid>
         <Grid item container spacing={4}>
           <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
-            <StudentListContainer
-              docId={classObj.docId}
-              students={classObj.students}
-            />
+            <StudentListContainer docId={classObj.docId} />
           </Grid>
           <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
-            <ClassInfo classObj={classObj} />
+            <ClassInfo classObj={classObj} studentList={studentList} />
           </Grid>
         </Grid>
       </Grid>

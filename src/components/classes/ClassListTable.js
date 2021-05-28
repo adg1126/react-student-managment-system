@@ -63,10 +63,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Row = ({
-  row: { docId, courseCode, courseName, students },
-  classes,
+  classObj: { docId, courseCode, courseName },
+  students,
   deleteClass
 }) => {
+  const classes = useStyles();
+
   return (
     <StyledTableRow>
       <StyledTableCell align='left'>
@@ -79,9 +81,7 @@ const Row = ({
         </Button>
       </StyledTableCell>
       <StyledTableCell align='left'>{courseName}</StyledTableCell>
-      <StyledTableCell align='center'>
-        {students ? students.length : 0}
-      </StyledTableCell>
+      <StyledTableCell align='center'>{students.length || 0}</StyledTableCell>
       <StyledTableCell align='center'>
         <Button
           variant='outlined'
@@ -105,10 +105,10 @@ const Row = ({
   );
 };
 
-const ClassListTable = ({ classList, deleteClass }) => {
+const ClassListTable = ({ classList, deleteClass, studentList }) => {
   const classes = useStyles();
 
-  return classList.length ? (
+  return classList.length && studentList ? (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='customized table'>
         <TableHead>
@@ -120,11 +120,14 @@ const ClassListTable = ({ classList, deleteClass }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {classList.map(row => (
+          {classList.map(classObj => (
             <Row
-              key={row.courseCode}
-              row={row}
+              key={classObj.courseCode}
+              classObj={classObj}
               classes={classes}
+              students={studentList.filter(student =>
+                student.courses.every(course => course.includes(classObj.docId))
+              )}
               deleteClass={deleteClass}
             />
           ))}
