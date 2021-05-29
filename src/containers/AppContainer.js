@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { fetchCoursesStart } from '../redux/courses/coursesActions';
 import { fetchStudentsStart } from '../redux/student/studentActions';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../redux/user/userSelectors';
@@ -11,7 +10,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default connect(mapStateToProps, {
-  fetchCoursesStart,
   fetchStudentsStart,
   checkUserSession
 })(App);

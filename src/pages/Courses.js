@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -33,10 +33,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Courses = () => {
+const Courses = ({ fetchCoursesStart }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    fetchCoursesStart();
+  }, [fetchCoursesStart]);
 
   const [open, setModalOpen] = useState(false);
 
