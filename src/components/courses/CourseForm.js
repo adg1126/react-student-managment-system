@@ -103,7 +103,7 @@ const CourseForm = props => {
           Meeting Days
         </FormLabel>
         <Field
-          name='schedule'
+          name='meetingDays'
           component={SwitchGroup}
           options={[
             { id: 1, name: 'monday' },
