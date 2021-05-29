@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -11,6 +11,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddStudentModalContainer from '../../containers/students/AddStudentModalContainer';
 import StudentListContainer from '../../containers/students/StudentListContainer';
 import CourseInfoContainer from '../../containers/courses/CourseInfoContainer';
+import Notification from '../notification/Notification';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -39,10 +40,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseShow = ({ course, studentList }) => {
+const CourseShow = ({
+  course,
+  fetchStudentsStart,
+  notificationOpen,
+  setNotificationOpen,
+  status
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    fetchStudentsStart();
+  }, [fetchStudentsStart]);
 
   const [open, setModalOpen] = useState(false);
 
@@ -50,7 +61,7 @@ const CourseShow = ({ course, studentList }) => {
     setModalOpen(state);
   };
 
-  return course && studentList ? (
+  return course ? (
     <Grid container direction='column' className={classes.mainContainer}>
       <Grid item container className={classes.headerContainer}>
         <Grid item>
@@ -75,12 +86,17 @@ const CourseShow = ({ course, studentList }) => {
         </Grid>
         <Grid item container spacing={4}>
           <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
-            <StudentListContainer docId={course.docId} />
+            <StudentListContainer />
           </Grid>
           <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
             <CourseInfoContainer />
           </Grid>
         </Grid>
+        <Notification
+          status={status}
+          notificationOpen={notificationOpen}
+          setNotificationOpen={setNotificationOpen}
+        />
       </Grid>
     </Grid>
   ) : null;

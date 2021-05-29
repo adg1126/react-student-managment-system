@@ -16,11 +16,10 @@ import SignupContainer from './containers/SignupContainer';
 import React from 'react';
 import Students from './pages/Students';
 
-const App = ({ checkUserSession, currentUser, fetchStudentsStart }) => {
+const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
     checkUserSession();
-    fetchStudentsStart();
-  }, [checkUserSession, fetchStudentsStart]);
+  }, [checkUserSession]);
 
   const withNavbar = () => {
     return (
