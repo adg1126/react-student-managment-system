@@ -14,7 +14,7 @@ import CourseInfoContainer from '../../containers/courses/CourseInfoContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    margin: '1em'
+    marginTop: '1em'
   },
   headerContainer: {
     marginBottom: '3em'

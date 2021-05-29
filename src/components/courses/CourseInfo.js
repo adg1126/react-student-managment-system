@@ -13,6 +13,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
 
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -62,11 +63,51 @@ const useStyles = makeStyles(theme => ({
       borderBottom: `1px solid ${theme.palette.secondary.light}`,
       backgroundColor: 'rgba(255, 255, 255, 0.1)'
     }
+  },
+  square: {
+    fontSize: '1.1em'
+  },
+  selectedQuare: {
+    fontSize: '1.1em',
+    backgroundColor: theme.palette.secondary.light,
+    color: 'white'
   }
 }));
 
+const MeetingDays = ({ meetingDays }) => {
+  const classes = useStyles();
+
+  const daysArr = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday'
+  ];
+
+  return daysArr.map((day, i) => {
+    const dayAbbr = day.slice(0, 3);
+
+    return (
+      <Grid item key={day}>
+        {meetingDays.includes(day) ? (
+          <Avatar variant='square' className={classes.selectedQuare}>
+            {dayAbbr.charAt(0).toUpperCase() + dayAbbr.slice(1)}
+          </Avatar>
+        ) : (
+          <Avatar variant='square' className={classes.square}>
+            {dayAbbr.charAt(0).toUpperCase() + dayAbbr.slice(1)}
+          </Avatar>
+        )}
+      </Grid>
+    );
+  });
+};
+
 const CourseInfoTable = ({
-  course: { courseCode, courseName },
+  course: { courseCode, courseName, meetingDays },
   studentList
 }) => {
   const classes = useStyles();
@@ -85,7 +126,11 @@ const CourseInfoTable = ({
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell align='left'>Meeting Days</StyledTableCell>
-            <StyledTableCell align='left'></StyledTableCell>
+            <StyledTableCell align='left'>
+              <Grid container spacing={1}>
+                <MeetingDays meetingDays={meetingDays} />
+              </Grid>
+            </StyledTableCell>
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell align='left'>Total Students</StyledTableCell>
@@ -119,7 +164,6 @@ const CourseInfo = ({ course, studentList }) => {
             <EditCourseModalContainer
               open={open}
               handleClickOpen={handleClickOpen}
-              docId={course.docId}
             />
             <Button
               variant='outlined'
