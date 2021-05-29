@@ -87,7 +87,7 @@ const CourseCard = ({ docId, courseCode, courseName, deleteCourse }) => {
   );
 };
 
-const CourseListCard = ({ courseList, deleteCourse }) => {
+const CourseListCard = ({ courseList, deleteCourse, errMessage }) => {
   const classes = useStyles();
 
   return courseList.length ? (
@@ -103,6 +103,10 @@ const CourseListCard = ({ courseList, deleteCourse }) => {
         </Grid>
       ))}
     </Grid>
+  ) : errMessage ? (
+    <Typography variant='h4' style={{ color: 'red' }}>
+      {errMessage}
+    </Typography>
   ) : (
     <Typography>You currently have no classes, add some now.</Typography>
   );

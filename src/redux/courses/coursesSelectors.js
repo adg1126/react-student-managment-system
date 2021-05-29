@@ -23,6 +23,11 @@ export const selectIsCoursesFetching = createSelector(
   courses => courses.isFetching
 );
 
+export const selectCoursesErrMessage = createSelector(
+  [selectCourses],
+  courses => courses.errMessage
+);
+
 export const selectCoursesStatus = createSelector(
   [selectCourses],
   courses => courses.status

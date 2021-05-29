@@ -105,7 +105,12 @@ const Row = ({
   );
 };
 
-const CourseListTable = ({ courseList, deleteCourse, studentList }) => {
+const CourseListTable = ({
+  courseList,
+  deleteCourse,
+  studentList,
+  errMessage
+}) => {
   const classes = useStyles();
 
   return courseList.length && studentList ? (
@@ -133,6 +138,10 @@ const CourseListTable = ({ courseList, deleteCourse, studentList }) => {
         </TableBody>
       </Table>
     </TableContainer>
+  ) : errMessage ? (
+    <Typography variant='h4' style={{ color: 'red' }}>
+      {errMessage}
+    </Typography>
   ) : (
     <Typography>You currently have no courses, add some now.</Typography>
   );

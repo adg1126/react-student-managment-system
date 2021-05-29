@@ -26,8 +26,15 @@ export function* fetchCoursesAsync() {
 
   try {
     const snapshot = yield coursesRef.get();
-    const coursesRefMap = yield call(convertCoursesSnapshotToMap, snapshot);
 
+    if (snapshot.empty) {
+      yield put({
+        type: ADD_COURSE_FAILURE,
+        payload: 'Failed to fetch courses, check your internet connection.'
+      });
+    }
+
+    const coursesRefMap = yield call(convertCoursesSnapshotToMap, snapshot);
     yield put({ type: FETCH_COURSES_SUCCESS, payload: coursesRefMap });
   } catch (err) {
     yield put({ type: FETCH_COURSES_FAILURE, payload: err.message });

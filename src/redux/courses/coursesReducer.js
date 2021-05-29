@@ -14,6 +14,7 @@ import {
 const INITIAL_STATE = {
   courseList: [],
   isFetching: false,
+  errMessage: '',
   status: {
     success: '',
     err: ''
@@ -30,10 +31,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetching: false,
-        status: {
-          ...state.status,
-          err: action.payload
-        }
+        errMessage: action.payload
       };
     case ADD_COURSE_SUCCESS:
       return {
