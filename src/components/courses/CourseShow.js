@@ -11,7 +11,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddStudentModalContainer from '../../containers/students/AddStudentModalContainer';
 import StudentListContainer from '../../containers/students/StudentListContainer';
 import CourseInfoContainer from '../../containers/courses/CourseInfoContainer';
-import Notification from '../notification/Notification';
+import NotificationContainer from '../../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -40,13 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseShow = ({
-  course,
-  fetchStudentsStart,
-  notificationOpen,
-  setNotificationOpen,
-  status
-}) => {
+const CourseShow = ({ course, fetchStudentsStart, status }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -71,7 +65,7 @@ const CourseShow = ({
       <Grid item container direction='column'>
         <Grid item>
           <AddStudentModalContainer
-            docId={course.docId}
+            course={course}
             open={open}
             handleClickOpen={handleClickOpen}
           />
@@ -92,11 +86,7 @@ const CourseShow = ({
             <CourseInfoContainer />
           </Grid>
         </Grid>
-        <Notification
-          status={status}
-          notificationOpen={notificationOpen}
-          setNotificationOpen={setNotificationOpen}
-        />
+        <NotificationContainer status={status} />
       </Grid>
     </Grid>
   ) : null;
