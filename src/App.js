@@ -14,7 +14,7 @@ import CourseShowContainer from './containers/courses/CourseShowContainer';
 import SigninContainer from './containers/SigninContainer';
 import SignupContainer from './containers/SignupContainer';
 import React from 'react';
-import Students from './pages/Students';
+import StudentsContainer from './containers/students/StudentsContainer';
 
 const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const App = ({ checkUserSession, currentUser }) => {
           path='/courses/:courseId'
           component={CourseShowContainer}
         />
-        <Route exact path='/students' component={Students} />
+        <Route exact path='/students' component={StudentsContainer} />
         <Route path='/assignments' component={Assignments} />
         <Route path='/schedule' component={Schedule} />
       </NavBarContainer>
