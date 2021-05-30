@@ -1,7 +1,15 @@
 import { connect } from 'react-redux';
+
+import { createStructuredSelector } from 'reselect';
+import { selectCoursesStatus } from '../../redux/courses/coursesSelectors';
+
 import { fetchCoursesStart } from '../../redux/courses/coursesActions';
 import Courses from '../../pages/Courses';
 
-export default connect(null, {
+const mapStateToProps = createStructuredSelector({
+  status: selectCoursesStatus
+});
+
+export default connect(mapStateToProps, {
   fetchCoursesStart
 })(Courses);

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Courses = ({ fetchCoursesStart }) => {
+const Courses = ({ fetchCoursesStart, status }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -81,7 +81,7 @@ const Courses = ({ fetchCoursesStart }) => {
           )}
         </Grid>
       </Grid>
-      <NotificationContainer />
+      <NotificationContainer status={status} />
     </Grid>
   );
 };
