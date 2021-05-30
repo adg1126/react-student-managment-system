@@ -21,7 +21,7 @@ const Notification = ({ status, notificationOpen, setNotificationOpen }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (status.success.length || status.err.length) {
+    if ((status && status.success.length) || (status && status.err.length)) {
       setNotificationOpen(true);
       setTimeout(() => {
         setNotificationOpen(false);
@@ -33,7 +33,7 @@ const Notification = ({ status, notificationOpen, setNotificationOpen }) => {
     setNotificationOpen(false);
   };
 
-  return (
+  return status ? (
     <div className={classes.root}>
       <Snackbar
         open={notificationOpen}
@@ -48,7 +48,7 @@ const Notification = ({ status, notificationOpen, setNotificationOpen }) => {
         </Alert>
       </Snackbar>
     </div>
-  );
+  ) : null;
 };
 
 export default Notification;
