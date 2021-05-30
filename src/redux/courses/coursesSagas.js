@@ -29,7 +29,7 @@ export function* fetchCoursesAsync() {
 
     if (snapshot.empty) {
       yield put({
-        type: ADD_COURSE_FAILURE,
+        type: FETCH_COURSES_FAILURE,
         payload: 'Failed to fetch courses, check your internet connection.'
       });
     }

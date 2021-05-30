@@ -66,7 +66,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
           success: 'Successfully deleted course'
         }
       };
-    case [ADD_COURSE_FAILURE, EDIT_COURSE_FAILURE, DELETE_COURSE_FAILURE]:
+    case ADD_COURSE_FAILURE || EDIT_COURSE_FAILURE || DELETE_COURSE_FAILURE:
       return {
         ...state,
         status: {
