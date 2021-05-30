@@ -3,16 +3,19 @@ import { Field, reduxForm } from 'redux-form';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   textField: {
     '& label.Mui-focused': {
       color: 'blue'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'blue'
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -26,6 +29,32 @@ const useStyles = makeStyles(theme => ({
       }
     },
     margin: '0.5em 0'
+  },
+  formControl: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.common.grey800
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.common.grey800
+    },
+    '& .Mui-focused': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'blue'
+      },
+      '& .MuiFormLabel-root': {
+        color: 'none'
+      }
+    }
+  },
+  buttonContainer: {
+    width: '40%',
+    marginTop: '1.5em',
+    [theme.breakpoints.down('sm')]: {
+      width: '60%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   },
   greenButton: {
     ...theme.button,
@@ -59,10 +88,38 @@ const renderTextField = ({
   />
 );
 
+const SelectField = ({
+  input,
+  label,
+  meta: { touched, error },
+  children,
+  ...custom
+}) => {
+  const classes = useStyles();
+
+  return (
+    <FormControl
+      style={{ marginTop: '0.5em' }}
+      classes={{
+        root: classes.formControl
+      }}
+      variant='outlined'
+      error={touched && error}
+      fullWidth
+    >
+      <InputLabel>{label}</InputLabel>
+      <Select {...input} {...custom} onChange={value => input.onChange(value)}>
+        {children}
+      </Select>
+      <FormHelperText>{touched && error}</FormHelperText>
+    </FormControl>
+  );
+};
+
 const StudentForm = props => {
   const classes = useStyles();
 
-  const { pristine, reset, handleClickOpen } = props;
+  const { pristine, reset, handleClickOpen, studentList } = props;
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);
@@ -71,29 +128,59 @@ const StudentForm = props => {
 
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
-      <Field
-        name='fullName'
-        variant='outlined'
-        component={renderTextField}
-        label='Full Name'
-        className={classes.textField}
-      />
+      <Grid container direction='column' spacing={2}>
+        <Grid item container direction='column'>
+          <Grid item>
+            <Typography>Add a new student</Typography>
+          </Grid>
+          <Grid item>
+            <Field
+              name='fullName'
+              variant='outlined'
+              component={renderTextField}
+              label='Full Name'
+              className={classes.textField}
+            />
+          </Grid>
+        </Grid>
+        {studentList.length ? (
+          <Grid item container direction='column'>
+            <Grid item>
+              <Typography>Or add an existing student</Typography>
+            </Grid>
+            <Grid item>
+              <Field
+                name='existingStudent'
+                component={SelectField}
+                label='Existing Students'
+              >
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {studentList.map((student, i) => (
+                  <MenuItem key={i} value={student}>
+                    {student.fullName}
+                  </MenuItem>
+                ))}
+              </Field>
+            </Grid>
+          </Grid>
+        ) : null}
+      </Grid>
       <Grid
         container
         justify={handleClickOpen ? 'space-between' : undefined}
-        style={{ width: '100%', marginTop: '1.2em' }}
+        className={classes.buttonContainer}
       >
         <Grid item>
-          {handleClickOpen ? (
-            <Button
-              variant='outlined'
-              className={classes.redButton}
-              onClick={() => handleClickOpen(false)}
-              color='primary'
-            >
-              Cancel
-            </Button>
-          ) : null}
+          <Button
+            variant='outlined'
+            className={classes.redButton}
+            onClick={() => handleClickOpen(false)}
+            color='primary'
+          >
+            Cancel
+          </Button>
         </Grid>
         <Grid item>
           <Button
