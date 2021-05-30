@@ -18,11 +18,36 @@ export const selectIsStudentsFetching = createSelector(
   students => students.isFetching
 );
 
+export const selectStudentsErrMessage = createSelector(
+  [selectStudents],
+  students => students.errMessage
+);
+
+export const selectStudentsStatus = createSelector(
+  [selectStudents],
+  students => students.status
+);
+
 export const selectStudentsForClass = classId =>
   createSelector([selectStudentListForPreview], studentList =>
-    studentList
-      ? studentList.filter(student =>
-          student.courses.every(course => course.includes(classId))
-        )
-      : null
+    studentList.filter(student =>
+      student.courses
+        ? student.courses.some(course => course.includes(classId))
+        : []
+    )
   );
+
+export const selectStudentsNotInCourse = classId =>
+  createSelector([selectStudentListForPreview], studentList =>
+    studentList.filter(student =>
+      student.courses
+        ? !student.courses.some(course => course.includes(classId))
+        : []
+    )
+  );
+
+export const selectStudent = studentId =>
+  createSelector([selectStudentList], studentList => studentList[studentId]);
+
+export const selectStudentCourses = studentId =>
+  createSelector([selectStudent(studentId)], student => student.courses);
