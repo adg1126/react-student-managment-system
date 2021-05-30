@@ -17,9 +17,10 @@ const mapStateToProps = state => {
   const classId = path.substring(path.lastIndexOf('/') + 1);
 
   return {
-    studentList: classId
-      ? selectStudentsForClass(classId)(state)
-      : selectStudentListForPreview(state),
+    studentList:
+      path !== '/students'
+        ? selectStudentsForClass(classId)(state)
+        : selectStudentListForPreview(state),
     isFetching: selectIsStudentsFetching(state)
   };
 };
