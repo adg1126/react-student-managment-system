@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import PostAddIcon from '@material-ui/icons/PostAdd';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+
+import AddStudentModalContainer from '../containers/students/AddStudentModalContainer';
 
 import NotificationContainer from '../containers/NotificationContainer';
 import StudentListContainer from '../containers/students/StudentListContainer';
@@ -31,10 +33,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Students = classObj => {
+const Students = ({ status, fetchStudentsStart }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    fetchStudentsStart();
+  }, [fetchStudentsStart]);
 
   const [open, setModalOpen] = useState(false);
 
@@ -50,6 +56,22 @@ const Students = classObj => {
         </Grid>
       </Grid>
       <Grid item container direction='column'>
+        <Grid item>
+          <AddStudentModalContainer
+            open={open}
+            handleClickOpen={handleClickOpen}
+          />
+          <Button
+            variant='outlined'
+            className={classes.addClassButton}
+            startIcon={<PersonAddIcon />}
+            onClick={() => handleClickOpen(true)}
+          >
+            Add Student
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid item container direction='column'>
         <Grid
           item
           style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
@@ -57,7 +79,7 @@ const Students = classObj => {
           <StudentListContainer />
         </Grid>
       </Grid>
-      <NotificationContainer />
+      <NotificationContainer status={status} />
     </Grid>
   );
 };
