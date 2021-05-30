@@ -3,15 +3,33 @@ import React from 'react';
 import Modal from '../modal/Modal';
 import StudentForm from './StudentForm';
 
-const AddStudentModal = ({ open, handleClickOpen, addStudent, docId }) => {
+const AddStudentModal = ({
+  open,
+  handleClickOpen,
+  addStudent,
+  addExistingStudentToCourse,
+  course,
+  studentList
+}) => {
   const onSubmit = formValues => {
-    addStudent({ ...formValues, courses: [docId] });
+    formValues.existingStudent
+      ? addExistingStudentToCourse({
+          ...formValues.existingStudent,
+          courses: [course.docId]
+        })
+      : addStudent({ ...formValues, courses: [course.docId] });
   };
 
   const modalContent = {
-    title: 'Student Information',
+    title: course
+      ? `Add Student to ${course.courseCode} - ${course.courseName}`
+      : 'Student Information',
     content: () => (
-      <StudentForm onSubmit={onSubmit} handleClickOpen={handleClickOpen} />
+      <StudentForm
+        onSubmit={onSubmit}
+        handleClickOpen={handleClickOpen}
+        studentList={studentList}
+      />
     ),
     actions: () => <></>
   };
