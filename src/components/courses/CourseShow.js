@@ -65,7 +65,6 @@ const CourseShow = ({ course, fetchStudentsStart, status }) => {
       <Grid item container direction='column'>
         <Grid item>
           <AddStudentModalContainer
-            course={course}
             open={open}
             handleClickOpen={handleClickOpen}
           />
