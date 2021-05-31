@@ -33,14 +33,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Courses = ({ fetchCoursesStart, status }) => {
+const Courses = ({ fetchCoursesStart, status, fetchStudentsStart }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     fetchCoursesStart();
-  }, [fetchCoursesStart]);
+    fetchStudentsStart();
+  }, [fetchCoursesStart, fetchStudentsStart]);
 
   const [open, setModalOpen] = useState(false);
 
