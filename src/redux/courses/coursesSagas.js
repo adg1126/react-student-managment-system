@@ -15,6 +15,7 @@ import {
   EDIT_COURSE_FAILURE
 } from './coursesActionTypes';
 import { firestore } from '../../config/firebase';
+import firebase from 'firebase/app';
 import { convertCoursesSnapshotToMap } from './coursesUtils';
 import { selectCurrentUser } from '../user/userSelectors';
 
@@ -84,13 +85,35 @@ export function* deleteCourseInFirebase({ payload: docId }) {
 
   if (currentUser) {
     try {
-      const snapshot = yield courseToDeleteRef.get();
+      const courseToDeleteSnapshot = yield courseToDeleteRef.get();
+      const studentsWithCourseRef = yield firestore
+        .collection('students')
+        .where('courses', 'array-contains', docId);
 
-      if (snapshot.empty) {
+      if (courseToDeleteSnapshot.empty) {
         yield put({
           type: DELETE_COURSE_FAILURE,
           payload: 'Failed to delete course, check your internet connection.'
         });
+      }
+
+      try {
+        const studentsWithCourseSnapshot = yield studentsWithCourseRef.get();
+
+        if (studentsWithCourseSnapshot.empty) {
+          yield put({
+            type: DELETE_COURSE_FAILURE,
+            payload: 'Failed to delete course, check your internet connection.'
+          });
+        }
+
+        yield studentsWithCourseSnapshot.forEach(doc => {
+          doc.ref.update({
+            courses: firebase.firestore.FieldValue.arrayRemove(docId)
+          });
+        });
+      } catch (err) {
+        yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
       }
 
       yield courseToDeleteRef.delete();
