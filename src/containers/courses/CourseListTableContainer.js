@@ -1,6 +1,5 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import {
   selectCourseListForPreview,
   selectIsCoursesFetching
@@ -12,11 +11,13 @@ import { deleteCourse } from '../../redux/courses/coursesActions';
 import CourseListTable from '../../components/courses/CourseListTable';
 import WithSpinner from '../WithSpinner';
 
-const mapStateToProps = createStructuredSelector({
-  courseList: selectCourseListForPreview,
-  isFetching: selectIsCoursesFetching,
-  studentList: selectStudentListForPreview
-});
+const mapStateToProps = state => {
+  return {
+    courseList: selectCourseListForPreview(state),
+    isFetching: selectIsCoursesFetching(state),
+    studentList: selectStudentListForPreview(state)
+  };
+};
 
 export default compose(
   connect(mapStateToProps, { deleteCourse }),
