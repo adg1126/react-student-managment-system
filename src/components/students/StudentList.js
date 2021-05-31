@@ -14,6 +14,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
 
 import EditStudentModalContainer from '../../containers/students/EditStudentModalContainer';
+import DeleteStudentContainer from '../../containers/students/DeleteStudentContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -62,21 +63,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ docId, student, deleteStudent }) => {
+const Row = ({ student }) => {
   const classes = useStyles();
 
   const [open, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const handleClickOpen = state => {
     setModalOpen(state);
+  };
+
+  const handleDeleteModalOpen = state => {
+    setDeleteModalOpen(state);
   };
 
   return (
     <StyledTableRow>
       <StyledTableCell align='left'>{student.fullName}</StyledTableCell>
       <StyledTableCell align='center'>
+        <DeleteStudentContainer
+          open={deleteModalOpen}
+          handleClickOpen={handleDeleteModalOpen}
+          student={student}
+        />
         <EditStudentModalContainer
-          docId={docId}
           open={open}
           handleClickOpen={handleClickOpen}
         />
@@ -84,7 +94,7 @@ const Row = ({ docId, student, deleteStudent }) => {
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteStudent(docId, student)}
+          onClick={() => handleDeleteModalOpen(true)}
         >
           Remove
         </Button>
@@ -92,7 +102,7 @@ const Row = ({ docId, student, deleteStudent }) => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          onClick={() => handleClickOpen(true)}
+          // onClick={() => handleClickOpen(true)}
         >
           Edit
         </Button>
@@ -116,12 +126,7 @@ const StudentList = ({ docId, studentList, deleteStudent }) => {
         <TableBody>
           {studentList
             ? studentList.map((student, i) => (
-                <Row
-                  key={i}
-                  docId={docId}
-                  student={student}
-                  deleteStudent={deleteStudent}
-                />
+                <Row key={i} student={student} deleteStudent={deleteStudent} />
               ))
             : null}
         </TableBody>

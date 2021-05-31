@@ -5,8 +5,6 @@ import {
   selectStudentsForClass,
   selectIsStudentsFetching
 } from '../../redux/student/studentSelectors';
-
-import { deleteStudent } from '../../redux/student/studentActions';
 import history from '../../history';
 
 import StudentList from '../../components/students/StudentList';
@@ -25,7 +23,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default compose(
-  connect(mapStateToProps, { deleteStudent }),
-  WithSpinner
-)(StudentList);
+export default compose(connect(mapStateToProps), WithSpinner)(StudentList);
