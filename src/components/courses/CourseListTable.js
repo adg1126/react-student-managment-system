@@ -130,7 +130,9 @@ const CourseListTable = ({
               key={course.courseCode}
               course={course}
               students={studentList.filter(student =>
-                student.courses.every(c => c.includes(course.docId))
+                student.courses
+                  ? student.courses.some(c => c.includes(course.docId))
+                  : []
               )}
               deleteCourse={deleteCourse}
             />
