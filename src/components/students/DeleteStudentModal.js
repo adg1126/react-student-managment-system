@@ -34,7 +34,7 @@ const DeleteStudentModal = ({
 
   const handleClick = () => {
     course
-      ? deleteStudentFromCourse({ ...student, courses: [course.docId] })
+      ? deleteStudentFromCourse({ ...student, courseToDelete: course.docId })
       : deleteStudent();
   };
 

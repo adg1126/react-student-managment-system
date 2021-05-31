@@ -15,7 +15,7 @@ const AddStudentModal = ({
     formValues.existingStudent
       ? addExistingStudentToCourse({
           ...formValues.existingStudent,
-          courses: [course.docId]
+          courseToAdd: course.docId
         })
       : addStudent({ ...formValues, courses: [course.docId] });
   };
