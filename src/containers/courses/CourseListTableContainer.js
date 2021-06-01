@@ -6,8 +6,6 @@ import {
 } from '../../redux/courses/coursesSelectors';
 import { selectStudentListForPreview } from '../../redux/student/studentSelectors';
 
-import { deleteCourse } from '../../redux/courses/coursesActions';
-
 import CourseListTable from '../../components/courses/CourseListTable';
 import WithSpinner from '../WithSpinner';
 
@@ -19,7 +17,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default compose(
-  connect(mapStateToProps, { deleteCourse }),
-  WithSpinner
-)(CourseListTable);
+export default compose(connect(mapStateToProps), WithSpinner)(CourseListTable);

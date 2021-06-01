@@ -7,8 +7,6 @@ import {
   selectCoursesErrMessage
 } from '../../redux/courses/coursesSelectors';
 
-import { deleteCourse } from '../../redux/courses/coursesActions';
-
 import CourseListCard from '../../components/courses/CourseListCard';
 import WithSpinner from '../WithSpinner';
 
@@ -18,7 +16,4 @@ const mapStateToProps = createStructuredSelector({
   errMessage: selectCoursesErrMessage
 });
 
-export default compose(
-  connect(mapStateToProps, { deleteCourse }),
-  WithSpinner
-)(CourseListCard);
+export default compose(connect(mapStateToProps), WithSpinner)(CourseListCard);

@@ -67,7 +67,7 @@ export function* addCourseToFirebase({ payload: course }) {
       yield put({
         type: ADD_COURSE_SUCCESS,
         key: courseDocRef.id,
-        value: { userId: currentUser.id, ...course }
+        value: { userId: currentUser.id, docId: courseDocRef.id, ...course }
       });
     } catch (err) {
       yield put({ type: ADD_COURSE_FAILURE, payload: err.message });
@@ -112,6 +112,7 @@ export function* deleteCourseInFirebase({ payload: docId }) {
             courses: firebase.firestore.FieldValue.arrayRemove(docId)
           });
         });
+        history.push('/courses');
       } catch (err) {
         yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
       }

@@ -16,8 +16,10 @@ import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 
 import EditIcon from '@material-ui/icons/Edit';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import EditCourseModalContainer from '../../containers/courses/EditCourseModalContainer';
+import DeleteCourseModalContainer from '../../containers/courses/DeleteCourseModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -45,7 +47,8 @@ const useStyles = makeStyles(theme => ({
     ...theme.button,
     ...theme.buttonRedAnimation,
     fontSize: '1em',
-    marginBottom: '1.5em'
+    marginBottom: '1.5em',
+    marginRight: '1em'
   },
   indigoButton: {
     ...theme.button,
@@ -151,6 +154,12 @@ const CourseInfo = ({ course, studentList }) => {
     setModalOpen(state);
   };
 
+  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
+
+  const handleClickDeleteCourseModalOpen = state => {
+    setDeleteCourseModalOpen(state);
+  };
+
   return (
     <Card>
       <CardContent>
@@ -164,7 +173,21 @@ const CourseInfo = ({ course, studentList }) => {
             <EditCourseModalContainer
               open={open}
               handleClickOpen={handleClickOpen}
+              course={course}
             />
+            <DeleteCourseModalContainer
+              open={openDeleteCourseModal}
+              handleClickOpen={handleClickDeleteCourseModalOpen}
+              course={course}
+            />
+            <Button
+              variant='outlined'
+              className={classes.redButton}
+              startIcon={<HighlightOffIcon />}
+              onClick={() => handleClickDeleteCourseModalOpen(true)}
+            >
+              Remove
+            </Button>
             <Button
               variant='outlined'
               className={classes.indigoButton}

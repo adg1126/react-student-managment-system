@@ -22,36 +22,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DeleteStudentModal = ({
-  open,
-  handleClickOpen,
-  deleteStudent,
-  deleteStudentFromCourse,
-  course,
-  student
-}) => {
+const DeleteCourseModal = ({ open, handleClickOpen, course, deleteCourse }) => {
   const classes = useStyles();
 
   const handleClick = () => {
-    course
-      ? deleteStudentFromCourse({ ...student, courseToDelete: course.docId })
-      : deleteStudent();
+    deleteCourse(course.docId);
   };
 
   const modalContent = {
-    title: course
-      ? `Remove Student from ${course.courseCode} - ${course.courseName}`
-      : 'Remove Student',
+    title: `Delete ${course.courseCode} - ${course.courseName}`,
     content: () => (
-      <>
-        <DialogContentText>
-          This action will only delete the student from this course the student.
-        </DialogContentText>
-        <DialogContentText>
-          To permanently delete the student delete the student. Delete the
-          student from the students tab.
-        </DialogContentText>
-      </>
+      <DialogContentText>
+        This action will delete the course delete and all of the student data
+        associated this course.
+      </DialogContentText>
     ),
     actions: () => (
       <Grid className={classes.buttonContainer} container direction='row'>
@@ -82,4 +66,4 @@ const DeleteStudentModal = ({
   );
 };
 
-export default DeleteStudentModal;
+export default DeleteCourseModal;

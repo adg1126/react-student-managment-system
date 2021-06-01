@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -14,6 +14,8 @@ import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
+
+import DeleteCourseModalContainer from '../../containers/courses/DeleteCourseModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -62,12 +64,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({
-  course: { docId, courseCode, courseName },
-  students,
-  deleteCourse
-}) => {
+const Row = ({ course, students, deleteCourse }) => {
   const classes = useStyles();
+
+  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
+
+  const handleClickDeleteCourseModalOpen = state => {
+    setDeleteCourseModalOpen(state);
+  };
+
+  const { docId, courseCode, courseName } = course;
 
   return (
     <StyledTableRow>
@@ -83,11 +89,16 @@ const Row = ({
       <StyledTableCell align='left'>{courseName}</StyledTableCell>
       <StyledTableCell align='center'>{students.length || 0}</StyledTableCell>
       <StyledTableCell align='center'>
+        <DeleteCourseModalContainer
+          open={openDeleteCourseModal}
+          handleClickOpen={handleClickDeleteCourseModalOpen}
+          course={course}
+        />
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteCourse(docId)}
+          onClick={() => handleClickDeleteCourseModalOpen(true)}
         >
           Remove
         </Button>
@@ -120,7 +131,7 @@ const CourseListTable = ({
           <TableRow>
             <StyledTableCell align='left'>Course Code</StyledTableCell>
             <StyledTableCell align='left'>Course Name</StyledTableCell>
-            <StyledTableCell align='center'># Students</StyledTableCell>
+            <StyledTableCell align='center'>Total Students</StyledTableCell>
             <StyledTableCell align='center'>Tools</StyledTableCell>
           </TableRow>
         </TableHead>

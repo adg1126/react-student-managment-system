@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history';
 
@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteCourseModalContainer from '../../containers/courses/DeleteCourseModalContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -50,8 +51,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseCard = ({ docId, courseCode, courseName, deleteCourse }) => {
+const CourseCard = course => {
   const classes = useStyles();
+
+  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
+
+  const handleClickDeleteCourseModalOpen = state => {
+    setDeleteCourseModalOpen(state);
+  };
+
+  const { docId, courseCode, courseName } = course;
 
   return (
     <Card className={classes.cardContainer}>
@@ -65,11 +74,16 @@ const CourseCard = ({ docId, courseCode, courseName, deleteCourse }) => {
         </Typography>
       </CardContent>
       <CardActions>
+        <DeleteCourseModalContainer
+          open={openDeleteCourseModal}
+          handleClickOpen={handleClickDeleteCourseModalOpen}
+          course={course}
+        />
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => deleteCourse(docId)}
+          onClick={() => handleClickDeleteCourseModalOpen(true)}
         >
           Remove
         </Button>
