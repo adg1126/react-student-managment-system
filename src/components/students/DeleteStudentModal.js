@@ -6,7 +6,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import Modal from '../modal/Modal';
+import ModalContainer from '../../containers/ModalContainer';
 
 const useStyles = makeStyles(theme => ({
   buttonContainer: { padding: '0 1em' },
@@ -89,7 +89,7 @@ const DeleteStudentModal = ({
     )
   };
 
-  return <Modal {...modalContent} modalName='deleteStudent' />;
+  return <ModalContainer {...modalContent} modalName='deleteStudent' />;
 };
 
 export default DeleteStudentModal;

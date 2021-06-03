@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Modal from '../modal/Modal';
+import ModalContainer from '../../containers/ModalContainer';
 import StudentForm from './StudentForm';
 
 const EditStudentModal = ({ editStudent, setModalOpen, studentToUpdate }) => {
@@ -22,7 +22,7 @@ const EditStudentModal = ({ editStudent, setModalOpen, studentToUpdate }) => {
     actions: <></>
   };
 
-  return <Modal {...modalContent} modalName='editStudent' />;
+  return <ModalContainer {...modalContent} modalName='editStudent' />;
 };
 
 export default EditStudentModal;

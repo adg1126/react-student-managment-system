@@ -1,7 +1,7 @@
 import React from 'react';
 import history from '../../history';
 
-import Modal from '../modal/Modal';
+import ModalContainer from '../../containers/ModalContainer';
 import StudentForm from './StudentForm';
 
 const AddStudentModal = ({
@@ -37,7 +37,7 @@ const AddStudentModal = ({
     actions: <></>
   };
 
-  return <Modal {...modalContent} modalName='addStudent' />;
+  return <ModalContainer {...modalContent} modalName='addStudent' />;
 };
 
 export default AddStudentModal;
