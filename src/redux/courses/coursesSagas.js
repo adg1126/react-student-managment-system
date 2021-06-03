@@ -2,18 +2,20 @@ import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import history from '../../history';
 import {
   FETCH_COURSES_START,
-  FETCH_COURSES_SUCCESS,
-  FETCH_COURSES_FAILURE,
   ADD_COURSE_START,
-  ADD_COURSE_SUCCESS,
-  ADD_COURSE_FAILURE,
   DELETE_COURSE_START,
-  DELETE_COURSE_SUCCESS,
-  DELETE_COURSE_FAILURE,
-  EDIT_COURSE_START,
-  EDIT_COURSE_SUCCESS,
-  EDIT_COURSE_FAILURE
+  EDIT_COURSE_START
 } from './coursesActionTypes';
+import {
+  fetchCoursesSuccesss,
+  fetchCoursesFailure,
+  addCourseSuccess,
+  addCourseFailure,
+  deleteCourseSuccess,
+  deleteCourseFailure,
+  editCourseSuccess,
+  editCourseFailure
+} from './coursesActions';
 import { firestore } from '../../config/firebase';
 import firebase from 'firebase/app';
 import { convertCoursesSnapshotToMap } from './coursesUtils';
@@ -29,16 +31,17 @@ export function* fetchCoursesAsync() {
     const snapshot = yield coursesRef.get();
 
     if (snapshot.empty) {
-      yield put({
-        type: FETCH_COURSES_FAILURE,
-        payload: 'Failed to fetch courses, check your internet connection.'
-      });
+      yield put(
+        fetchCoursesFailure(
+          'Failed to fetch courses, check your internet connection.'
+        )
+      );
     }
 
     const coursesRefMap = yield call(convertCoursesSnapshotToMap, snapshot);
-    yield put({ type: FETCH_COURSES_SUCCESS, payload: coursesRefMap });
+    yield put(fetchCoursesSuccesss(coursesRefMap));
   } catch (err) {
-    yield put({ type: FETCH_COURSES_FAILURE, payload: err.message });
+    yield put(fetchCoursesFailure(err.message));
   }
 }
 
@@ -46,7 +49,7 @@ export function* fetchCoursesStart() {
   yield takeLatest(FETCH_COURSES_START, fetchCoursesAsync);
 }
 
-export function* addCourseToFirebase({ payload: course }) {
+export function* addCourseToFirebase({ payload: courseData }) {
   const coursesRef = firestore.collection('courses');
   const currentUser = yield select(selectCurrentUser);
 
@@ -54,23 +57,26 @@ export function* addCourseToFirebase({ payload: course }) {
     try {
       const snapshot = yield coursesRef.get();
       if (snapshot.empty) {
-        yield put({
-          type: ADD_COURSE_FAILURE,
-          payload: 'Failed to add course, check your internet connection.'
-        });
+        yield put(
+          addCourseFailure(
+            'Failed to add course, check your internet connection.'
+          )
+        );
       }
 
       const courseDocRef = yield coursesRef.add({
-        ...course,
+        ...courseData,
         userId: currentUser.id
       });
-      yield put({
-        type: ADD_COURSE_SUCCESS,
-        key: courseDocRef.id,
-        value: { userId: currentUser.id, docId: courseDocRef.id, ...course }
-      });
+      yield put(
+        addCourseSuccess(courseDocRef.id, {
+          userId: currentUser.id,
+          docId: courseDocRef.id,
+          ...courseData
+        })
+      );
     } catch (err) {
-      yield put({ type: ADD_COURSE_FAILURE, payload: err.message });
+      yield put(addCourseFailure(err.message));
     }
   }
 }
@@ -79,8 +85,8 @@ export function* onCourseAdd() {
   yield takeLatest(ADD_COURSE_START, addCourseToFirebase);
 }
 
-export function* deleteCourseInFirebase({ payload: docId }) {
-  const courseToDeleteRef = firestore.collection('courses').doc(docId);
+export function* deleteCourseInFirebase({ payload: courseDocId }) {
+  const courseToDeleteRef = firestore.collection('courses').doc(courseDocId);
   const currentUser = yield select(selectCurrentUser);
 
   if (currentUser) {
@@ -88,39 +94,41 @@ export function* deleteCourseInFirebase({ payload: docId }) {
       const courseToDeleteSnapshot = yield courseToDeleteRef.get();
       const studentsWithCourseRef = yield firestore
         .collection('students')
-        .where('courses', 'array-contains', docId);
+        .where('courses', 'array-contains', courseDocId);
 
       if (courseToDeleteSnapshot.empty) {
-        yield put({
-          type: DELETE_COURSE_FAILURE,
-          payload: 'Failed to delete course, check your internet connection.'
-        });
+        yield put(
+          deleteCourseFailure(
+            'Failed to delete course, check your internet connection.'
+          )
+        );
       }
 
       try {
         const studentsWithCourseSnapshot = yield studentsWithCourseRef.get();
 
         if (studentsWithCourseSnapshot.empty) {
-          yield put({
-            type: DELETE_COURSE_FAILURE,
-            payload: 'Failed to delete course, check your internet connection.'
-          });
+          yield put(
+            deleteCourseFailure(
+              'Failed to delete course, check your internet connection.'
+            )
+          );
         }
 
         yield studentsWithCourseSnapshot.forEach(doc => {
           doc.ref.update({
-            courses: firebase.firestore.FieldValue.arrayRemove(docId)
+            courses: firebase.firestore.FieldValue.arrayRemove(courseDocId)
           });
         });
         history.push('/courses');
       } catch (err) {
-        yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
+        yield put(deleteCourseFailure(err.message));
       }
 
       yield courseToDeleteRef.delete();
-      yield put({ type: DELETE_COURSE_SUCCESS, payload: docId });
+      yield put(deleteCourseSuccess(courseDocId));
     } catch (err) {
-      yield put({ type: DELETE_COURSE_FAILURE, payload: err.message });
+      yield put(deleteCourseFailure(err.message));
     }
   }
 }
@@ -129,8 +137,8 @@ export function* onCourseDelete() {
   yield takeLatest(DELETE_COURSE_START, deleteCourseInFirebase);
 }
 
-export function* editCourseInFirebase({ key: docId, value: course }) {
-  const courseToEditRef = firestore.collection('courses').doc(docId);
+export function* editCourseInFirebase({ key: courseDocId, value: courseData }) {
+  const courseToEditRef = firestore.collection('courses').doc(courseDocId);
   const currentUser = yield select(selectCurrentUser);
 
   if (currentUser) {
@@ -138,17 +146,18 @@ export function* editCourseInFirebase({ key: docId, value: course }) {
       const snapshot = yield courseToEditRef.get();
 
       if (snapshot.empty) {
-        yield put({
-          type: EDIT_COURSE_FAILURE,
-          payload: 'Failed to edit course, check your internet connection.'
-        });
+        yield put(
+          editCourseFailure(
+            'Failed to edit course, check your internet connection.'
+          )
+        );
       }
 
-      yield courseToEditRef.update({ ...course });
-      yield put({ type: EDIT_COURSE_SUCCESS, payload: course });
+      yield courseToEditRef.update({ ...courseData });
+      yield put(editCourseSuccess(courseData));
       history.push('/courses');
     } catch (err) {
-      yield put({ type: EDIT_COURSE_FAILURE, payload: err.message });
+      yield put(editCourseFailure(err.message));
     }
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -33,7 +33,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Courses = ({ fetchCoursesStart, status, fetchStudentsStart }) => {
+const Courses = ({
+  fetchCoursesStart,
+  status,
+  fetchStudentsStart,
+  setModalOpen
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -42,12 +47,6 @@ const Courses = ({ fetchCoursesStart, status, fetchStudentsStart }) => {
     fetchCoursesStart();
     fetchStudentsStart();
   }, [fetchCoursesStart, fetchStudentsStart]);
-
-  const [open, setModalOpen] = useState(false);
-
-  const handleClickOpen = state => {
-    setModalOpen(state);
-  };
 
   return (
     <Grid container className={classes.mainContainer} direction='column'>
@@ -58,15 +57,12 @@ const Courses = ({ fetchCoursesStart, status, fetchStudentsStart }) => {
       </Grid>
       <Grid item container direction='column'>
         <Grid item>
-          <AddCourseModalContainer
-            open={open}
-            handleClickOpen={handleClickOpen}
-          />
+          <AddCourseModalContainer />
           <Button
             variant='outlined'
             className={classes.addCourseButton}
             startIcon={<PostAddIcon />}
-            onClick={() => handleClickOpen(true)}
+            onClick={() => setModalOpen('addCourse', true)}
           >
             Add Course
           </Button>

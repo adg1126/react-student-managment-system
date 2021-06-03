@@ -1,24 +1,26 @@
 import React from 'react';
 
-import Modal from '../modal/Modal';
+import ModalContainer from '../../containers/ModalContainer';
 import CourseForm from './CourseForm';
 
-const AddCourseModal = ({ open, handleClickOpen, addCourse }) => {
+const AddCourseModal = ({ addCourse, setModalOpen }) => {
   const onSubmit = formValues => {
     addCourse(formValues);
   };
 
   const modalContent = {
     title: 'Course Information',
-    content: () => (
-      <CourseForm onSubmit={onSubmit} handleClickOpen={handleClickOpen} />
+    content: (
+      <CourseForm
+        onSubmit={onSubmit}
+        setModalOpen={setModalOpen}
+        modalName='addCourse'
+      />
     ),
-    actions: () => <></>
+    actions: <></>
   };
 
-  return (
-    <Modal {...modalContent} open={open} handleClickOpen={handleClickOpen} />
-  );
+  return <ModalContainer {...modalContent} modalName='addCourse' />;
 };
 
 export default AddCourseModal;

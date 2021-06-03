@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -90,12 +90,12 @@ const MeetingDays = ({ meetingDays }) => {
     'sunday'
   ];
 
-  return daysArr.map((day, i) => {
+  return daysArr.map(day => {
     const dayAbbr = day.slice(0, 3);
 
     return (
       <Grid item key={day}>
-        {meetingDays.includes(day) ? (
+        {meetingDays && meetingDays.includes(day) ? (
           <Avatar variant='square' className={classes.selectedQuare}>
             {dayAbbr.charAt(0).toUpperCase() + dayAbbr.slice(1)}
           </Avatar>
@@ -145,19 +145,22 @@ const CourseInfoTable = ({
   );
 };
 
-const CourseInfo = ({ course, studentList }) => {
+const CourseInfo = ({
+  course,
+  studentList,
+  setModalOpen,
+  setCourseToUpdate
+}) => {
   const classes = useStyles();
 
-  const [open, setModalOpen] = useState(false);
-
-  const handleClickOpen = state => {
-    setModalOpen(state);
+  const handleDeleteCourse = () => {
+    setModalOpen('deleteCourse', true);
+    setCourseToUpdate(course);
   };
 
-  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
-
-  const handleClickDeleteCourseModalOpen = state => {
-    setDeleteCourseModalOpen(state);
+  const handleEditCourse = () => {
+    setModalOpen('editCourse', true);
+    setCourseToUpdate(course);
   };
 
   return (
@@ -170,21 +173,13 @@ const CourseInfo = ({ course, studentList }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <EditCourseModalContainer
-              open={open}
-              handleClickOpen={handleClickOpen}
-              course={course}
-            />
-            <DeleteCourseModalContainer
-              open={openDeleteCourseModal}
-              handleClickOpen={handleClickDeleteCourseModalOpen}
-              course={course}
-            />
+            <DeleteCourseModalContainer />
+            <EditCourseModalContainer />
             <Button
               variant='outlined'
               className={classes.redButton}
               startIcon={<HighlightOffIcon />}
-              onClick={() => handleClickDeleteCourseModalOpen(true)}
+              onClick={handleDeleteCourse}
             >
               Remove
             </Button>
@@ -192,7 +187,7 @@ const CourseInfo = ({ course, studentList }) => {
               variant='outlined'
               className={classes.indigoButton}
               startIcon={<EditIcon />}
-              onClick={() => handleClickOpen(true)}
+              onClick={handleEditCourse}
             >
               Edit
             </Button>

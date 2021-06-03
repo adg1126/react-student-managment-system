@@ -8,11 +8,13 @@ import {
   DELETE_COURSE_SUCCESS,
   DELETE_COURSE_FAILURE,
   EDIT_COURSE_SUCCESS,
-  EDIT_COURSE_FAILURE
+  EDIT_COURSE_FAILURE,
+  SET_COURSE_TO_UPDATE
 } from './coursesActionTypes';
 
 const INITIAL_STATE = {
   courseList: [],
+  courseToUpdate: null,
   isFetching: false,
   errMessage: '',
   status: {
@@ -45,6 +47,11 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
           success: 'Successfully added course'
         }
       };
+    case SET_COURSE_TO_UPDATE:
+      return {
+        ...state,
+        courseToUpdate: { ...state.courseToUpdate, ...action.payload }
+      };
     case EDIT_COURSE_SUCCESS:
       return {
         ...state,
@@ -54,7 +61,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
         },
         status: {
           ...state.status,
-          successMessage: 'Successfully edited course'
+          success: 'Successfully edited course'
         }
       };
     case DELETE_COURSE_SUCCESS:

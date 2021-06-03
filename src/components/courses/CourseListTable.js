@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -16,6 +16,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
 
 import DeleteCourseModalContainer from '../../containers/courses/DeleteCourseModalContainer';
+import EditCourseModalContainer from '../../containers/courses/EditCourseModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -64,13 +65,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ course, students, deleteCourse }) => {
+const Row = ({ course, students, setModalOpen, setCourseToUpdate }) => {
   const classes = useStyles();
 
-  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
+  const handleDeleteCourse = () => {
+    setModalOpen('deleteCourse', true);
+    setCourseToUpdate(course);
+  };
 
-  const handleClickDeleteCourseModalOpen = state => {
-    setDeleteCourseModalOpen(state);
+  const handleEditCourse = () => {
+    setModalOpen('editCourse', true);
+    setCourseToUpdate(course);
   };
 
   const { docId, courseCode, courseName } = course;
@@ -89,16 +94,13 @@ const Row = ({ course, students, deleteCourse }) => {
       <StyledTableCell align='left'>{courseName}</StyledTableCell>
       <StyledTableCell align='center'>{students.length || 0}</StyledTableCell>
       <StyledTableCell align='center'>
-        <DeleteCourseModalContainer
-          open={openDeleteCourseModal}
-          handleClickOpen={handleClickDeleteCourseModalOpen}
-          course={course}
-        />
+        <DeleteCourseModalContainer />
+        <EditCourseModalContainer />
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => handleClickDeleteCourseModalOpen(true)}
+          onClick={handleDeleteCourse}
         >
           Remove
         </Button>
@@ -106,8 +108,7 @@ const Row = ({ course, students, deleteCourse }) => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          component={Link}
-          to={`/courses/${docId}`}
+          onClick={handleEditCourse}
         >
           Edit
         </Button>
@@ -118,9 +119,10 @@ const Row = ({ course, students, deleteCourse }) => {
 
 const CourseListTable = ({
   courseList,
-  deleteCourse,
   studentList,
-  errMessage
+  errMessage,
+  setCourseToUpdate,
+  setModalOpen
 }) => {
   const classes = useStyles();
 
@@ -145,7 +147,8 @@ const CourseListTable = ({
                   ? student.courses.some(c => c.includes(course.docId))
                   : []
               )}
-              deleteCourse={deleteCourse}
+              setModalOpen={setModalOpen}
+              setCourseToUpdate={setCourseToUpdate}
             />
           ))}
         </TableBody>

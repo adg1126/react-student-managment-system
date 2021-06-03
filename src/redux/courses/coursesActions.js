@@ -1,26 +1,81 @@
 import {
   FETCH_COURSES_START,
+  FETCH_COURSES_SUCCESS,
+  FETCH_COURSES_FAILURE,
   ADD_COURSE_START,
+  ADD_COURSE_SUCCESS,
+  ADD_COURSE_FAILURE,
   DELETE_COURSE_START,
-  EDIT_COURSE_START
+  DELETE_COURSE_SUCCESS,
+  DELETE_COURSE_FAILURE,
+  EDIT_COURSE_START,
+  EDIT_COURSE_SUCCESS,
+  EDIT_COURSE_FAILURE,
+  SET_COURSE_TO_UPDATE
 } from './coursesActionTypes';
 
 export const fetchCoursesStart = () => ({
   type: FETCH_COURSES_START
 });
 
-export const addCourse = course => ({
+export const fetchCoursesSuccesss = coursesMap => ({
+  type: FETCH_COURSES_SUCCESS,
+  payload: coursesMap
+});
+
+export const fetchCoursesFailure = errMsg => ({
+  type: FETCH_COURSES_FAILURE,
+  payload: errMsg
+});
+
+export const addCourse = courseData => ({
   type: ADD_COURSE_START,
-  payload: course
+  payload: courseData
 });
 
-export const deleteCourse = docId => ({
+export const addCourseSuccess = (courseDocId, courseData) => ({
+  type: ADD_COURSE_SUCCESS,
+  key: courseDocId,
+  value: courseData
+});
+
+export const addCourseFailure = errMsg => ({
+  type: ADD_COURSE_FAILURE,
+  payload: errMsg
+});
+
+export const deleteCourse = courseDocId => ({
   type: DELETE_COURSE_START,
-  payload: docId
+  payload: courseDocId
 });
 
-export const editCourse = (docId, course) => ({
+export const deleteCourseSuccess = courseDocId => ({
+  type: DELETE_COURSE_SUCCESS,
+  payload: courseDocId
+});
+
+export const deleteCourseFailure = errMsg => ({
+  type: DELETE_COURSE_FAILURE,
+  payload: errMsg
+});
+
+export const editCourse = (courseDocId, courseData) => ({
   type: EDIT_COURSE_START,
-  key: docId,
-  value: course
+  key: courseDocId,
+  value: courseData
+});
+
+export const editCourseSuccess = courseData => ({
+  type: EDIT_COURSE_SUCCESS,
+  payload: courseData
+});
+
+export const editCourseFailure = errMsg => ({
+  type: EDIT_COURSE_FAILURE,
+  payload: errMsg
+});
+
+export const setCourseToUpdate = courseData => ({
+  type: SET_COURSE_TO_UPDATE,
+  payload: courseData
 });

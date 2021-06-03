@@ -5,6 +5,7 @@ import { selectCoursesStatus } from '../../redux/courses/coursesSelectors';
 
 import { fetchCoursesStart } from '../../redux/courses/coursesActions';
 import { fetchStudentsStart } from '../../redux/student/studentActions';
+import { setModalOpen } from '../../redux/modal/modalActions';
 import Courses from '../../pages/Courses';
 
 const mapStateToProps = createStructuredSelector({
@@ -13,5 +14,6 @@ const mapStateToProps = createStructuredSelector({
 
 export default connect(mapStateToProps, {
   fetchCoursesStart,
-  fetchStudentsStart
+  fetchStudentsStart,
+  setModalOpen
 })(Courses);

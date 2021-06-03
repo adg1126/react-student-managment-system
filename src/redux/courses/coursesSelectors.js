@@ -32,3 +32,8 @@ export const selectCoursesStatus = createSelector(
   [selectCourses],
   courses => courses.status
 );
+
+export const selectCourseToUpdate = createSelector(
+  [selectCourses],
+  courses => courses.courseToUpdate
+);

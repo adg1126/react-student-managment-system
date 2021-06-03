@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import history from '../../history';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +11,9 @@ import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
+
 import DeleteCourseModalContainer from '../../containers/courses/DeleteCourseModalContainer';
+import EditCourseModalContainer from '../../containers/courses/EditCourseModalContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -51,13 +52,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseCard = course => {
+const CourseCard = ({ course, setModalOpen, setCourseToUpdate }) => {
   const classes = useStyles();
 
-  const [openDeleteCourseModal, setDeleteCourseModalOpen] = useState(false);
+  const handleDeleteCourse = () => {
+    setModalOpen('deleteCourse', true);
+    setCourseToUpdate(course);
+  };
 
-  const handleClickDeleteCourseModalOpen = state => {
-    setDeleteCourseModalOpen(state);
+  const handleEditCourse = () => {
+    setModalOpen('editCourse', true);
+    setCourseToUpdate(course);
   };
 
   const { docId, courseCode, courseName } = course;
@@ -74,16 +79,13 @@ const CourseCard = course => {
         </Typography>
       </CardContent>
       <CardActions>
-        <DeleteCourseModalContainer
-          open={openDeleteCourseModal}
-          handleClickOpen={handleClickDeleteCourseModalOpen}
-          course={course}
-        />
+        <DeleteCourseModalContainer />
+        <EditCourseModalContainer />
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => handleClickDeleteCourseModalOpen(true)}
+          onClick={handleDeleteCourse}
         >
           Remove
         </Button>
@@ -91,8 +93,7 @@ const CourseCard = course => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          component={Link}
-          to={`/courses/${docId}`}
+          onClick={handleEditCourse}
         >
           Edit
         </Button>
@@ -101,7 +102,12 @@ const CourseCard = course => {
   );
 };
 
-const CourseListCard = ({ courseList, deleteCourse, errMessage }) => {
+const CourseListCard = ({
+  courseList,
+  errMessage,
+  setModalOpen,
+  setCourseToUpdate
+}) => {
   const classes = useStyles();
 
   return courseList.length ? (
@@ -113,7 +119,11 @@ const CourseListCard = ({ courseList, deleteCourse, errMessage }) => {
     >
       {courseList.map((course, i) => (
         <Grid item key={i}>
-          <CourseCard {...course} deleteCourse={deleteCourse} />
+          <CourseCard
+            course={course}
+            setModalOpen={setModalOpen}
+            setCourseToUpdate={setCourseToUpdate}
+          />
         </Grid>
       ))}
     </Grid>
