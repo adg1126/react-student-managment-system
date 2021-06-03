@@ -31,26 +31,18 @@ const useStyles = makeStyles(theme => ({
     margin: '0.5em 0'
   },
   buttonContainer: {
-    width: '35%',
-    marginTop: '1.5em',
-    [theme.breakpoints.down('sm')]: {
-      width: '60%'
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%'
-    }
+    marginTop: '1.5em'
   },
   greenButton: {
     ...theme.button,
     ...theme.buttonGreenAnimation,
-    fontSize: '1em',
-    marginBottom: '1.5em'
+    fontSize: '1em'
   },
   redButton: {
     ...theme.button,
     ...theme.buttonRedAnimation,
     fontSize: '1em',
-    marginBottom: '1.5em'
+    marginRight: '1em'
   }
 }));
 
@@ -75,7 +67,7 @@ const renderTextField = ({
 const CourseForm = props => {
   const classes = useStyles();
 
-  const { pristine, reset, handleClickOpen } = props;
+  const { pristine, reset, setModalOpen, modalName } = props;
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);
@@ -116,17 +108,13 @@ const CourseForm = props => {
           ]}
         />
       </FormGroup>
-      <Grid
-        container
-        justify={handleClickOpen ? 'space-between' : undefined}
-        className={classes.buttonContainer}
-      >
+      <Grid container className={classes.buttonContainer}>
         <Grid item>
-          {handleClickOpen ? (
+          {setModalOpen ? (
             <Button
               variant='outlined'
               className={classes.redButton}
-              onClick={() => handleClickOpen(false)}
+              onClick={() => setModalOpen(modalName, false)}
               color='primary'
             >
               Cancel

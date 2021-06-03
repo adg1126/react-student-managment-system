@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../../history';
 import { Field, reduxForm } from 'redux-form';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -47,26 +48,18 @@ const useStyles = makeStyles(theme => ({
     }
   },
   buttonContainer: {
-    width: '40%',
-    marginTop: '1.5em',
-    [theme.breakpoints.down('sm')]: {
-      width: '60%'
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%'
-    }
+    marginTop: '1.5em'
   },
   greenButton: {
     ...theme.button,
     ...theme.buttonGreenAnimation,
-    fontSize: '1em',
-    marginBottom: '1.5em'
+    fontSize: '1em'
   },
   redButton: {
     ...theme.button,
     ...theme.buttonRedAnimation,
     fontSize: '1em',
-    marginBottom: '1.5em'
+    marginRight: '1em'
   }
 }));
 
@@ -119,7 +112,7 @@ const SelectField = ({
 const StudentForm = props => {
   const classes = useStyles();
 
-  const { pristine, reset, handleClickOpen, studentList } = props;
+  const { pristine, reset, setModalOpen, modalName, studentList } = props;
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);
@@ -129,21 +122,16 @@ const StudentForm = props => {
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
       <Grid container direction='column' spacing={2}>
-        <Grid item container direction='column'>
-          <Grid item>
-            <Typography>Add a new student</Typography>
-          </Grid>
-          <Grid item>
-            <Field
-              name='fullName'
-              variant='outlined'
-              component={renderTextField}
-              label='Full Name'
-              className={classes.textField}
-            />
-          </Grid>
+        <Grid item>
+          <Field
+            className={classes.textField}
+            variant='outlined'
+            name='fullName'
+            component={renderTextField}
+            label='Full Name'
+          />
         </Grid>
-        {studentList.length ? (
+        {studentList && history.location.pathname !== '/students' ? (
           <Grid item container direction='column'>
             <Grid item>
               <Typography>Or add an existing student</Typography>
@@ -167,17 +155,12 @@ const StudentForm = props => {
           </Grid>
         ) : null}
       </Grid>
-      <Grid
-        container
-        justify={handleClickOpen ? 'space-between' : undefined}
-        className={classes.buttonContainer}
-      >
+      <Grid container direction='row' className={classes.buttonContainer}>
         <Grid item>
           <Button
             variant='outlined'
             className={classes.redButton}
-            onClick={() => handleClickOpen(false)}
-            color='primary'
+            onClick={() => setModalOpen(modalName, false)}
           >
             Cancel
           </Button>
@@ -188,7 +171,6 @@ const StudentForm = props => {
             type='submit'
             variant='outlined'
             className={classes.greenButton}
-            color='primary'
           >
             Submit
           </Button>
@@ -198,18 +180,6 @@ const StudentForm = props => {
   );
 };
 
-const validate = values => {
-  const errors = {};
-
-  const requiredFields = ['courseCode', 'courseName', 'units'];
-  requiredFields.forEach(field => {
-    if (!values[field]) errors[field] = 'Required';
-  });
-
-  return errors;
-};
-
 export default reduxForm({
-  form: 'studentForm',
-  validate
+  form: 'studentForm'
 })(StudentForm);
