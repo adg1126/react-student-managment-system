@@ -1,4 +1,5 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import _ from 'lodash';
 import {
   FETCH_STUDENTS_START,
   ADD_STUDENT_START,
@@ -121,7 +122,7 @@ export function* updateStudentInFirebase({ key: studentDocId }) {
         .doc(studentDocId);
       const student = yield select(selectStudent(studentDocId));
 
-      yield studentRef.update(student);
+      yield studentRef.update(_.omit(student, 'docId'));
     } catch (err) {
       console.log(err);
     }
