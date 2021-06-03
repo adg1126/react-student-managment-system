@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -40,14 +40,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseShow = ({ course, fetchStudentsStart, status, setModalOpen }) => {
+const CourseShow = ({ course, status, setModalOpen }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
-
-  useEffect(() => {
-    fetchStudentsStart();
-  }, [fetchStudentsStart]);
 
   return course ? (
     <Grid container direction='column' className={classes.mainContainer}>
