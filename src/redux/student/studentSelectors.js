@@ -51,3 +51,8 @@ export const selectStudent = studentId =>
 
 export const selectStudentCourses = studentId =>
   createSelector([selectStudent(studentId)], student => student.courses);
+
+export const selectStudentToUpdate = createSelector(
+  [selectStudents],
+  student => student.studentToUpdate
+);
