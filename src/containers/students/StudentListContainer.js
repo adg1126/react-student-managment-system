@@ -5,6 +5,8 @@ import {
   selectStudentsForClass,
   selectIsStudentsFetching
 } from '../../redux/student/studentSelectors';
+import { setStudentToUpdate } from '../../redux/student/studentActions';
+import { setModalOpen } from '../../redux/modal/modalActions';
 import history from '../../history';
 
 import StudentList from '../../components/students/StudentList';
@@ -23,4 +25,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default compose(connect(mapStateToProps), WithSpinner)(StudentList);
+export default compose(
+  connect(mapStateToProps, { setModalOpen, setStudentToUpdate }),
+  WithSpinner
+)(StudentList);

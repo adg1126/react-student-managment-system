@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,7 +14,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
 
 import EditStudentModalContainer from '../../containers/students/EditStudentModalContainer';
-import DeleteStudentContainer from '../../containers/students/DeleteStudentContainer';
+import DeleteStudentContainer from '../../containers/students/DeleteStudentModalContainer';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -63,38 +63,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ student }) => {
+const Row = ({ student, setModalOpen, setStudentToUpdate }) => {
   const classes = useStyles();
 
-  const [open, setModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
-  const handleClickOpen = state => {
-    setModalOpen(state);
+  const handleDeleteStudent = () => {
+    setModalOpen('deleteStudent', true);
+    setStudentToUpdate(student);
   };
 
-  const handleDeleteModalOpen = state => {
-    setDeleteModalOpen(state);
+  const handleEditStudent = () => {
+    setModalOpen('editStudent', true);
+    setStudentToUpdate(student);
   };
 
   return (
     <StyledTableRow>
       <StyledTableCell align='left'>{student.fullName}</StyledTableCell>
       <StyledTableCell align='center'>
-        <DeleteStudentContainer
-          open={deleteModalOpen}
-          handleClickOpen={handleDeleteModalOpen}
-          student={student}
-        />
-        <EditStudentModalContainer
-          open={open}
-          handleClickOpen={handleClickOpen}
-        />
+        <DeleteStudentContainer />
+        <EditStudentModalContainer />
         <Button
           variant='outlined'
           className={classes.redButton}
           startIcon={<HighlightOffIcon />}
-          onClick={() => handleDeleteModalOpen(true)}
+          onClick={handleDeleteStudent}
         >
           Remove
         </Button>
@@ -102,7 +94,7 @@ const Row = ({ student }) => {
           variant='outlined'
           className={classes.indigoButton}
           startIcon={<EditIcon />}
-          // onClick={() => handleClickOpen(true)}
+          onClick={handleEditStudent}
         >
           Edit
         </Button>
@@ -111,7 +103,7 @@ const Row = ({ student }) => {
   );
 };
 
-const StudentList = ({ docId, studentList, deleteStudent }) => {
+const StudentList = ({ studentList, setModalOpen, setStudentToUpdate }) => {
   const classes = useStyles();
 
   return (
@@ -125,8 +117,13 @@ const StudentList = ({ docId, studentList, deleteStudent }) => {
         </TableHead>
         <TableBody>
           {studentList
-            ? studentList.map((student, i) => (
-                <Row key={i} student={student} deleteStudent={deleteStudent} />
+            ? studentList.map(student => (
+                <Row
+                  key={student.docId}
+                  student={student}
+                  setModalOpen={setModalOpen}
+                  setStudentToUpdate={setStudentToUpdate}
+                />
               ))
             : null}
         </TableBody>
