@@ -1,24 +1,24 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import {
   FETCH_STUDENTS_START,
-  FETCH_STUDENTS_SUCCESS,
-  FETCH_STUDENTS_FAILURE,
   ADD_STUDENT_START,
-  ADD_STUDENT_SUCCESS,
-  ADD_STUDENT_FAILURE,
   DELETE_STUDENT_START,
-  DELETE_STUDENT_SUCCESS,
-  DELETE_STUDENT_FAILURE,
-  EDIT_STUDENT_START,
-  EDIT_STUDENT_SUCCESS,
-  EDIT_STUDENT_FAILURE,
+  EDIT_STUDENT,
   ADD_EXISTING_STUDENT_TO_COURSE,
   DELETE_STUDENT_FROM_COURSE
 } from './studentActionTypes';
+import {
+  fetchStudentsSuccess,
+  fetchStudentsFailure,
+  addStudentSuccess,
+  addStudentFailure,
+  deleteStudentSuccess,
+  deleteStudentFailure
+} from './studentActions';
 import { firestore } from '../../config/firebase';
 import { convertStudentsSnapshotToMap } from './studentUtils';
 import { selectCurrentUser } from '../user/userSelectors';
-import { selectStudentCourses } from './studentSelectors';
+import { selectStudent } from './studentSelectors';
 
 export function* fetchStudentsAsync() {
   const currentUser = yield select(selectCurrentUser);
@@ -30,17 +30,17 @@ export function* fetchStudentsAsync() {
     const snapshot = yield studentsRef.get();
 
     if (snapshot.empty) {
-      yield put({
-        type: FETCH_STUDENTS_FAILURE,
-        payload: 'Failed to fetch students, check your internet connection.'
-      });
+      yield put(
+        fetchStudentsFailure(
+          'Failed to fetch students, check your internet connection.'
+        )
+      );
     }
 
     const studentsMap = yield call(convertStudentsSnapshotToMap, snapshot);
-
-    yield put({ type: FETCH_STUDENTS_SUCCESS, payload: studentsMap });
+    yield put(fetchStudentsSuccess(studentsMap));
   } catch (err) {
-    yield put({ type: FETCH_STUDENTS_FAILURE, payload: err.message });
+    yield put(fetchStudentsFailure(err.message));
   }
 }
 
@@ -48,7 +48,7 @@ export function* fetchStudentsStart() {
   yield takeLatest(FETCH_STUDENTS_START, fetchStudentsAsync);
 }
 
-export function* addStudentToFirebase({ payload: student }) {
+export function* addStudentToFirebase({ payload: studentData }) {
   const currentUser = yield select(selectCurrentUser);
   const studentsRef = firestore.collection('students');
 
@@ -56,22 +56,26 @@ export function* addStudentToFirebase({ payload: student }) {
     try {
       const snapshot = yield studentsRef.get();
       if (snapshot.empty) {
-        yield put({
-          type: ADD_STUDENT_FAILURE,
-          payload: 'Failed to add student, check your internet connection.'
-        });
+        yield put(
+          addStudentFailure(
+            'Failed to add student, check your internet connection.'
+          )
+        );
       }
 
       const studentDocRef = yield studentsRef.add({
-        ...student,
+        ...studentData,
         userId: currentUser.id
       });
-      yield put({
-        type: ADD_STUDENT_SUCCESS,
-        payload: { userId: currentUser.id, docId: studentDocRef.id, ...student }
-      });
+      yield put(
+        addStudentSuccess({
+          userId: currentUser.id,
+          docId: studentDocRef.id,
+          ...studentData
+        })
+      );
     } catch (err) {
-      yield put({ type: ADD_STUDENT_FAILURE, payload: err.message });
+      yield put(addStudentFailure(err.message));
     }
   }
 }
@@ -80,19 +84,44 @@ export function* onStudentAdd() {
   yield takeLatest(ADD_STUDENT_START, addStudentToFirebase);
 }
 
-export function* updateStudentInFirebase({ payload: studentObj }) {
+export function* deleteStudentInFirebase({ payload: studentDocId }) {
+  const currentUser = yield select(selectCurrentUser);
+  const studentToDeleteRef = firestore.collection('students').doc(studentDocId);
+
+  if (currentUser) {
+    try {
+      const snapshot = yield studentToDeleteRef.get();
+      if (snapshot.empty) {
+        yield put(
+          deleteStudentFailure(
+            'Failed to delete student, check your internet connection.'
+          )
+        );
+      }
+
+      yield studentToDeleteRef.delete();
+      yield put(deleteStudentSuccess(studentDocId));
+    } catch (err) {
+      yield put(deleteStudentFailure(err.message));
+    }
+  }
+}
+
+export function* onStudentDelete() {
+  yield takeLatest(DELETE_STUDENT_START, deleteStudentInFirebase);
+}
+
+export function* updateStudentInFirebase({ key: studentDocId }) {
   const currentUser = yield select(selectCurrentUser);
 
   if (currentUser) {
     try {
       const studentRef = yield firestore
         .collection('students')
-        .doc(studentObj.docId);
-      const studentCourses = yield select(
-        selectStudentCourses(studentObj.docId)
-      );
+        .doc(studentDocId);
+      const student = yield select(selectStudent(studentDocId));
 
-      yield studentRef.update({ courses: studentCourses });
+      yield studentRef.update(student);
     } catch (err) {
       console.log(err);
     }
@@ -101,7 +130,7 @@ export function* updateStudentInFirebase({ payload: studentObj }) {
 
 export function* onStudentChange() {
   yield takeLatest(
-    [ADD_EXISTING_STUDENT_TO_COURSE, DELETE_STUDENT_FROM_COURSE],
+    [ADD_EXISTING_STUDENT_TO_COURSE, DELETE_STUDENT_FROM_COURSE, EDIT_STUDENT],
     updateStudentInFirebase
   );
 }
@@ -110,6 +139,7 @@ export function* studentSagas() {
   yield all([
     call(fetchStudentsStart),
     call(onStudentAdd),
+    call(onStudentDelete),
     call(onStudentChange)
   ]);
 }
