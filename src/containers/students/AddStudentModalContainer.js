@@ -1,14 +1,16 @@
 import { connect } from 'react-redux';
-import {
-  addStudent,
-  addExistingStudentToCourse
-} from '../../redux/student/studentActions';
-import AddStudentModal from '../../components/students/AddStudentModal';
+import history from '../../history';
 
 import { selectStudentsNotInCourse } from '../../redux/student/studentSelectors';
 import { selectCourse } from '../../redux/courses/coursesSelectors';
 
-import history from '../../history';
+import {
+  addStudent,
+  addExistingStudentToCourse
+} from '../../redux/student/studentActions';
+import { setModalOpen } from '../../redux/modal/modalActions';
+
+import AddStudentModal from '../../components/students/AddStudentModal';
 
 const mapStateToProps = state => {
   const path = history.location.pathname;
@@ -23,5 +25,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   addStudent,
-  addExistingStudentToCourse
+  addExistingStudentToCourse,
+  setModalOpen
 })(AddStudentModal);
