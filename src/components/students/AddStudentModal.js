@@ -1,42 +1,43 @@
 import React from 'react';
+import history from '../../history';
 
 import Modal from '../modal/Modal';
 import StudentForm from './StudentForm';
 
 const AddStudentModal = ({
-  open,
-  handleClickOpen,
   addStudent,
+  setModalOpen,
   addExistingStudentToCourse,
   course,
   studentList
 }) => {
   const onSubmit = formValues => {
-    formValues.existingStudent
-      ? addExistingStudentToCourse({
-          ...formValues.existingStudent,
-          courseToAdd: course.docId
-        })
-      : addStudent({ ...formValues, courses: [course.docId] });
+    formValues.existingStudent && history.location.pathname !== '/students'
+      ? addExistingStudentToCourse(
+          formValues.existingStudent.docId,
+          course.docId
+        )
+      : history.location.pathname !== '/students'
+      ? addStudent({ ...formValues, courses: [course.docId] })
+      : addStudent({ ...formValues, courses: [] });
   };
 
   const modalContent = {
     title: course
       ? `Add Student to ${course.courseCode} - ${course.courseName}`
       : 'Student Information',
-    content: () => (
+    content: (
       <StudentForm
         onSubmit={onSubmit}
-        handleClickOpen={handleClickOpen}
+        setModalOpen={setModalOpen}
         studentList={studentList}
+        modalName='addStudent'
       />
     ),
-    actions: () => <></>
+    actions: <></>
   };
 
-  return (
-    <Modal {...modalContent} open={open} handleClickOpen={handleClickOpen} />
-  );
+  return <Modal {...modalContent} modalName='addStudent' />;
 };
 
 export default AddStudentModal;

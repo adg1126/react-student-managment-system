@@ -1,4 +1,6 @@
 import React from 'react';
+import history from '../../history';
+
 import { makeStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Grid from '@material-ui/core/Grid';
@@ -23,26 +25,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DeleteStudentModal = ({
-  open,
-  handleClickOpen,
   deleteStudent,
   deleteStudentFromCourse,
   course,
-  student
+  studentToUpdate,
+  setModalOpen
 }) => {
   const classes = useStyles();
 
   const handleClick = () => {
-    course
-      ? deleteStudentFromCourse({ ...student, courseToDelete: course.docId })
-      : deleteStudent();
+    course && studentToUpdate && history.location.pathname !== '/students'
+      ? deleteStudentFromCourse(studentToUpdate.docId, course.docId)
+      : deleteStudent(studentToUpdate.docId);
+    setModalOpen('deleteStudent', false);
   };
 
   const modalContent = {
-    title: course
-      ? `Remove Student from ${course.courseCode} - ${course.courseName}`
-      : 'Remove Student',
-    content: () => (
+    title:
+      course && studentToUpdate
+        ? `Remove ${studentToUpdate.fullName} from ${course.courseCode} - ${course.courseName}`
+        : 'Remove Student',
+    content: course ? (
       <>
         <DialogContentText>
           This action will only delete the student from this course the student.
@@ -52,14 +55,23 @@ const DeleteStudentModal = ({
           student from the students tab.
         </DialogContentText>
       </>
+    ) : (
+      <>
+        <DialogContentText>
+          This action will permanently delete all of this student' data.
+        </DialogContentText>
+        <DialogContentText>
+          Including all this student's course data (attendance and grades).
+        </DialogContentText>
+      </>
     ),
-    actions: () => (
+    actions: (
       <Grid className={classes.buttonContainer} container direction='row'>
         <Grid item>
           <Button
             variant='outlined'
             className={classes.redButton}
-            onClick={() => handleClickOpen(false)}
+            onClick={() => setModalOpen('deleteStudent', false)}
           >
             Cancel
           </Button>
@@ -77,9 +89,7 @@ const DeleteStudentModal = ({
     )
   };
 
-  return (
-    <Modal {...modalContent} open={open} handleClickOpen={handleClickOpen} />
-  );
+  return <Modal {...modalContent} modalName='deleteStudent' />;
 };
 
 export default DeleteStudentModal;

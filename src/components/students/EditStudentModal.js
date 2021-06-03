@@ -3,23 +3,26 @@ import React from 'react';
 import Modal from '../modal/Modal';
 import StudentForm from './StudentForm';
 
-const EditStudentModal = ({ open, handleClickOpen, editStudent, docId }) => {
+const EditStudentModal = ({ editStudent, setModalOpen, studentToUpdate }) => {
   const onSubmit = formValues => {
-    console.log(docId, { ...formValues });
-    // editStudent(docId, { ...formValues });
+    editStudent(studentToUpdate.docId, { ...formValues });
+    setModalOpen('editStudent', false);
   };
 
   const modalContent = {
     title: 'Edit Student Information',
-    content: () => (
-      <StudentForm onSubmit={onSubmit} handleClickOpen={handleClickOpen} />
+    content: (
+      <StudentForm
+        onSubmit={onSubmit}
+        initialValues={studentToUpdate}
+        setModalOpen={setModalOpen}
+        modalName='editStudent'
+      />
     ),
-    actions: () => <></>
+    actions: <></>
   };
 
-  return (
-    <Modal {...modalContent} open={open} handleClickOpen={handleClickOpen} />
-  );
+  return <Modal {...modalContent} modalName='editStudent' />;
 };
 
 export default EditStudentModal;
