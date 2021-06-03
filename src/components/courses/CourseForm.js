@@ -30,6 +30,27 @@ const useStyles = makeStyles(theme => ({
     },
     margin: '0.5em 0'
   },
+  datePicker: {
+    '& label': { color: 'rgba(255,255,255,0.1)' },
+    '& label.Mui-focused': {
+      color: 'blue'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'blue'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: theme.palette.common.grey800
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.common.grey800
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'blue'
+      }
+    },
+    margin: '0.5em 0'
+  },
   buttonContainer: {
     marginTop: '1.5em'
   },
@@ -64,6 +85,23 @@ const renderTextField = ({
   />
 );
 
+const renderDatePicker = ({
+  label,
+  input,
+  meta: { touched, invalid, error },
+  ...custom
+}) => (
+  <TextField
+    label={label}
+    placeholder={label}
+    error={touched && invalid}
+    helperText={touched && error}
+    {...input}
+    {...custom}
+    margin='dense'
+  />
+);
+
 const CourseForm = props => {
   const classes = useStyles();
 
@@ -89,6 +127,23 @@ const CourseForm = props => {
         name='courseName'
         component={renderTextField}
         label='Course Name'
+      />
+      <Field
+        style={{ marginRight: '2em' }}
+        className={classes.datePicker}
+        variant='outlined'
+        name='startDate'
+        component={renderDatePicker}
+        label='Start Date'
+        type='date'
+      />
+      <Field
+        className={classes.datePicker}
+        variant='outlined'
+        name='endDate'
+        component={renderDatePicker}
+        label='End Date'
+        type='date'
       />
       <FormGroup style={{ margin: '1em 0' }}>
         <FormLabel style={{ color: 'black', margin: '0.5em 0' }}>
@@ -140,7 +195,7 @@ const CourseForm = props => {
 const validate = values => {
   const errors = {};
 
-  const requiredFields = ['courseCode', 'courseName'];
+  const requiredFields = ['courseCode', 'courseName', 'startDate', 'endDate'];
   requiredFields.forEach(field => {
     if (!values[field]) errors[field] = 'Required';
   });
