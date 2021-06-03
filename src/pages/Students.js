@@ -10,7 +10,8 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddStudentModalContainer from '../containers/students/AddStudentModalContainer';
 
 import NotificationContainer from '../containers/NotificationContainer';
-import StudentListContainer from '../containers/students/StudentListContainer';
+import StudentListTableContainer from '../containers/students/StudentListTableContainer';
+import StudentListCardContainer from '../containers/students/StudentListCardContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -61,9 +62,13 @@ const Students = ({ status, setModalOpen }) => {
       <Grid item container direction='column'>
         <Grid
           item
-          style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
+          style={{ width: matchesMD ? '95%' : '80%', marginTop: '1em' }}
         >
-          <StudentListContainer />
+          {matchesMD ? (
+            <StudentListCardContainer />
+          ) : (
+            <StudentListTableContainer />
+          )}
         </Grid>
       </Grid>
       <NotificationContainer status={status} />

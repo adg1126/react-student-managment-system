@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 import AddStudentModalContainer from '../../containers/students/AddStudentModalContainer';
-import StudentListContainer from '../../containers/students/StudentListContainer';
+import StudentListTableContainer from '../../containers/students/StudentListTableContainer';
 import CourseInfoContainer from '../../containers/courses/CourseInfoContainer';
 import NotificationContainer from '../../containers/NotificationContainer';
 
@@ -66,7 +66,7 @@ const CourseShow = ({ course, status, setModalOpen }) => {
         </Grid>
         <Grid item container spacing={4}>
           <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
-            <StudentListContainer />
+            <StudentListTableContainer />
           </Grid>
           <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
             <CourseInfoContainer />

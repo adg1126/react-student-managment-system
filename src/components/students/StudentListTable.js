@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit';
@@ -35,9 +36,6 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 const useStyles = makeStyles(theme => ({
-  table: {
-    width: '100%'
-  },
   redButton: {
     ...theme.button,
     ...theme.buttonRedAnimation,
@@ -103,12 +101,14 @@ const Row = ({ student, setModalOpen, setStudentToUpdate }) => {
   );
 };
 
-const StudentList = ({ studentList, setModalOpen, setStudentToUpdate }) => {
-  const classes = useStyles();
-
-  return (
+const StudentListTable = ({
+  studentList,
+  setModalOpen,
+  setStudentToUpdate
+}) => {
+  return studentList ? (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label='customized table'>
+      <Table aria-label='customized table'>
         <TableHead>
           <TableRow>
             <StyledTableCell align='left'>Name</StyledTableCell>
@@ -116,20 +116,20 @@ const StudentList = ({ studentList, setModalOpen, setStudentToUpdate }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {studentList
-            ? studentList.map(student => (
-                <Row
-                  key={student.docId}
-                  student={student}
-                  setModalOpen={setModalOpen}
-                  setStudentToUpdate={setStudentToUpdate}
-                />
-              ))
-            : null}
+          {studentList.map(student => (
+            <Row
+              key={student.docId}
+              student={student}
+              setModalOpen={setModalOpen}
+              setStudentToUpdate={setStudentToUpdate}
+            />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
+  ) : (
+    <Typography>You currently have no student, add some now.</Typography>
   );
 };
 
-export default StudentList;
+export default StudentListTable;

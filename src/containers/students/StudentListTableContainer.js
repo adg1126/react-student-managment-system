@@ -9,7 +9,7 @@ import { setStudentToUpdate } from '../../redux/student/studentActions';
 import { setModalOpen } from '../../redux/modal/modalActions';
 import history from '../../history';
 
-import StudentList from '../../components/students/StudentList';
+import StudentListTable from '../../components/students/StudentListTable';
 import WithSpinner from '../WithSpinner';
 
 const mapStateToProps = state => {
@@ -28,4 +28,4 @@ const mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps, { setModalOpen, setStudentToUpdate }),
   WithSpinner
-)(StudentList);
+)(StudentListTable);
