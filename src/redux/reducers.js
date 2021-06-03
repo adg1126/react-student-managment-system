@@ -5,12 +5,14 @@ import coursesReducer from './courses/coursesReducer';
 import notificationReducer from './notification/notificationReducer';
 import userReducer from './user/userReducer';
 import studentReducer from './student/studentReducers';
+import modalReducer from './modal/modalReducers';
 
 export default combineReducers({
-  navbar: navbarReducer,
   courses: coursesReducer,
-  notification: notificationReducer,
   user: userReducer,
   student: studentReducer,
+  navbar: navbarReducer,
+  notification: notificationReducer,
+  modal: modalReducer,
   form: formReducer
 });
