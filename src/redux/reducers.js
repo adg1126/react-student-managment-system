@@ -6,9 +6,11 @@ import notificationReducer from './notification/notificationReducer';
 import userReducer from './user/userReducer';
 import studentReducer from './student/studentReducers';
 import modalReducer from './modal/modalReducers';
+import attendanceReducer from './attendance/attendanceReducer';
 
 export default combineReducers({
   courses: coursesReducer,
+  attendance: attendanceReducer,
   user: userReducer,
   student: studentReducer,
   navbar: navbarReducer,
