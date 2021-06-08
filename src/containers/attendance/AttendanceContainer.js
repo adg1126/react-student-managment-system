@@ -5,26 +5,27 @@ import { createStructuredSelector } from 'reselect';
 import {
   selectCourseListForPreview,
   selectIsCoursesFetching,
-  selectCoursesErrMessage
+  selectCoursesErrMessage,
+  selectCurrentCourse
 } from '../../redux/courses/coursesSelectors';
 import { selectStudentListForPreview } from '../../redux/student/studentSelectors';
-import { selectAttendanceCourseListForPreview } from '../../redux/attendance/attendanceSelectors';
+import { selectAttendanceForCourseClassDates } from '../../redux/attendance/attendanceSelectors';
 
-import { setModalOpen } from '../../redux/modal/modalActions';
-import { setCourseToUpdate } from '../../redux/courses/coursesActions';
+import { fetchAttendanceForCourse } from '../../redux/attendance/attendanceActions';
 
 import Attendance from '../../pages/Attendance';
 import WithSpinner from '../WithSpinner';
 
 const mapStateToProps = createStructuredSelector({
   courseList: selectCourseListForPreview,
+  currentCourse: selectCurrentCourse,
   studentList: selectStudentListForPreview,
   isFetching: selectIsCoursesFetching,
   errMessage: selectCoursesErrMessage,
-  attendanceCourses: selectAttendanceCourseListForPreview
+  attendanceForCourseClassDates: selectAttendanceForCourseClassDates
 });
 
 export default compose(
-  connect(mapStateToProps, { setModalOpen, setCourseToUpdate }),
+  connect(mapStateToProps, { fetchAttendanceForCourse }),
   WithSpinner
 )(Attendance);
