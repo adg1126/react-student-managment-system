@@ -9,12 +9,12 @@ import {
   DELETE_COURSE_FAILURE,
   EDIT_COURSE_SUCCESS,
   EDIT_COURSE_FAILURE,
-  SET_COURSE_TO_UPDATE
+  SET_CURRENT_COURSE
 } from './coursesActionTypes';
 
 const INITIAL_STATE = {
   courseList: [],
-  courseToUpdate: null,
+  currentCourse: null,
   isFetching: false,
   errMessage: '',
   status: {
@@ -47,11 +47,16 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
           success: 'Successfully added course'
         }
       };
-    case SET_COURSE_TO_UPDATE:
-      return {
-        ...state,
-        courseToUpdate: { ...state.courseToUpdate, ...action.payload }
-      };
+    case SET_CURRENT_COURSE:
+      return typeof action.payload === 'string'
+        ? {
+            ...state,
+            currentCourse: action.payload
+          }
+        : {
+            ...state,
+            currentCourse: { ...state.currentCourse, ...action.payload }
+          };
     case EDIT_COURSE_SUCCESS:
       return {
         ...state,

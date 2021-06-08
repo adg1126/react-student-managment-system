@@ -33,7 +33,7 @@ export const selectCoursesStatus = createSelector(
   courses => courses.status
 );
 
-export const selectCourseToUpdate = createSelector(
+export const selectCurrentCourse = createSelector(
   [selectCourses],
-  courses => courses.courseToUpdate
+  courses => courses.currentCourse
 );

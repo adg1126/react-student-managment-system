@@ -11,7 +11,7 @@ import {
   EDIT_COURSE_START,
   EDIT_COURSE_SUCCESS,
   EDIT_COURSE_FAILURE,
-  SET_COURSE_TO_UPDATE
+  SET_CURRENT_COURSE
 } from './coursesActionTypes';
 
 export const fetchCoursesStart = () => ({
@@ -75,7 +75,7 @@ export const editCourseFailure = errMsg => ({
   payload: errMsg
 });
 
-export const setCourseToUpdate = courseData => ({
-  type: SET_COURSE_TO_UPDATE,
+export const setCurrentCourse = courseData => ({
+  type: SET_CURRENT_COURSE,
   payload: courseData
 });
