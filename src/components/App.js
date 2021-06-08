@@ -6,7 +6,7 @@ import history from '../history';
 
 import NavBarContainer from '../containers/NavBarContainer';
 import Dashboard from '../pages/Dashboard';
-import Attendance from '../pages/Attendance';
+import AttendanceContainer from '../containers/attendance/AttendanceContainer';
 import CoursesContainer from '../containers/courses/CoursesContainer';
 import Assignments from '../pages/Assignments';
 import Schedule from '../pages/Schedule';
@@ -25,6 +25,7 @@ class App extends Component {
     if (this.props.currentUser) {
       this.props.fetchCoursesStart();
       this.props.fetchStudentsStart();
+      this.props.fetchAttendanceStart();
     }
   }
 
@@ -32,7 +33,7 @@ class App extends Component {
     return (
       <NavBarContainer>
         <Route exact path='/' component={Dashboard} />
-        <Route path='/attendance' component={Attendance} />
+        <Route path='/attendance' component={AttendanceContainer} />
         <Route exact path='/courses' component={CoursesContainer} />
         <Route
           exact
