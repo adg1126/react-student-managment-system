@@ -149,18 +149,18 @@ const CourseInfo = ({
   course,
   studentList,
   setModalOpen,
-  setCourseToUpdate
+  setCurrentCourse
 }) => {
   const classes = useStyles();
 
   const handleDeleteCourse = () => {
     setModalOpen('deleteCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   const handleEditCourse = () => {
     setModalOpen('editCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   return (

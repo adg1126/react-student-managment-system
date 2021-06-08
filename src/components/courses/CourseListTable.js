@@ -65,17 +65,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Row = ({ course, students, setModalOpen, setCourseToUpdate }) => {
+const Row = ({ course, students, setModalOpen, setCurrentCourse }) => {
   const classes = useStyles();
 
   const handleDeleteCourse = () => {
     setModalOpen('deleteCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   const handleEditCourse = () => {
     setModalOpen('editCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   const { docId, courseCode, courseName } = course;
@@ -121,7 +121,7 @@ const CourseListTable = ({
   courseList,
   studentList,
   errMessage,
-  setCourseToUpdate,
+  setCurrentCourse,
   setModalOpen
 }) => {
   const classes = useStyles();
@@ -148,7 +148,7 @@ const CourseListTable = ({
                   : []
               )}
               setModalOpen={setModalOpen}
-              setCourseToUpdate={setCourseToUpdate}
+              setCurrentCourse={setCurrentCourse}
             />
           ))}
         </TableBody>

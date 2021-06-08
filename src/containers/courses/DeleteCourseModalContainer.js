@@ -4,12 +4,12 @@ import { deleteCourse } from '../../redux/courses/coursesActions';
 import { setModalOpen } from '../../redux/modal/modalActions';
 
 import { createStructuredSelector } from 'reselect';
-import { selectCourseToUpdate } from '../../redux/courses/coursesSelectors';
+import { selectCurrentCourse } from '../../redux/courses/coursesSelectors';
 
 import DeleteCourseModal from '../../components/courses/DeleteCourseModal';
 
 const mapStateToProps = createStructuredSelector({
-  courseToUpdate: selectCourseToUpdate
+  courseToUpdate: selectCurrentCourse
 });
 
 export default connect(mapStateToProps, { deleteCourse, setModalOpen })(

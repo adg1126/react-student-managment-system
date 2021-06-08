@@ -9,7 +9,7 @@ import {
 } from '../../redux/courses/coursesSelectors';
 
 import { setModalOpen } from '../../redux/modal/modalActions';
-import { setCourseToUpdate } from '../../redux/courses/coursesActions';
+import { setCurrentCourse } from '../../redux/courses/coursesActions';
 
 import CourseListCard from '../../components/courses/CourseListCard';
 import WithSpinner from '../WithSpinner';
@@ -21,6 +21,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default compose(
-  connect(mapStateToProps, { setModalOpen, setCourseToUpdate }),
+  connect(mapStateToProps, { setModalOpen, setCurrentCourse }),
   WithSpinner
 )(CourseListCard);

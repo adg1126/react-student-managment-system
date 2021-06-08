@@ -52,17 +52,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CourseCard = ({ course, setModalOpen, setCourseToUpdate }) => {
+const CourseCard = ({ course, setModalOpen, setCurrentCourse }) => {
   const classes = useStyles();
 
   const handleDeleteCourse = () => {
     setModalOpen('deleteCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   const handleEditCourse = () => {
     setModalOpen('editCourse', true);
-    setCourseToUpdate(course);
+    setCurrentCourse(course);
   };
 
   const { docId, courseCode, courseName } = course;
@@ -106,7 +106,7 @@ const CourseListCard = ({
   courseList,
   errMessage,
   setModalOpen,
-  setCourseToUpdate
+  setCurrentCourse
 }) => {
   const classes = useStyles();
 
@@ -122,7 +122,7 @@ const CourseListCard = ({
           <CourseCard
             course={course}
             setModalOpen={setModalOpen}
-            setCourseToUpdate={setCourseToUpdate}
+            setCurrentCourse={setCurrentCourse}
           />
         </Grid>
       ))}

@@ -7,7 +7,7 @@ import {
 import { selectStudentListForPreview } from '../../redux/student/studentSelectors';
 
 import { setModalOpen } from '../../redux/modal/modalActions';
-import { setCourseToUpdate } from '../../redux/courses/coursesActions';
+import { setCurrentCourse } from '../../redux/courses/coursesActions';
 
 import CourseListTable from '../../components/courses/CourseListTable';
 import WithSpinner from '../WithSpinner';
@@ -19,6 +19,6 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-  connect(mapStateToProps, { setModalOpen, setCourseToUpdate }),
+  connect(mapStateToProps, { setModalOpen, setCurrentCourse }),
   WithSpinner
 )(CourseListTable);
