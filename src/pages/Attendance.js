@@ -1,5 +1,4 @@
-import React from 'react';
-import moment from 'moment';
+import React, { useEffect } from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -12,7 +11,7 @@ import {
   Appointments
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-import TakeAttendance from '../components/attendance/TakeAttendance';
+import TakeAttendanceContainer from '../containers/attendance/TakeAttendanceContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -40,40 +39,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Attendance = ({ courseList, studentList, attendanceCourses }) => {
+const Attendance = ({
+  courseList,
+  currentCourse,
+  fetchAttendanceForCourse,
+  studentList,
+  attendanceForCourseClassDates
+}) => {
   const classes = useStyles();
   const theme = useTheme();
-  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const [courseId, setCourseId] = React.useState('');
-  const [filteredStudents, setFilteredStudents] = React.useState([]);
-  const [filteredAttendance, setFilteredAttendance] = React.useState([]);
-
-  // const currentDate = '2018-07-17';
-  const currentDate = new Date().toISOString().slice(0, 10);
-
-  const handleChangeCourse = e => {
-    setCourseId(e.target.value);
-    setFilteredStudents(getStudentsForClass(e.target.value));
-    setFilteredAttendance(getAttendance(e.target.value));
-  };
-
-  const getStudentsForClass = courseCode =>
-    studentList.filter(student =>
-      student.courses
-        ? student.courses.some(course => course.includes(courseCode))
-        : []
-    );
-
-  const getAttendance = courseCode => {
-    const filtered = attendanceCourses.filter(course =>
-      course.courseId.match(courseCode)
-    );
-
-    return filtered[0].classDates;
-  };
+  useEffect(() => {
+    fetchAttendanceForCourse(currentCourse);
+  }, [fetchAttendanceForCourse, currentCourse]);
 
   return courseList && studentList ? (
     <Grid
@@ -85,20 +64,15 @@ const Attendance = ({ courseList, studentList, attendanceCourses }) => {
     >
       <Grid item style={{ width: matchesSM ? '90%' : '60%' }}>
         <Paper>
-          <Scheduler data={filteredAttendance.length ? filteredAttendance : []}>
-            <ViewState currentDate={currentDate} />
+          <Scheduler data={attendanceForCourseClassDates}>
+            <ViewState currentDate={new Date().toISOString().slice(0, 10)} />
             <MonthView />
             <Appointments />
           </Scheduler>
         </Paper>
       </Grid>
       <Grid style={{ width: matchesSM ? '90%' : '40%' }}>
-        <TakeAttendance
-          courseList={courseList}
-          filteredStudents={filteredStudents}
-          courseId={courseId}
-          handleChangeCourse={handleChangeCourse}
-        />
+        <TakeAttendanceContainer />
       </Grid>
     </Grid>
   ) : null;
