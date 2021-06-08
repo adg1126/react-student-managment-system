@@ -1,11 +1,13 @@
 import {
   FETCH_ATTENDANCE_START,
   FETCH_ATTENDANCE_SUCCESS,
-  FETCH_ATTENDANCE_FAILURE
+  FETCH_ATTENDANCE_FAILURE,
+  FETCH_ATTENDANCE_FOR_COURSE
 } from './attendanceActionTypes';
 
 const INITIAL_STATE = {
-  courseList: [],
+  courseList: {},
+  attendanceForCourse: {},
   isFetching: false,
   errMessage: '',
   status: {
@@ -25,6 +27,13 @@ const attendanceReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isFetching: false,
         errMessage: action.payload
+      };
+    case FETCH_ATTENDANCE_FOR_COURSE:
+      return {
+        ...state,
+        attendanceForCourse: Object.values(state.courseList).find(course =>
+          course.courseId.match(action.payload)
+        )
       };
     default:
       return state;
