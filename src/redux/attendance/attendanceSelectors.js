@@ -24,3 +24,8 @@ export const selectAttendanceForCourseClassDates = createSelector(
   attendanceForCourse =>
     _.isEmpty(attendanceForCourse) ? [] : attendanceForCourse.classDates
 );
+
+export const selectIsAttendanceFetching = createSelector(
+  [selectAttendance],
+  attendance => attendance.isFetching
+);
