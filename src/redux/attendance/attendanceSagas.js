@@ -82,12 +82,7 @@ export function* updateAttendanceInFirebase() {
 
 export function* onUpdateAttendanceInFireBase() {
   yield takeLatest(
-    [
-      FETCH_COURSES_SUCCESS,
-      ADD_COURSE_SUCCESS,
-      EDIT_COURSE_SUCCESS,
-      DELETE_COURSE_SUCCESS
-    ],
+    [FETCH_COURSES_SUCCESS, ADD_COURSE_SUCCESS, EDIT_COURSE_SUCCESS],
     updateAttendanceInFirebase
   );
 }
