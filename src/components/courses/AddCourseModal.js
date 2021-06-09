@@ -5,7 +5,7 @@ import CourseForm from './CourseForm';
 
 const AddCourseModal = ({ addCourse, setModalOpen }) => {
   const onSubmit = formValues => {
-    addCourse({ ...formValues });
+    addCourse(formValues);
   };
 
   const modalContent = {
