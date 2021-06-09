@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
+import _ from 'lodash';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -130,8 +131,12 @@ let CourseForm = props => {
 
   const { pristine, reset, setModalOpen, modalName, daysMeet } = props;
 
-  const onSubmit = formValues => {
-    props.onSubmit(formValues);
+  const onSubmit = ({ daysMeet, daysMeetAndTime, ...rest }) => {
+    props.onSubmit({
+      daysMeet,
+      daysMeetAndTime: _.pick(daysMeetAndTime, daysMeet),
+      ...rest
+    });
     reset();
   };
 
