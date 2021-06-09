@@ -1,12 +1,10 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-// let classDates = [];
-
 export const getClassDates = (startDate, endDate, daysObj, courseCode) => {
-  let start = moment(startDate, 'YYYY-MM-DD'), // Sept. 1st
+  let start = moment(startDate, 'YYYY-MM-DD'),
     end = moment(endDate),
-    classDates = []; // Nov. 2nd
+    classDates = [];
 
   for (const [k, v] of Object.entries(daysObj)) {
     let currentDay = start.clone().day(k);
