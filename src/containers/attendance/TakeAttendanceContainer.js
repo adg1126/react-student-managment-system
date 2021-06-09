@@ -11,9 +11,7 @@ import TakeAttendance from '../../components/attendance/TakeAttendance';
 
 const mapStateToProps = state => ({
   courseList: selectCourseListForPreview(state),
-  filteredStudents: selectStudentsForClass(
-    typeof selectCurrentCourse(state) === 'string'
-  )(state)
+  filteredStudents: selectStudentsForClass(selectCurrentCourse(state))(state)
 });
 
 export default connect(mapStateToProps, { setCurrentCourse })(TakeAttendance);
