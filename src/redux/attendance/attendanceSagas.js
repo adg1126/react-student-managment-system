@@ -5,6 +5,8 @@ import _ from 'lodash';
 import {
   FETCH_ATTENDANCE_START,
   FETCH_ATTENDANCE_SUCCESS,
+  ADD_COURSE_ATTENDANCE_SUCCESS,
+  DELETE_COURSE_ATTENDANCE_SUCCESS,
   UPDATE_STUDENT_ATTENDANCE_STATUS,
   UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS
 } from './attendanceActionTypes';
@@ -24,12 +26,17 @@ import {
 import {
   fetchAttendanceSuccesss,
   fetchAttendanceFailure,
+  addCourseAttendanceSuccess,
+  deleteCourseAttendanceSuccess,
   updateAttendanceSuccess,
   updateStudentAttendanceStatusSuccess
 } from './attendanceActions';
 
 import { selectCurrentUser } from '../user/userSelectors';
-import { selectCourseListForPreview } from '../courses/coursesSelectors';
+import {
+  selectCourseList,
+  selectCourseListForPreview
+} from '../courses/coursesSelectors';
 import { selectStudentListForPreview } from '../student/studentSelectors';
 import {
   selectAttendanceCourseListForPreview,
@@ -43,104 +50,43 @@ import {
 
 export function* fetchAttendanceAsync() {
   const currentUser = yield select(selectCurrentUser);
-  const AttendanceRef = firestore
+  const attendanceRef = firestore
     .collection('attendance')
     .where('userId', '==', currentUser.id);
 
   try {
-    const snapshot = yield AttendanceRef.get();
-    const AttendanceRefMap = yield call(
+    const snapshot = yield attendanceRef.get();
+    const attendanceRefMap = yield call(
       convertAttendanceSnapshotToMap,
       snapshot
     );
-    yield put(fetchAttendanceSuccesss(AttendanceRefMap));
+    yield put(fetchAttendanceSuccesss(attendanceRefMap));
   } catch (err) {
     yield put(fetchAttendanceFailure(err.message));
   }
 }
 
 export function* fetchAttendanceStart() {
-  yield takeLatest(FETCH_ATTENDANCE_START, fetchAttendanceAsync);
-}
-
-export function* addAttendanceInFirebase() {
-  const currentUser = yield select(selectCurrentUser);
-  const attendanceRef = firestore.collection('attendance');
-  const courseList = yield select(selectCourseListForPreview);
-  const studentList = yield select(selectStudentListForPreview);
-
-  if (currentUser && courseList.length && studentList.length) {
-    yield courseList.forEach(async course => {
-      const {
-        docId,
-        courseDates: { startDate, endDate },
-        daysMeetAndTime,
-        courseCode
-      } = course;
-
-      const courseStudents = _.compact(
-        studentList.map(student =>
-          student.courses.includes(docId)
-            ? {
-                ..._.pick(student, ['docId', 'fullName']),
-                attendanceStatus: ''
-              }
-            : null
-        )
-      );
-
-      let courseAttendanceSnapshot = await attendanceRef
-        .where('courseId', '==', docId)
-        .get();
-
-      const newDates = getClassDates(
-        startDate,
-        endDate,
-        daysMeetAndTime,
-        courseCode,
-        courseStudents
-      );
-
-      if (courseAttendanceSnapshot.empty) {
-        await attendanceRef.add({
-          classDates: newDates,
-          userId: currentUser.id,
-          courseId: docId,
-          courseCode
-        });
-      }
-    });
-  }
-}
-
-export function* onAddAttendanceInFireBase() {
   yield takeLatest(
     [
-      FETCH_COURSES_SUCCESS,
-      ADD_COURSE_SUCCESS,
-      FETCH_STUDENTS_SUCCESS,
-      ADD_STUDENT_SUCCESS,
-      DELETE_STUDENT_FROM_COURSE
+      FETCH_ATTENDANCE_START,
+      ADD_COURSE_ATTENDANCE_SUCCESS,
+      DELETE_COURSE_ATTENDANCE_SUCCESS
     ],
-    addAttendanceInFirebase
+    fetchAttendanceAsync
   );
 }
 
 export function* updateAttendanceInFirebase() {
   const currentUser = yield select(selectCurrentUser);
   const attendanceRef = firestore.collection('attendance');
+  const courseList = yield select(selectCourseListForPreview);
+  const studentList = yield select(selectStudentListForPreview);
   const attendanceCourseList = yield select(
     selectAttendanceCourseListForPreview
   );
-  const courseList = yield select(selectCourseListForPreview);
-  const studentList = yield select(selectStudentListForPreview);
 
-  if (
-    currentUser &&
-    courseList.length &&
-    attendanceCourseList.length &&
-    studentList.length
-  ) {
+  if (currentUser && courseList.length && studentList.length) {
     for (let course of courseList) {
       const courseStudents = _.compact(
         studentList.map(student =>
@@ -165,78 +111,88 @@ export function* updateAttendanceInFirebase() {
         .where('courseId', '==', course.docId)
         .get();
 
-      if (!courseAttendanceSnapshot.empty) {
-        for (let aCourse of attendanceCourseList) {
-          if (aCourse.courseId.includes(course.docId)) {
+      if (courseAttendanceSnapshot.empty) {
+        yield attendanceRef.add({
+          classDates: newDates,
+          userId: currentUser.id,
+          courseId: course.docId,
+          courseCode: course.courseCode
+        });
+
+        yield put(addCourseAttendanceSuccess());
+      } else if (
+        !courseAttendanceSnapshot.empty &&
+        attendanceCourseList.length
+      ) {
+        for (let courseAttendance of attendanceCourseList) {
+          if (courseAttendance.courseId.includes(course.docId)) {
             let newClassDates;
 
             newClassDates =
-              aCourse.classDates.length > newDates.length
+              courseAttendance.classDates.length > newDates.length
                 ? newDates.map(
                     date =>
                       _.compact(
                         _.flatten(
-                          aCourse.classDates.map(aDate =>
-                            date.startDate.toString() ===
-                            aDate.startDate.toString()
-                              ? aDate
-                              : null
+                          courseAttendance.classDates.map(
+                            courseAttendanceDate =>
+                              date.startDate.toString() ===
+                              courseAttendanceDate.startDate.toString()
+                                ? courseAttendanceDate
+                                : null
                           )
                         )
                       )[0]
                   )
-                : newDates.reduce((res, obj2) => {
-                    if (
-                      aCourse.classDates.some(
-                        obj1 =>
-                          obj2.startDate.toString() ===
-                          obj1.startDate.toString()
-                      )
-                    ) {
-                      if (
-                        aCourse.classDates.some(obj1 =>
-                          obj2.students.every(student =>
-                            obj1.students.includes(student.docId)
+                : newDates.reduce((res, newDate) => {
+                    return courseAttendance.classDates.some(
+                      courseAttendanceDate =>
+                        newDate.startDate.toString() ===
+                        courseAttendanceDate.startDate.toString()
+                    )
+                      ? courseAttendance.classDates.some(courseAttendanceDate =>
+                          newDate.students.every(student =>
+                            courseAttendanceDate.students.includes(
+                              student.docId
+                            )
                           )
                         )
-                      ) {
-                        return res;
-                      } else {
-                        if (!_.isEmpty(res)) {
-                          return aCourse.classDates.map(aDate => {
-                            let newStudents = _.flattenDeep(
-                              obj2.students.map(obj2Student => [
-                                ...aDate.students.filter(
-                                  resStudent =>
-                                    obj2Student.docId === resStudent.docId
-                                ),
-                                obj2Student
-                              ])
-                            );
+                        ? res
+                        : courseAttendance.classDates.map(
+                            courseAttendanceDate => {
+                              let newStudents = _.flattenDeep(
+                                newDate.students.map(newDateStudent => [
+                                  ...courseAttendanceDate.students.filter(
+                                    resStudent =>
+                                      newDateStudent.docId === resStudent.docId
+                                  ),
+                                  newDateStudent
+                                ])
+                              );
 
-                            return {
-                              ...aDate,
-                              students: _.uniqWith(newStudents, (x, y) =>
-                                _.isEqual(x.docId, y.docId)
-                                  ? !x.attendanceStatus.length ||
-                                    !y.attendanceStatus.length
-                                  : null
-                              )
-                            };
-                          });
-                        }
-                      }
-                    } else {
-                      return [...res, obj2];
-                    }
-                  }, aCourse.classDates);
+                              return {
+                                ...courseAttendanceDate,
+                                students: _.uniqWith(newStudents, (x, y) =>
+                                  _.isEqual(x.docId, y.docId)
+                                    ? !x.attendanceStatus.length ||
+                                      !y.attendanceStatus.length
+                                    : null
+                                )
+                              };
+                            }
+                          )
+                      : [...res, newDate];
+                  }, courseAttendance.classDates);
 
-            yield courseAttendanceSnapshot.forEach(doc => {
+            yield courseAttendanceSnapshot.forEach(async doc => {
               doc.ref.update({
                 classDates: newClassDates
               });
             });
-            yield put(updateAttendanceSuccess(aCourse.docId, newClassDates));
+
+            yield put(
+              updateAttendanceSuccess(courseAttendance.docId, newClassDates)
+            );
           }
         }
       }
@@ -244,20 +200,64 @@ export function* updateAttendanceInFirebase() {
   }
 }
 
-export function* onUpdateAttendanceInFireBase() {
+export function* onUpdateAttendanceInFirebase() {
   yield takeLatest(
     [
-      FETCH_ATTENDANCE_SUCCESS,
-      UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS,
       FETCH_COURSES_SUCCESS,
+      ADD_COURSE_SUCCESS,
       EDIT_COURSE_SUCCESS,
       FETCH_STUDENTS_SUCCESS,
       ADD_STUDENT_SUCCESS,
       DELETE_STUDENT_FROM_COURSE,
       ADD_EXISTING_STUDENT_TO_COURSE,
-      EDIT_STUDENT
+      EDIT_STUDENT,
+      FETCH_ATTENDANCE_SUCCESS,
+      UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS
     ],
     updateAttendanceInFirebase
+  );
+}
+
+export function* deleteAttendanceInFirebase() {
+  const currentUser = yield select(selectCurrentUser);
+  const attendanceRef = firestore.collection('attendance');
+  const attendanceRefSnapshot = yield attendanceRef.get();
+  const attendanceCourseList = yield select(
+    selectAttendanceCourseListForPreview
+  );
+  const courseList = yield select(selectCourseList);
+
+  if (
+    currentUser &&
+    !_.isEmpty(attendanceCourseList) &&
+    !_.isEmpty(courseList)
+  ) {
+    try {
+      const coursesToDelete = attendanceCourseList.filter(
+        ({ courseId }) => !Object.keys(courseList).some(k => k === courseId)
+      );
+
+      if (coursesToDelete.length) {
+        yield attendanceRefSnapshot.forEach(async doc => {
+          await coursesToDelete.forEach(({ docId }) => {
+            if (docId === doc.id && coursesToDelete.length) {
+              doc.ref.delete();
+            }
+          });
+        });
+
+        yield put(deleteCourseAttendanceSuccess());
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+}
+
+export function* onDeleteAttendanceInFirebase() {
+  yield takeLatest(
+    [FETCH_COURSES_SUCCESS, FETCH_ATTENDANCE_SUCCESS, DELETE_COURSE_SUCCESS],
+    deleteAttendanceInFirebase
   );
 }
 
@@ -290,8 +290,8 @@ export function* onUpdateStudentAttendanceInFirebase() {
 export function* attendanceSagas() {
   yield all([
     call(fetchAttendanceStart),
-    call(onUpdateAttendanceInFireBase),
-    call(onAddAttendanceInFireBase),
+    call(onUpdateAttendanceInFirebase),
+    call(onDeleteAttendanceInFirebase),
     call(onUpdateStudentAttendanceInFirebase)
   ]);
 }
