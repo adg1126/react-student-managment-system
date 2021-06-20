@@ -4,9 +4,9 @@ import {
   FETCH_STUDENTS_START,
   ADD_STUDENT_START,
   DELETE_STUDENT_START,
-  EDIT_STUDENT,
-  ADD_EXISTING_STUDENT_TO_COURSE,
-  DELETE_STUDENT_FROM_COURSE
+  ADD_EXISTING_STUDENT_TO_COURSE_START,
+  DELETE_STUDENT_FROM_COURSE_START,
+  EDIT_STUDENT_START
 } from './studentActionTypes';
 import {
   fetchStudentsSuccess,
@@ -14,7 +14,13 @@ import {
   addStudentSuccess,
   addStudentFailure,
   deleteStudentSuccess,
-  deleteStudentFailure
+  deleteStudentFailure,
+  addExistingStudentToCourseSuccess,
+  addExistingStudentToCourseFailure,
+  deleteStudentFromCourseSuccess,
+  deleteStudentFromCourseFailure,
+  editStudentFailure,
+  editStudentSuccess
 } from './studentActions';
 import { firestore } from '../../config/firebase';
 import { convertStudentsSnapshotToMap } from './studentUtils';
@@ -112,7 +118,7 @@ export function* onStudentDelete() {
   yield takeLatest(DELETE_STUDENT_START, deleteStudentInFirebase);
 }
 
-export function* updateStudentInFirebase({ key: studentDocId }) {
+export function* updateStudentInFirebase({ type, key: studentDocId }) {
   const currentUser = yield select(selectCurrentUser);
 
   if (currentUser) {
@@ -120,18 +126,46 @@ export function* updateStudentInFirebase({ key: studentDocId }) {
       const studentRef = yield firestore
         .collection('students')
         .doc(studentDocId);
-      const student = yield select(selectStudent(studentDocId));
 
+      const student = yield select(selectStudent(studentDocId));
       yield studentRef.update(_.omit(student, 'docId'));
+
+      type === ADD_EXISTING_STUDENT_TO_COURSE_START
+        ? yield put(
+            addExistingStudentToCourseSuccess(
+              'Successfully added student to course'
+            )
+          )
+        : type === DELETE_STUDENT_FROM_COURSE_START
+        ? yield put(
+            deleteStudentFromCourseSuccess(
+              'Successfully deleted student from course'
+            )
+          )
+        : yield put(editStudentSuccess('Successfully edited student'));
     } catch (err) {
-      console.log(err);
+      type === ADD_EXISTING_STUDENT_TO_COURSE_START
+        ? yield put(
+            addExistingStudentToCourseFailure('Failed to add student to course')
+          )
+        : type === DELETE_STUDENT_FROM_COURSE_START
+        ? yield put(
+            deleteStudentFromCourseFailure(
+              'Failed to delete student from course'
+            )
+          )
+        : yield put(editStudentFailure('Failed to edit student information'));
     }
   }
 }
 
 export function* onStudentChange() {
   yield takeLatest(
-    [ADD_EXISTING_STUDENT_TO_COURSE, DELETE_STUDENT_FROM_COURSE, EDIT_STUDENT],
+    [
+      ADD_EXISTING_STUDENT_TO_COURSE_START,
+      DELETE_STUDENT_FROM_COURSE_START,
+      EDIT_STUDENT_START
+    ],
     updateStudentInFirebase
   );
 }

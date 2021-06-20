@@ -7,9 +7,15 @@ import {
   DELETE_STUDENT_SUCCESS,
   DELETE_STUDENT_FAILURE,
   SET_STUDENT_TO_UPDATE,
-  ADD_EXISTING_STUDENT_TO_COURSE,
-  DELETE_STUDENT_FROM_COURSE,
-  EDIT_STUDENT
+  ADD_EXISTING_STUDENT_TO_COURSE_START,
+  ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS,
+  ADD_EXISTING_STUDENT_TO_COURSE_FAILURE,
+  DELETE_STUDENT_FROM_COURSE_START,
+  DELETE_STUDENT_FROM_COURSE_SUCCESS,
+  DELETE_STUDENT_FROM_COURSE_FAILURE,
+  EDIT_STUDENT_START,
+  EDIT_STUDENT_SUCCESS,
+  EDIT_STUDENT_FAILURE
 } from './studentActionTypes';
 import _ from 'lodash';
 
@@ -44,7 +50,6 @@ const studentReducer = (state = INITIAL_STATE, action) => {
           [action.payload.docId]: action.payload
         },
         status: {
-          ...state.status,
           success: 'Successfully added student'
         }
       };
@@ -53,7 +58,6 @@ const studentReducer = (state = INITIAL_STATE, action) => {
         ...state,
         studentList: _.omit(state.studentList, action.payload),
         status: {
-          ...state.status,
           success: 'Successfully deleted student'
         }
       };
@@ -61,7 +65,6 @@ const studentReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         status: {
-          ...state.status,
           err: action.payload
         }
       };
@@ -70,7 +73,7 @@ const studentReducer = (state = INITIAL_STATE, action) => {
         ...state,
         studentToUpdate: { ...state.studentToUpdate, ...action.payload }
       };
-    case ADD_EXISTING_STUDENT_TO_COURSE:
+    case ADD_EXISTING_STUDENT_TO_COURSE_START:
       return {
         ...state,
         studentList: {
@@ -82,13 +85,23 @@ const studentReducer = (state = INITIAL_STATE, action) => {
               action.value
             )
           }
-        },
-        status: {
-          ...state.status,
-          success: 'Successfully added student to course'
         }
       };
-    case DELETE_STUDENT_FROM_COURSE:
+    case ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS:
+      return {
+        ...state,
+        status: {
+          success: action.payload
+        }
+      };
+    case ADD_EXISTING_STUDENT_TO_COURSE_FAILURE:
+      return {
+        ...state,
+        status: {
+          err: action.payload
+        }
+      };
+    case DELETE_STUDENT_FROM_COURSE_START:
       return {
         ...state,
         studentList: {
@@ -100,22 +113,42 @@ const studentReducer = (state = INITIAL_STATE, action) => {
               action.value
             )
           }
-        },
-        status: {
-          ...state.status,
-          success: 'Successfully deleted student from course'
         }
       };
-    case EDIT_STUDENT:
+    case DELETE_STUDENT_FROM_COURSE_SUCCESS:
+      return {
+        ...state,
+        status: {
+          success: action.payload
+        }
+      };
+    case DELETE_STUDENT_FROM_COURSE_FAILURE:
+      return {
+        ...state,
+        status: {
+          err: action.payload
+        }
+      };
+    case EDIT_STUDENT_START:
       return {
         ...state,
         studentList: {
           ...state.studentList,
           [action.key]: { ...state.studentList[action.key], ...action.value }
-        },
+        }
+      };
+    case EDIT_STUDENT_SUCCESS:
+      return {
+        ...state,
         status: {
-          ...state.status,
-          success: 'Successfully edited student'
+          success: action.payload
+        }
+      };
+    case EDIT_STUDENT_FAILURE:
+      return {
+        ...state,
+        status: {
+          err: action.payload
         }
       };
     default:

@@ -9,9 +9,15 @@ import {
   DELETE_STUDENT_SUCCESS,
   DELETE_STUDENT_FAILURE,
   SET_STUDENT_TO_UPDATE,
-  ADD_EXISTING_STUDENT_TO_COURSE,
-  DELETE_STUDENT_FROM_COURSE,
-  EDIT_STUDENT
+  ADD_EXISTING_STUDENT_TO_COURSE_START,
+  ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS,
+  ADD_EXISTING_STUDENT_TO_COURSE_FAILURE,
+  DELETE_STUDENT_FROM_COURSE_START,
+  DELETE_STUDENT_FROM_COURSE_SUCCESS,
+  DELETE_STUDENT_FROM_COURSE_FAILURE,
+  EDIT_STUDENT_START,
+  EDIT_STUDENT_SUCCESS,
+  EDIT_STUDENT_FAILURE
 } from './studentActionTypes';
 
 export const fetchStudentsStart = () => ({
@@ -28,7 +34,7 @@ export const fetchStudentsFailure = errMsg => ({
   payload: errMsg
 });
 
-export const addStudent = studentData => ({
+export const addStudentStart = studentData => ({
   type: ADD_STUDENT_START,
   payload: studentData
 });
@@ -43,7 +49,7 @@ export const addStudentFailure = errMsg => ({
   payload: errMsg
 });
 
-export const deleteStudent = studentDocId => ({
+export const deleteStudentStart = studentDocId => ({
   type: DELETE_STUDENT_START,
   payload: studentDocId
 });
@@ -53,9 +59,9 @@ export const deleteStudentSuccess = studentDocId => ({
   payload: studentDocId
 });
 
-export const deleteStudentFailure = err => ({
+export const deleteStudentFailure = errMsg => ({
   type: DELETE_STUDENT_FAILURE,
-  payload: err
+  payload: errMsg
 });
 
 export const setStudentToUpdate = studentData => ({
@@ -63,20 +69,50 @@ export const setStudentToUpdate = studentData => ({
   payload: studentData
 });
 
-export const addExistingStudentToCourse = (studentDocId, courseDocId) => ({
-  type: ADD_EXISTING_STUDENT_TO_COURSE,
+export const addExistingStudentToCourseStart = (studentDocId, courseDocId) => ({
+  type: ADD_EXISTING_STUDENT_TO_COURSE_START,
   key: studentDocId,
   value: courseDocId
 });
 
-export const deleteStudentFromCourse = (studentDocId, courseDocId) => ({
-  type: DELETE_STUDENT_FROM_COURSE,
+export const addExistingStudentToCourseSuccess = msg => ({
+  type: ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS,
+  payload: msg
+});
+
+export const addExistingStudentToCourseFailure = errMsg => ({
+  type: ADD_EXISTING_STUDENT_TO_COURSE_FAILURE,
+  payload: errMsg
+});
+
+export const deleteStudentFromCourseStart = (studentDocId, courseDocId) => ({
+  type: DELETE_STUDENT_FROM_COURSE_START,
   key: studentDocId,
   value: courseDocId
 });
 
-export const editStudent = (studentDocId, studentData) => ({
-  type: EDIT_STUDENT,
+export const deleteStudentFromCourseSuccess = msg => ({
+  type: DELETE_STUDENT_FROM_COURSE_SUCCESS,
+  payload: msg
+});
+
+export const deleteStudentFromCourseFailure = errMsg => ({
+  type: DELETE_STUDENT_FROM_COURSE_FAILURE,
+  payload: errMsg
+});
+
+export const editStudentStart = (studentDocId, studentData) => ({
+  type: EDIT_STUDENT_START,
   key: studentDocId,
   value: studentData
+});
+
+export const editStudentSuccess = msg => ({
+  type: EDIT_STUDENT_SUCCESS,
+  payload: msg
+});
+
+export const editStudentFailure = errMsg => ({
+  type: EDIT_STUDENT_FAILURE,
+  payload: errMsg
 });
