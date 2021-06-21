@@ -5,21 +5,21 @@ import ModalContainer from '../../containers/ModalContainer';
 import StudentForm from './StudentForm';
 
 const AddStudentModal = ({
-  addStudent,
+  addStudentStart,
   setModalOpen,
-  addExistingStudentToCourse,
+  addExistingStudentToCourseStart,
   course,
   studentList
 }) => {
   const onSubmit = formValues => {
     formValues.existingStudent && history.location.pathname !== '/students'
-      ? addExistingStudentToCourse(
+      ? addExistingStudentToCourseStart(
           formValues.existingStudent.docId,
           course.docId
         )
       : history.location.pathname !== '/students'
-      ? addStudent({ ...formValues, courses: [course.docId] })
-      : addStudent({ ...formValues, courses: [] });
+      ? addStudentStart({ ...formValues, courses: [course.docId] })
+      : addStudentStart({ ...formValues, courses: [] });
   };
 
   const modalContent = {

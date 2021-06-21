@@ -3,9 +3,13 @@ import React from 'react';
 import ModalContainer from '../../containers/ModalContainer';
 import StudentForm from './StudentForm';
 
-const EditStudentModal = ({ editStudent, setModalOpen, studentToUpdate }) => {
+const EditStudentModal = ({
+  editStudentStart,
+  setModalOpen,
+  studentToUpdate
+}) => {
   const onSubmit = formValues => {
-    editStudent(studentToUpdate.docId, { ...formValues });
+    editStudentStart(studentToUpdate.docId, { ...formValues });
     setModalOpen('editStudent', false);
   };
 

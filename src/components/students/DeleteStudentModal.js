@@ -25,8 +25,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DeleteStudentModal = ({
-  deleteStudent,
-  deleteStudentFromCourse,
+  deleteStudentStart,
+  deleteStudentFromCourseStart,
   course,
   studentToUpdate,
   setModalOpen
@@ -35,8 +35,8 @@ const DeleteStudentModal = ({
 
   const handleClick = () => {
     course && studentToUpdate && history.location.pathname !== '/students'
-      ? deleteStudentFromCourse(studentToUpdate.docId, course.docId)
-      : deleteStudent(studentToUpdate.docId);
+      ? deleteStudentFromCourseStart(studentToUpdate.docId, course.docId)
+      : deleteStudentStart(studentToUpdate.docId);
     setModalOpen('deleteStudent', false);
   };
 

@@ -1,4 +1,5 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import _ from 'lodash';
 import history from '../../history';
 import {
   FETCH_COURSES_START,
@@ -19,7 +20,6 @@ import {
 import { firestore } from '../../config/firebase';
 import firebase from 'firebase/app';
 import { convertCoursesSnapshotToMap } from './coursesUtils';
-import { getClassDates } from '../attendance/attendanceUtils';
 import { selectCurrentUser } from '../user/userSelectors';
 
 export function* fetchCoursesAsync() {
@@ -66,22 +66,11 @@ export function* addCourseToFirebase({ payload: courseData }) {
         );
       }
 
-      const {
-        courseDates: { startDate, endDate },
-        daysMeetAndTime,
-        courseCode
-      } = courseData;
-
       const courseDocRef = yield coursesRef.add({
         ...courseData,
         userId: currentUser.id
       });
-      yield attendanceRef.add({
-        ...getClassDates(startDate, endDate, daysMeetAndTime, courseCode),
-        userId: currentUser.id,
-        courseId: courseDocRef.id,
-        courseCode
-      });
+
       yield put(
         addCourseSuccess(courseDocRef.id, {
           userId: currentUser.id,
@@ -153,7 +142,6 @@ export function* onCourseDelete() {
 
 export function* editCourseInFirebase({ key: courseDocId, value: courseData }) {
   const courseToEditRef = firestore.collection('courses').doc(courseDocId);
-  const attendanceRef = firestore.collection('attendance');
   const currentUser = yield select(selectCurrentUser);
 
   if (currentUser) {
@@ -168,20 +156,7 @@ export function* editCourseInFirebase({ key: courseDocId, value: courseData }) {
         );
       }
 
-      const {
-        courseDates: { startDate, endDate },
-        daysMeetAndTime,
-        courseCode
-      } = courseData;
-
-      yield attendanceRef.add({
-        classDates: [
-          ...getClassDates(startDate, endDate, daysMeetAndTime, courseCode)
-        ],
-        userId: currentUser.id,
-        courseId: courseToEditRef.id
-      });
-      yield courseToEditRef.update({ ...courseData });
+      yield courseToEditRef.update(_.omit(courseData, 'docId'));
       yield put(editCourseSuccess(courseData));
       history.push('/courses');
     } catch (err) {

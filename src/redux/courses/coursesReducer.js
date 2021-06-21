@@ -55,7 +55,7 @@ const coursesReducer = (state = INITIAL_STATE, action) => {
           }
         : {
             ...state,
-            currentCourse: { ...state.currentCourse, ...action.payload }
+            currentCourse: { ...action.payload }
           };
     case EDIT_COURSE_SUCCESS:
       return {
