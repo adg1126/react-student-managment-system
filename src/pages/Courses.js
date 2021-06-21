@@ -14,15 +14,9 @@ import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    margin: '1em',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 0
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: 10
-    }
+    width: '100vw'
   },
-  headerContainer: {
+  header: {
     marginBottom: '3em'
   },
   addCourseButton: {
@@ -39,13 +33,20 @@ const Courses = ({ status, setModalOpen }) => {
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Grid container className={classes.mainContainer} direction='column'>
-      <Grid item container className={classes.headerContainer}>
-        <Grid item>
+    <Grid
+      container
+      direction='row'
+      justify='center'
+      className={classes.mainContainer}
+    >
+      <Grid
+        container
+        direction='column'
+        style={{ width: matchesMD ? '95%' : '80%', marginTop: '1em' }}
+      >
+        <Grid item className={classes.header}>
           <Typography variant='h4'>Course List</Typography>
         </Grid>
-      </Grid>
-      <Grid item container direction='column'>
         <Grid item>
           <AddCourseModalContainer />
           <Button
@@ -57,18 +58,15 @@ const Courses = ({ status, setModalOpen }) => {
             Add Course
           </Button>
         </Grid>
-        <Grid
-          item
-          style={{ width: matchesMD ? '100%' : '80%', marginTop: '1em' }}
-        >
+        <Grid item>
           {matchesMD ? (
             <CourseListCardContainer />
           ) : (
             <CourseListTableContainer />
           )}
         </Grid>
+        <NotificationContainer status={status} />
       </Grid>
-      <NotificationContainer status={status} />
     </Grid>
   );
 };

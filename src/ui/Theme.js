@@ -14,7 +14,7 @@ const customBreakpointValues = {
 const breakpoints = createBreakpoints({ ...customBreakpointValues });
 
 // Shades of grey
-const white = '#ffffff',
+const white = 'rgb(246, 247, 249)',
   grey500 = '#d1d7e0',
   grey600 = '#93a5be',
   grey800 = '#506690',

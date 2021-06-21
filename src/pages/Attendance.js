@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
@@ -25,8 +24,13 @@ import NotificationContainer from '../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    marginTop: '1em',
-    width: '100%'
+    width: '100vw'
+  },
+  col: {
+    width: '80%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   formControl: {
     '& .MuiOutlinedInput-notchedOutline': {
@@ -148,43 +152,50 @@ const Attendance = ({
 
   return (
     <Grid
-      className={classes.mainContainer}
       container
-      direction={matchesSM ? 'column' : 'row'}
-      alignItems='flex-start'
-      spacing={3}
+      direction='column'
+      alignItems='center'
+      className={classes.mainContainer}
     >
-      <Grid item style={{ width: matchesSM ? '90%' : '60%' }}>
-        <Paper>
-          <Scheduler data={CourseDates}>
-            <EditingState
-              onCommitChanges={onCommitChanges}
-              addedAppointment={addedAppointment}
-              onAddedAppointmentChange={onAddedAppointmentChange}
-            />
-
-            <IntegratedEditing />
-            <MonthView
-              startDayHour={9}
-              endDayHour={19}
-              timeTableCellComponent={TimeTableCell}
-            />
-
-            <Appointments />
-
-            <AppointmentTooltip
-              showOpenButton
-              showDeleteButton={allowDeleting}
-              headerComponent={AppointmentTooltipHeader}
-            />
-            <DragDropProvider allowDrag={allowDrag} allowResize={allowResize} />
-          </Scheduler>
-        </Paper>
+      <Grid
+        className={classes.col}
+        container
+        direction={matchesSM ? 'column' : 'row'}
+        alignItems={matchesSM ? 'center' : 'flex-start'}
+        spacing={4}
+      >
+        <Grid item style={{ width: matchesSM ? '100%' : '60%' }}>
+          <Paper>
+            <Scheduler data={CourseDates}>
+              <EditingState
+                onCommitChanges={onCommitChanges}
+                addedAppointment={addedAppointment}
+                onAddedAppointmentChange={onAddedAppointmentChange}
+              />
+              <IntegratedEditing />
+              <MonthView
+                startDayHour={9}
+                endDayHour={19}
+                timeTableCellComponent={TimeTableCell}
+              />
+              <Appointments />
+              <AppointmentTooltip
+                showOpenButton
+                showDeleteButton={allowDeleting}
+                headerComponent={AppointmentTooltipHeader}
+              />
+              <DragDropProvider
+                allowDrag={allowDrag}
+                allowResize={allowResize}
+              />
+            </Scheduler>
+          </Paper>
+        </Grid>
+        <Grid style={{ width: matchesSM ? '95%' : '40%' }}>
+          <TakeAttendanceContainer />
+        </Grid>
+        <NotificationContainer status={status} />
       </Grid>
-      <Grid style={{ width: matchesSM ? '90%' : '40%' }}>
-        <TakeAttendanceContainer />
-      </Grid>
-      <NotificationContainer status={status} />
     </Grid>
   );
 };
