@@ -51,7 +51,7 @@ const StudentForm = props => {
         </Grid>
         {studentList && history.location.pathname !== '/students' ? (
           <Grid item container direction='column'>
-            <Grid item>
+            <Grid item style={{ margin: '0.5em 0' }}>
               <Typography>Or add an existing student</Typography>
             </Grid>
             <Grid item>

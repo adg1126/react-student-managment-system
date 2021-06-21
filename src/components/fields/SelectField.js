@@ -9,16 +9,17 @@ const SelectField = ({
   label,
   meta: { touched, error },
   children,
+  markAllAs,
   ...custom
 }) => (
-  <FormControl
-    style={{ marginTop: '0.5em' }}
-    variant='outlined'
-    error={touched && error}
-    fullWidth
-  >
+  <FormControl variant='outlined' error={touched && error} fullWidth>
     <InputLabel>{label}</InputLabel>
-    <Select {...input} {...custom} onChange={value => input.onChange(value)}>
+    <Select
+      {...input}
+      {...custom}
+      value={markAllAs && markAllAs.length ? markAllAs : input.value}
+      onChange={value => input.onChange(value)}
+    >
       {children}
     </Select>
     <FormHelperText>{touched && error}</FormHelperText>

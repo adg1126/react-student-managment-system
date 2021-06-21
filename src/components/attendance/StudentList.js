@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import _ from 'lodash';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +12,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import SelectField from '../fields/SelectField';
 
 const useStyles = makeStyles(theme => ({
+  formControl: {
+    minWidth: 120
+  },
   buttonContainer: {
     margin: '1em 0'
   },
@@ -27,17 +31,43 @@ const StudentList = ({
   courseStudents,
   updateStudentAttendanceStatusStart,
   handleSubmit,
-  pristine
+  pristine,
+  markAllAs
 }) => {
   const classes = useStyles();
 
   const onSubmit = formValues => {
-    updateStudentAttendanceStatusStart(currentCourse.docId, formValues);
+    if (markAllAs && markAllAs.length) {
+      const newFormValues = Object.keys(formValues).reduce((res, key) => {
+        if (_.isObject(formValues[key])) res[key] = { status: markAllAs };
+        return res;
+      }, {});
+      updateStudentAttendanceStatusStart(currentCourse.docId, newFormValues);
+    } else {
+      updateStudentAttendanceStatusStart(currentCourse.docId, formValues);
+    }
   };
 
   return courseStudents && courseStudents.length ? (
     <Grid container direction='column' style={{ padding: '0 1em' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid item>
+          <Field
+            classes={{ root: classes.formControl }}
+            name='markAllAs'
+            component={SelectField}
+            label='Mark all as'
+          >
+            <MenuItem value=''>
+              <em>None</em>
+            </MenuItem>
+            {['Present', 'Absent', 'Excused'].map((status, i) => (
+              <MenuItem key={i} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Field>
+        </Grid>
         {courseStudents.map((student, i) => (
           <Grid
             key={i}
@@ -51,10 +81,11 @@ const StudentList = ({
             </Grid>
             <Grid item style={{ margin: '1em' }}>
               <Field
+                classes={{ root: classes.formControl }}
                 name={`${student.docId}.status`}
                 component={SelectField}
                 label='Status'
-                fullWidth
+                markAllAs={markAllAs}
               >
                 <MenuItem value=''>
                   <em>None</em>
@@ -91,10 +122,13 @@ const StudentList = ({
   ) : null;
 };
 
+const selector = formValueSelector('studentAttendance');
+
 const mapStateToProps = (state, ownProps) => ({
   initialValues: Object.fromEntries(
     ownProps.courseStudents.map(s => [s.docId, { status: s.attendanceStatus }])
-  )
+  ),
+  markAllAs: selector(state, 'markAllAs')
 });
 
 export default connect(mapStateToProps)(

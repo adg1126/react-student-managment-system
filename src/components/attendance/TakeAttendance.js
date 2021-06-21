@@ -78,26 +78,6 @@ const TakeAttendance = ({ courseList, currentCourse, setCurrentCourse }) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid>
-            {/* <FormControl
-          style={{ width: '10em' }}
-          className={classes.formControl}
-          variant='outlined'
-          margin='dense'
-        >
-          <InputLabel>Mark all as</InputLabel>
-          <Select value={course} onChange={handleChange}>
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            {['Presen', 'Absent'].map((status, i) => (
-              <MenuItem key={i} value={i}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl> */}
-          </Grid>
         </Grid>
         <Grid item>
           <Divider />
