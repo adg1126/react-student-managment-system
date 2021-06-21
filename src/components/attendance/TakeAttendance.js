@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
@@ -33,7 +34,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TakeAttendance = ({ courseList, currentCourse, setCurrentCourse }) => {
+const TakeAttendance = ({
+  courseList,
+  currentCourse,
+  currentDate,
+  setCurrentCourse
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
@@ -77,6 +83,22 @@ const TakeAttendance = ({ courseList, currentCourse, setCurrentCourse }) => {
                 ))}
               </Select>
             </FormControl>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          container
+          direction='row'
+          alignItems='center'
+          spacing={matchesXS ? undefined : 3}
+        >
+          <Grid item>
+            {!_.isEmpty(currentDate) && (
+              <Typography variant='body1'>{`On ${
+                !_.isEmpty(currentDate) &&
+                moment(currentDate.startDate).format('llll')
+              }`}</Typography>
+            )}
           </Grid>
         </Grid>
         <Grid item>
