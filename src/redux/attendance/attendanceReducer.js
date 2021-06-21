@@ -2,12 +2,18 @@ import {
   FETCH_ATTENDANCE_START,
   FETCH_ATTENDANCE_SUCCESS,
   FETCH_ATTENDANCE_FAILURE,
-  FETCH_ATTENDANCE_FOR_COURSE
+  SET_CURRENT_COURSE,
+  SET_CURRENT_DATE,
+  UPDATE_ATTENDANCE_SUCCESS,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_START,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS
 } from './attendanceActionTypes';
+import _ from 'lodash';
 
 const INITIAL_STATE = {
   courseList: {},
-  attendanceForCourse: {},
+  currentCourse: {},
+  currentDate: {},
   isFetching: false,
   errMessage: '',
   status: {
@@ -28,13 +34,54 @@ const attendanceReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         errMessage: action.payload
       };
-    case FETCH_ATTENDANCE_FOR_COURSE:
+    case SET_CURRENT_COURSE:
       return {
         ...state,
-        attendanceForCourse: Object.values(state.courseList).find(course =>
-          course.courseId.match(action.payload)
+        isFetching: false,
+        currentCourse: Object.values(state.courseList).find(course =>
+          course.courseCode.match(action.payload)
         )
       };
+    case SET_CURRENT_DATE:
+      return { ...state, currentDate: action.payload };
+    case UPDATE_ATTENDANCE_SUCCESS:
+      return {
+        ...state,
+        courseList: {
+          ...state.courseList,
+          [action.key]: {
+            ...state.courseList[action.key],
+            classDates: action.value
+          }
+        }
+      };
+    case UPDATE_STUDENT_ATTENDANCE_STATUS_START:
+      return {
+        ...state,
+        courseList: {
+          ...state.courseList,
+          [action.key]: {
+            ...state.courseList[action.key],
+            classDates: state.currentCourse.classDates.map(date =>
+              date.id === state.currentDate.id
+                ? {
+                    ...date,
+                    students: state.currentDate.students.map(student =>
+                      _.isEmpty(action.value[student.docId])
+                        ? student
+                        : {
+                            ...student,
+                            attendanceStatus: action.value[student.docId].status
+                          }
+                    )
+                  }
+                : date
+            )
+          }
+        }
+      };
+    case UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS:
+      return { ...state, status: { success: action.payload } };
     default:
       return state;
   }

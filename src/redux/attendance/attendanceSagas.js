@@ -7,7 +7,7 @@ import {
   FETCH_ATTENDANCE_SUCCESS,
   ADD_COURSE_ATTENDANCE_SUCCESS,
   DELETE_COURSE_ATTENDANCE_SUCCESS,
-  UPDATE_STUDENT_ATTENDANCE_STATUS,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_START,
   UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS
 } from './attendanceActionTypes';
 import {
@@ -18,10 +18,10 @@ import {
 } from '../courses/coursesActionTypes';
 import {
   ADD_STUDENT_SUCCESS,
-  DELETE_STUDENT_FROM_COURSE,
   FETCH_STUDENTS_SUCCESS,
-  ADD_EXISTING_STUDENT_TO_COURSE,
-  EDIT_STUDENT
+  ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS,
+  DELETE_STUDENT_FROM_COURSE_SUCCESS,
+  EDIT_STUDENT_SUCCESS
 } from '../student/studentActionTypes';
 import {
   fetchAttendanceSuccesss,
@@ -29,7 +29,8 @@ import {
   addCourseAttendanceSuccess,
   deleteCourseAttendanceSuccess,
   updateAttendanceSuccess,
-  updateStudentAttendanceStatusSuccess
+  updateStudentAttendanceStatusSuccess,
+  updateStudentAttendanceStatusFailure
 } from './attendanceActions';
 
 import { selectCurrentUser } from '../user/userSelectors';
@@ -112,14 +113,16 @@ export function* updateAttendanceInFirebase() {
         .get();
 
       if (courseAttendanceSnapshot.empty) {
-        yield attendanceRef.add({
-          classDates: newDates,
-          userId: currentUser.id,
-          courseId: course.docId,
-          courseCode: course.courseCode
-        });
+        try {
+          yield attendanceRef.add({
+            classDates: newDates,
+            userId: currentUser.id,
+            courseId: course.docId,
+            courseCode: course.courseCode
+          });
 
-        yield put(addCourseAttendanceSuccess());
+          yield put(addCourseAttendanceSuccess());
+        } catch (err) {}
       } else if (
         !courseAttendanceSnapshot.empty &&
         attendanceCourseList.length
@@ -184,15 +187,17 @@ export function* updateAttendanceInFirebase() {
                       : [...res, newDate];
                   }, courseAttendance.classDates);
 
-            yield courseAttendanceSnapshot.forEach(async doc => {
-              doc.ref.update({
-                classDates: newClassDates
+            try {
+              yield courseAttendanceSnapshot.forEach(async doc => {
+                doc.ref.update({
+                  classDates: newClassDates
+                });
               });
-            });
 
-            yield put(
-              updateAttendanceSuccess(courseAttendance.docId, newClassDates)
-            );
+              yield put(
+                updateAttendanceSuccess(courseAttendance.docId, newClassDates)
+              );
+            } catch (err) {}
           }
         }
       }
@@ -208,9 +213,9 @@ export function* onUpdateAttendanceInFirebase() {
       EDIT_COURSE_SUCCESS,
       FETCH_STUDENTS_SUCCESS,
       ADD_STUDENT_SUCCESS,
-      DELETE_STUDENT_FROM_COURSE,
-      ADD_EXISTING_STUDENT_TO_COURSE,
-      EDIT_STUDENT,
+      ADD_EXISTING_STUDENT_TO_COURSE_SUCCESS,
+      DELETE_STUDENT_FROM_COURSE_SUCCESS,
+      EDIT_STUDENT_SUCCESS,
       FETCH_ATTENDANCE_SUCCESS,
       UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS
     ],
@@ -245,12 +250,9 @@ export function* deleteAttendanceInFirebase() {
             }
           });
         });
-
         yield put(deleteCourseAttendanceSuccess());
       }
-    } catch (err) {
-      console.log(err.message);
-    }
+    } catch (err) {}
   }
 }
 
@@ -272,17 +274,19 @@ export function* updateStudentAttendanceInFirebase({ key: courseDocId }) {
 
       yield attendanceForCourseRef.update(_.omit(course, 'docId'));
       yield put(
-        updateStudentAttendanceStatusSuccess('Successfully updated attendance')
+        updateStudentAttendanceStatusSuccess('Successfully updated attendance.')
       );
     } catch (err) {
-      console.log(err.message);
+      yield put(
+        updateStudentAttendanceStatusFailure('Failed to updated attendance.')
+      );
     }
   }
 }
 
 export function* onUpdateStudentAttendanceInFirebase() {
   yield takeLatest(
-    UPDATE_STUDENT_ATTENDANCE_STATUS,
+    UPDATE_STUDENT_ATTENDANCE_STATUS_START,
     updateStudentAttendanceInFirebase
   );
 }

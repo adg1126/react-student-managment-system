@@ -2,7 +2,14 @@ import {
   FETCH_ATTENDANCE_START,
   FETCH_ATTENDANCE_SUCCESS,
   FETCH_ATTENDANCE_FAILURE,
-  FETCH_ATTENDANCE_FOR_COURSE
+  SET_CURRENT_COURSE,
+  SET_CURRENT_DATE,
+  ADD_COURSE_ATTENDANCE_SUCCESS,
+  DELETE_COURSE_ATTENDANCE_SUCCESS,
+  UPDATE_ATTENDANCE_SUCCESS,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_START,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS,
+  UPDATE_STUDENT_ATTENDANCE_STATUS_FAILURE
 } from './attendanceActionTypes';
 
 export const fetchAttendanceStart = () => ({
@@ -19,7 +26,44 @@ export const fetchAttendanceFailure = errMsg => ({
   payload: errMsg
 });
 
-export const fetchAttendanceForCourse = courseDocId => ({
-  type: FETCH_ATTENDANCE_FOR_COURSE,
-  payload: courseDocId
+export const setCurrentCourse = courseCode => ({
+  type: SET_CURRENT_COURSE,
+  payload: courseCode
+});
+
+export const setCurrentDate = dateObj => ({
+  type: SET_CURRENT_DATE,
+  payload: dateObj
+});
+
+export const addCourseAttendanceSuccess = () => ({
+  type: ADD_COURSE_ATTENDANCE_SUCCESS
+});
+
+export const deleteCourseAttendanceSuccess = () => ({
+  type: DELETE_COURSE_ATTENDANCE_SUCCESS
+});
+
+export const updateAttendanceSuccess = (courseId, classDates) => ({
+  type: UPDATE_ATTENDANCE_SUCCESS,
+  key: courseId,
+  value: classDates
+});
+
+export const updateStudentAttendanceStatusStart = (
+  courseDocId,
+  studentsMap
+) => ({
+  type: UPDATE_STUDENT_ATTENDANCE_STATUS_START,
+  key: courseDocId,
+  value: studentsMap
+});
+
+export const updateStudentAttendanceStatusSuccess = msg => ({
+  type: UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS,
+  payload: msg
+});
+
+export const updateStudentAttendanceStatusFailure = errMsg => ({
+  type: UPDATE_STUDENT_ATTENDANCE_STATUS_FAILURE
 });

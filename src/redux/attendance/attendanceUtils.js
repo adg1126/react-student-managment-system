@@ -1,7 +1,13 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-export const getClassDates = (startDate, endDate, daysObj, courseCode) => {
+export const getClassDates = (
+  startDate,
+  endDate,
+  daysObj,
+  courseCode,
+  courseStudents
+) => {
   let start = moment(startDate, 'YYYY-MM-DD'),
     end = moment(endDate),
     classDates = [];
@@ -10,14 +16,21 @@ export const getClassDates = (startDate, endDate, daysObj, courseCode) => {
     let currentDay = start.clone().day(k);
 
     while (currentDay.add(7, 'd').isBefore(end)) {
-      classDates.push({
-        title: courseCode,
-        startDate: moment(
+      let id = _.uniqueId(`${courseCode}_`),
+        title = courseCode,
+        startDate = moment(
           `${currentDay.clone().format('YYYY-MM-DD')} ${v.startTime}`
         ).toDate(),
-        endDate: moment(
+        endDate = moment(
           `${currentDay.clone().format('YYYY-MM-DD')} ${v.endTime}`
-        ).toDate()
+        ).toDate();
+
+      classDates.push({
+        id,
+        title,
+        startDate,
+        endDate,
+        ...(courseStudents && { students: courseStudents })
       });
     }
   }
@@ -27,17 +40,18 @@ export const getClassDates = (startDate, endDate, daysObj, courseCode) => {
 
 export const convertAttendanceSnapshotToMap = course => {
   const transformedCollection = course.docs.map(doc => {
-    const { classDates, courseId, userId } = doc.data();
+    const { classDates, courseId, userId, courseCode } = doc.data();
 
     return {
       docId: doc.id,
       classDates: classDates.map(cd => ({
-        title: cd.title,
+        ...cd,
         startDate: cd.startDate.toDate(),
         endDate: cd.endDate.toDate()
       })),
       courseId,
-      userId
+      userId,
+      courseCode
     };
   });
 
