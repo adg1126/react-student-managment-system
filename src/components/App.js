@@ -4,7 +4,6 @@ import { ThemeProvider } from '@material-ui/styles';
 import theme from '../ui/Theme';
 import history from '../history';
 
-// import NavBarContainer from '../containers/NavBarContainer';
 import AppbarContainer from '../containers/appbar/AppbarContainer';
 import Dashboard from '../pages/Dashboard';
 import AttendanceContainer from '../containers/attendance/AttendanceContainer';
@@ -32,7 +31,6 @@ class App extends Component {
 
   protectedRoutes = () => {
     return (
-      // <NavBarContainer>
       <>
         <AppbarContainer />
         <Route exact path='/' component={Dashboard} />
@@ -47,7 +45,6 @@ class App extends Component {
         <Route path='/assignments' component={Assignments} />
         <Route path='/schedule' component={Schedule} />
       </>
-      // </NavBarContainer>
     );
   };
 
