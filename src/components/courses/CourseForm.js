@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+
 import SwitchGroup from '../fields/SwitchGroup';
 
 const useStyles = makeStyles(theme => ({

@@ -23,8 +23,7 @@ const white = '#ffffff',
   black = '#2e3650';
 
 // Color Scheme
-const grey = '#ebf4f6',
-  mainIndigo = '#021F38',
+const mainIndigo = '#021F38',
   lightIndigo = '#5885af',
   highlightedIndigo = '#669df6',
   red = '#c40d2e',
@@ -45,7 +44,7 @@ export default createMuiTheme({
       green
     },
     primary: {
-      main: grey
+      main: grey800
     },
     secondary: {
       main: mainIndigo,
@@ -99,6 +98,30 @@ export default createMuiTheme({
       content: '""',
       position: 'absolute',
       background: green,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: '100%',
+      zIndex: '-1',
+      transition: 'top 0.2s ease-in'
+    },
+    '&:hover::before': {
+      top: 0
+    }
+  },
+  buttonGreyAnimation: {
+    position: 'relative',
+    color: grey900,
+    border: `1px solid ${grey600}`,
+    zIndex: 1,
+    '&:hover': {
+      color: white,
+      border: `1px solid ${grey600}`
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      background: grey600,
       bottom: 0,
       left: 0,
       right: 0,

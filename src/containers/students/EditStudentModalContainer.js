@@ -3,7 +3,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { selectStudentToUpdate } from '../../redux/student/studentSelectors';
 
-import { editStudent } from '../../redux/student/studentActions';
+import { editStudentStart } from '../../redux/student/studentActions';
 import { setModalOpen } from '../../redux/modal/modalActions';
 
 import EditStudentModal from '../../components/students/EditStudentModal';
@@ -13,6 +13,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default connect(mapStateToProps, {
-  editStudent,
+  editStudentStart,
   setModalOpen
 })(EditStudentModal);

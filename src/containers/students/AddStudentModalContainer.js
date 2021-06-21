@@ -5,8 +5,8 @@ import { selectStudentsNotInCourse } from '../../redux/student/studentSelectors'
 import { selectCourse } from '../../redux/courses/coursesSelectors';
 
 import {
-  addStudent,
-  addExistingStudentToCourse
+  addStudentStart,
+  addExistingStudentToCourseStart
 } from '../../redux/student/studentActions';
 import { setModalOpen } from '../../redux/modal/modalActions';
 
@@ -24,7 +24,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  addStudent,
-  addExistingStudentToCourse,
+  addStudentStart,
+  addExistingStudentToCourseStart,
   setModalOpen
 })(AddStudentModal);

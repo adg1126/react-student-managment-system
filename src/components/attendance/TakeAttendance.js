@@ -1,13 +1,40 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import _ from 'lodash';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import SelectField from '../fields/SelectField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import StudentListContainer from '../../containers/attendance/StudentListContainer';
 
-const TakeAttendance = ({ courseList, filteredStudents, setCurrentCourse }) => {
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  buttonContainer: {
+    marginTop: '1.5em'
+  },
+  greenButton: {
+    ...theme.button,
+    ...theme.buttonGreenAnimation,
+    fontSize: '1em'
+  },
+  redButton: {
+    ...theme.button,
+    ...theme.buttonRedAnimation,
+    fontSize: '1em',
+    marginRight: '1em'
+  }
+}));
+
+const TakeAttendance = ({ courseList, currentCourse, setCurrentCourse }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -26,18 +53,30 @@ const TakeAttendance = ({ courseList, filteredStudents, setCurrentCourse }) => {
           spacing={matchesXS ? undefined : 3}
         >
           <Grid item>
-            <Typography variant='body1' gutterBottom>
-              Attendance for
-            </Typography>
+            <Typography variant='body1'>Attendance for</Typography>
           </Grid>
           <Grid item>
-            <SelectField
-              options={courseList.map(course => ({
-                value: course.docId,
-                name: course.courseCode
-              }))}
-              handleChange={handleChangeCourse}
-            />
+            <FormControl variant='outlined' className={classes.formControl}>
+              <InputLabel>Course</InputLabel>
+              <Select
+                value={
+                  currentCourse && !_.isEmpty(currentCourse)
+                    ? currentCourse.courseCode
+                    : ''
+                }
+                onChange={handleChangeCourse}
+                label='Course'
+              >
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {courseList.map(({ courseCode }) => (
+                  <MenuItem key={courseCode} value={courseCode}>
+                    {courseCode}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid>
             {/* <FormControl
@@ -63,29 +102,8 @@ const TakeAttendance = ({ courseList, filteredStudents, setCurrentCourse }) => {
         <Grid item>
           <Divider />
         </Grid>
-        <Grid
-          item
-          container
-          direction='column'
-          spacing={3}
-          style={{ width: '70%' }}
-        >
-          {filteredStudents.length
-            ? filteredStudents.map((student, i) => (
-                <Grid
-                  key={i}
-                  item
-                  container
-                  direction='row'
-                  justify='space-between'
-                >
-                  <Grid item>
-                    <Typography variant='body1'>{student.fullName}</Typography>
-                  </Grid>
-                  <Grid item></Grid>
-                </Grid>
-              ))
-            : null}
+        <Grid item container direction='column' spacing={3}>
+          <StudentListContainer />
         </Grid>
       </Grid>
     </Paper>

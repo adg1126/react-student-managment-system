@@ -1,17 +1,16 @@
 import { connect } from 'react-redux';
-import {
-  selectCourseListForPreview,
-  selectCurrentCourse
-} from '../../redux/courses/coursesSelectors';
-import { selectStudentsForClass } from '../../redux/student/studentSelectors';
+import { selectCourseListForPreview } from '../../redux/courses/coursesSelectors';
+import { selectCurrentCourse } from '../../redux/attendance/attendanceSelectors';
 
-import { setCurrentCourse } from '../../redux/courses/coursesActions';
+import { setCurrentCourse } from '../../redux/attendance/attendanceActions';
 
 import TakeAttendance from '../../components/attendance/TakeAttendance';
 
 const mapStateToProps = state => ({
   courseList: selectCourseListForPreview(state),
-  filteredStudents: selectStudentsForClass(selectCurrentCourse(state))(state)
+  currentCourse: selectCurrentCourse(state)
 });
 
-export default connect(mapStateToProps, { setCurrentCourse })(TakeAttendance);
+export default connect(mapStateToProps, {
+  setCurrentCourse
+})(TakeAttendance);

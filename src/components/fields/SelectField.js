@@ -1,44 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles(theme => ({
-  mainContainer: {
-    marginTop: '1em',
-    width: '100%'
-  },
-  formControl: {
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.common.grey800
-    },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.common.grey800
-    },
-    '& .Mui-focused': {
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'blue'
-      }
-    },
-    '& label.Mui-focused': {
-      color: 'blue'
-    }
-  }
-}));
-
-const SelectField = ({ options, value, handleChange }) => {
-  const classes = useStyles();
-
+const SelectField = ({ options, value, label, handleChange }) => {
   return (
-    <FormControl
-      style={{ width: '7em' }}
-      className={classes.formControl}
-      variant='outlined'
-      margin='dense'
-    >
-      <InputLabel>Course</InputLabel>
+    <FormControl style={{ width: '7em' }} variant='outlined' margin='dense'>
+      <InputLabel>{label}</InputLabel>
       <Select value={value ? value : ''} onChange={handleChange}>
         <MenuItem value=''>
           <em>None</em>

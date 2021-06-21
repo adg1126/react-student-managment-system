@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentCourse } from '../../redux/courses/coursesSelectors';
 import {
-  selectAttendanceForCourseClassDates,
-  selectIsAttendanceFetching
+  selectCurrentCourseDates,
+  selectIsAttendanceFetching,
+  selectAttendanceStatus
 } from '../../redux/attendance/attendanceSelectors';
 
 import {
   fetchAttendanceStart,
-  fetchAttendanceForCourse
+  setCurrentCourse,
+  setCurrentDate
 } from '../../redux/attendance/attendanceActions';
 
 import Attendance from '../../pages/Attendance';
@@ -19,10 +21,15 @@ import WithSpinner from '../WithSpinner';
 const mapStateToProps = createStructuredSelector({
   isFetching: selectIsAttendanceFetching,
   currentCourse: selectCurrentCourse,
-  attendanceForCourseClassDates: selectAttendanceForCourseClassDates
+  CourseDates: selectCurrentCourseDates,
+  status: selectAttendanceStatus
 });
 
 export default compose(
-  connect(mapStateToProps, { fetchAttendanceStart, fetchAttendanceForCourse }),
+  connect(mapStateToProps, {
+    fetchAttendanceStart,
+    setCurrentCourse,
+    setCurrentDate
+  }),
   WithSpinner
 )(Attendance);

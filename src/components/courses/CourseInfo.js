@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MeetingDays = ({ meetingDays }) => {
+const MeetingDays = ({ daysMeet }) => {
   const classes = useStyles();
 
   const daysArr = [
@@ -95,7 +95,7 @@ const MeetingDays = ({ meetingDays }) => {
 
     return (
       <Grid item key={day}>
-        {meetingDays && meetingDays.includes(day) ? (
+        {daysMeet && daysMeet.includes(day) ? (
           <Avatar variant='square' className={classes.selectedQuare}>
             {dayAbbr.charAt(0).toUpperCase() + dayAbbr.slice(1)}
           </Avatar>
@@ -110,7 +110,7 @@ const MeetingDays = ({ meetingDays }) => {
 };
 
 const CourseInfoTable = ({
-  course: { courseCode, courseName, meetingDays },
+  course: { courseCode, courseName, daysMeet },
   studentList
 }) => {
   const classes = useStyles();
@@ -131,7 +131,7 @@ const CourseInfoTable = ({
             <StyledTableCell align='left'>Meeting Days</StyledTableCell>
             <StyledTableCell align='left'>
               <Grid container spacing={1}>
-                <MeetingDays meetingDays={meetingDays} />
+                <MeetingDays daysMeet={daysMeet} />
               </Grid>
             </StyledTableCell>
           </StyledTableRow>

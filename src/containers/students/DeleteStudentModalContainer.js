@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import {
-  deleteStudent,
-  deleteStudentFromCourse
+  deleteStudentStart,
+  deleteStudentFromCourseStart
 } from '../../redux/student/studentActions';
 import DeleteStudentModal from '../../components/students/DeleteStudentModal';
 import { setModalOpen } from '../../redux/modal/modalActions';
@@ -22,7 +22,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  deleteStudent,
-  deleteStudentFromCourse,
+  deleteStudentStart,
+  deleteStudentFromCourseStart,
   setModalOpen
 })(DeleteStudentModal);
