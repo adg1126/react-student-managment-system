@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 import history from '../../history';
 
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -12,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+import Textfield from '../fields/Textfield';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -34,26 +35,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   formContainer: { margin: '1.5em 0' },
-  textField: {
-    '& label.Mui-focused': {
-      color: 'blue'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'blue'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'blue'
-      }
-    },
-    margin: '0.5em 0'
-  },
   indigoButton: {
     ...theme.button,
     ...theme.buttonIndigoAnimation,
@@ -75,24 +56,6 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-
-const renderTextField = ({
-  label,
-  input,
-  meta: { touched, invalid, error },
-  ...custom
-}) => (
-  <TextField
-    label={label}
-    placeholder={label}
-    error={touched && invalid}
-    helperText={touched && error}
-    {...input}
-    {...custom}
-    margin='dense'
-    fullWidth
-  />
-);
 
 const Signup = ({ reset, handleSubmit, googleSignInStart, signUpStart }) => {
   const classes = useStyles();
@@ -118,26 +81,18 @@ const Signup = ({ reset, handleSubmit, googleSignInStart, signUpStart }) => {
         <Grid item className={classes.formContainer}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Field
-              className={classes.textField}
-              variant='outlined'
               name='displayName'
-              component={renderTextField}
+              component={Textfield}
               label='Full Name'
+              fullWidth
             />
+            <Field name='email' component={Textfield} label='Email' fullWidth />
             <Field
-              className={classes.textField}
-              variant='outlined'
-              name='email'
-              component={renderTextField}
-              label='Email'
-            />
-            <Field
-              className={classes.textField}
-              variant='outlined'
               type={showPassword ? 'text' : 'password'}
               name='password'
-              component={renderTextField}
+              component={Textfield}
               label='Password'
+              fullWidth
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>
@@ -153,12 +108,11 @@ const Signup = ({ reset, handleSubmit, googleSignInStart, signUpStart }) => {
               }}
             />
             <Field
-              className={classes.textField}
-              variant='outlined'
               type={showPassword ? 'text' : 'password'}
               name='confirmPassword'
-              component={renderTextField}
+              component={Textfield}
               label='Confirm Password'
+              fullWidth
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>

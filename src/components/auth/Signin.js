@@ -13,6 +13,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
+import Textfield from '../fields/Textfield';
+
 const useStyles = makeStyles(theme => ({
   mainContainer: {
     height: '100vh',
@@ -34,26 +36,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   formContainer: { margin: '1.5em 0' },
-  textField: {
-    '& label.Mui-focused': {
-      color: 'blue'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'blue'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'blue'
-      }
-    },
-    margin: '0.5em 0'
-  },
   indigoButton: {
     ...theme.button,
     ...theme.buttonIndigoAnimation,
@@ -75,24 +57,6 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-
-const renderTextField = ({
-  label,
-  input,
-  meta: { touched, invalid, error },
-  ...custom
-}) => (
-  <TextField
-    label={label}
-    placeholder={label}
-    error={touched && invalid}
-    helperText={touched && error}
-    {...input}
-    {...custom}
-    margin='dense'
-    fullWidth
-  />
-);
 
 const Signin = ({
   reset,
@@ -122,19 +86,12 @@ const Signin = ({
         </Grid>
         <Grid item className={classes.formContainer}>
           <form onSubmit={handleSubmit(onSubmit)}>
+            <Field name='email' component={Textfield} fullWidth label='Email' />
             <Field
-              className={classes.textField}
-              variant='outlined'
-              name='email'
-              component={renderTextField}
-              label='Email'
-            />
-            <Field
-              className={classes.textField}
-              variant='outlined'
               type={showPassword ? 'text' : 'password'}
               name='password'
-              component={renderTextField}
+              component={Textfield}
+              fullWidth
               label='Password'
               InputProps={{
                 endAdornment: (

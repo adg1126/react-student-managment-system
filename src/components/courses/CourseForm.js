@@ -5,35 +5,15 @@ import _ from 'lodash';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import SwitchGroup from '../fields/SwitchGroup';
+import Textfield from '../fields/Textfield';
 
 const useStyles = makeStyles(theme => ({
-  textField: {
-    '& label.Mui-focused': {
-      color: 'blue'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'blue'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.common.grey800
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'blue'
-      }
-    },
-    margin: '0.5em 0'
-  },
   buttonContainer: {
     marginTop: '1.5em'
   },
@@ -50,27 +30,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const renderTextField = ({
-  label,
-  input,
-  meta: { touched, invalid, error },
-  ...custom
-}) => (
-  <TextField
-    label={label}
-    placeholder={label}
-    error={touched && invalid}
-    helperText={touched && error}
-    {...input}
-    {...custom}
-    margin='dense'
-  />
-);
-
-const DaysMeetAndTime = ({ daysMeet, input }) => {
-  const classes = useStyles();
-
-  return [
+const DaysMeetAndTime = ({ daysMeet, input }) =>
+  [
     'monday',
     'tuesday',
     'wednesday',
@@ -91,10 +52,8 @@ const DaysMeetAndTime = ({ daysMeet, input }) => {
     >
       <Grid item>
         <Field
-          className={classes.textField}
-          variant='outlined'
           name={`${input.name}.${day}.startTime`}
-          component={renderTextField}
+          component={Textfield}
           label='Start Time'
           type='time'
           InputLabelProps={{
@@ -107,10 +66,8 @@ const DaysMeetAndTime = ({ daysMeet, input }) => {
       </Grid>
       <Grid item>
         <Field
-          className={classes.textField}
-          variant='outlined'
           name={`${input.name}.${day}.endTime`}
-          component={renderTextField}
+          component={Textfield}
           label='End Time'
           type='time'
           InputLabelProps={{
@@ -123,7 +80,6 @@ const DaysMeetAndTime = ({ daysMeet, input }) => {
       </Grid>
     </Grid>
   ));
-};
 
 let CourseForm = props => {
   const classes = useStyles();
@@ -144,27 +100,21 @@ let CourseForm = props => {
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
       <Field
-        className={classes.textField}
-        variant='outlined'
         name='courseCode'
-        component={renderTextField}
+        component={Textfield}
         label='Course Code'
         fullWidth
       />
       <Field
-        className={classes.textField}
-        variant='outlined'
         name='courseName'
-        component={renderTextField}
+        component={Textfield}
         label='Course Name'
         fullWidth
       />
       <Field
         style={{ marginRight: '2em' }}
-        className={classes.textField}
-        variant='outlined'
         name='courseDates.startDate'
-        component={renderTextField}
+        component={Textfield}
         label='Start Date'
         type='date'
         InputLabelProps={{
@@ -172,10 +122,8 @@ let CourseForm = props => {
         }}
       />
       <Field
-        className={classes.textField}
-        variant='outlined'
         name='courseDates.endDate'
-        component={renderTextField}
+        component={Textfield}
         label='End Date'
         type='date'
         InputLabelProps={{

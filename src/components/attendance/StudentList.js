@@ -6,17 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+
+import SelectField from '../fields/SelectField';
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
-  },
   buttonContainer: {
     margin: '1em 0'
   },
@@ -28,38 +22,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SelectField = ({
-  input,
-  label,
-  meta: { touched, error },
-  children,
-  ...custom
-}) => {
-  const classes = useStyles();
-
-  return (
-    <FormControl
-      className={classes.formControl}
-      variant='outlined'
-      error={touched && error}
-      fullWidth
-    >
-      <InputLabel>{label}</InputLabel>
-      <Select {...input} {...custom} onChange={value => input.onChange(value)}>
-        {children}
-      </Select>
-      <FormHelperText>{touched && error}</FormHelperText>
-    </FormControl>
-  );
-};
-
 const StudentList = ({
   currentCourse,
   courseStudents,
   updateStudentAttendanceStatusStart,
   handleSubmit,
-  pristine,
-  reset
+  pristine
 }) => {
   const classes = useStyles();
 
@@ -86,6 +54,7 @@ const StudentList = ({
                 name={`${student.docId}.status`}
                 component={SelectField}
                 label='Status'
+                fullWidth
               >
                 <MenuItem value=''>
                   <em>None</em>

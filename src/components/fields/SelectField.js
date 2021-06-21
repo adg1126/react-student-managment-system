@@ -1,25 +1,28 @@
 import React from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-const SelectField = ({ options, value, label, handleChange }) => {
-  return (
-    <FormControl style={{ width: '7em' }} variant='outlined' margin='dense'>
-      <InputLabel>{label}</InputLabel>
-      <Select value={value ? value : ''} onChange={handleChange}>
-        <MenuItem value=''>
-          <em>None</em>
-        </MenuItem>
-        {options.map((option, i) => (
-          <MenuItem key={i} value={option.value}>
-            {option.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
+const SelectField = ({
+  input,
+  label,
+  meta: { touched, error },
+  children,
+  ...custom
+}) => (
+  <FormControl
+    style={{ marginTop: '0.5em' }}
+    variant='outlined'
+    error={touched && error}
+    fullWidth
+  >
+    <InputLabel>{label}</InputLabel>
+    <Select {...input} {...custom} onChange={value => input.onChange(value)}>
+      {children}
+    </Select>
+    <FormHelperText>{touched && error}</FormHelperText>
+  </FormControl>
+);
 
 export default SelectField;
