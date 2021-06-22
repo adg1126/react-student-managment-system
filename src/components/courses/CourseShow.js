@@ -15,24 +15,9 @@ import NotificationContainer from '../../containers/NotificationContainer';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
-    marginTop: '1em'
+    width: '100vw'
   },
-  headerContainer: {
-    marginBottom: '3em'
-  },
-  redButton: {
-    ...theme.button,
-    ...theme.buttonRedAnimation,
-    fontSize: '1em',
-    marginBottom: '1.5em'
-  },
-  indigoButton: {
-    ...theme.button,
-    ...theme.buttonIndigoAnimation,
-    fontSize: '1em',
-    marginBottom: '1.5em'
-  },
-  addClassButton: {
+  greenButton: {
     ...theme.button,
     ...theme.buttonGreenAnimation,
     fontSize: '1em',
@@ -43,37 +28,50 @@ const useStyles = makeStyles(theme => ({
 const CourseShow = ({ course, status, setModalOpen }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   return course ? (
-    <Grid container direction='column' className={classes.mainContainer}>
-      <Grid item container className={classes.headerContainer}>
+    <Grid
+      container
+      direction='row'
+      justify='center'
+      className={classes.mainContainer}
+    >
+      <Grid
+        container
+        direction='column'
+        style={{ width: '95%', marginTop: '1em' }}
+        spacing={3}
+      >
         <Grid item>
           <Typography variant='h5'>{`${course.courseCode} - ${course.courseName}`}</Typography>
         </Grid>
-      </Grid>
-      <Grid item container direction='column'>
         <Grid item>
           <AddStudentModalContainer />
           <Button
             variant='outlined'
-            className={classes.addClassButton}
+            className={classes.greenButton}
             startIcon={<PersonAddIcon />}
             onClick={() => setModalOpen('addStudent', true)}
           >
             Add Student
           </Button>
         </Grid>
-        <Grid item container spacing={4}>
-          <Grid item style={{ width: matchesMD ? '100%' : '60%' }}>
-            <StudentListTableContainer />
-          </Grid>
-          <Grid item style={{ width: matchesMD ? '100%' : '40%' }}>
-            <CourseInfoContainer />
-          </Grid>
-        </Grid>
-        <NotificationContainer status={status} />
       </Grid>
+      <Grid
+        item
+        container
+        style={{ width: '95%', marginTop: '1em' }}
+        spacing={4}
+      >
+        <Grid item style={{ width: matchesSM ? '100%' : '60%' }}>
+          <StudentListTableContainer />
+        </Grid>
+        <Grid item style={{ width: matchesSM ? '100%' : '40%' }}>
+          <CourseInfoContainer />
+        </Grid>
+      </Grid>
+      <NotificationContainer status={status} />
     </Grid>
   ) : null;
 };
