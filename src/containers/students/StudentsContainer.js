@@ -27,7 +27,7 @@ const mapStateToProps = state => {
   const classId = path.substring(path.lastIndexOf('/') + 1);
 
   return {
-    status: selectStudentsStatus(state) && selectCoursesStatus(state),
+    status: selectStudentsStatus(state),
     studentList:
       path !== '/students'
         ? selectStudentsForClass(classId)(state)

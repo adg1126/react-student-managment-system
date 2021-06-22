@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../history';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -72,7 +73,14 @@ const StudentCard = ({
     );
 
   const cardContent = {
-    header: <Typography variant='h5'>{student.fullName} </Typography>,
+    header: (
+      <Typography
+        variant='h5'
+        onClick={() => history.push(`/students/${student.docId}`)}
+      >
+        {student.fullName}
+      </Typography>
+    ),
     content: (
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>

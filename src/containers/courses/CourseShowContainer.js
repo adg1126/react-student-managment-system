@@ -4,7 +4,7 @@ import { selectStudentsStatus } from '../../redux/student/studentSelectors';
 
 import { setModalOpen } from '../../redux/modal/modalActions';
 
-import CourseShow from '../../components/courses/CourseShow';
+import CourseShow from '../../pages/CourseShow';
 
 const mapStateToProps = (state, ownProps) => ({
   course: selectCourse(ownProps.match.params.courseId)(state),

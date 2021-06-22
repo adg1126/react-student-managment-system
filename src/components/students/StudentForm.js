@@ -43,9 +43,38 @@ const StudentForm = props => {
       <Grid container direction='column' spacing={2}>
         <Grid item>
           <Field
+            type='text'
             name='fullName'
             component={Textfield}
             label='Full Name'
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <Field
+            type='email'
+            name='email'
+            component={Textfield}
+            label='Email'
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <Field
+            type='number'
+            name='phoneNumber'
+            component={Textfield}
+            label='Phone Number'
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <Field
+            name='dateOfBirth'
+            component={Textfield}
+            label='Date of Birth'
+            type='date'
+            InputLabelProps={{ shrink: true }}
             fullWidth
           />
         </Grid>
@@ -98,6 +127,18 @@ const StudentForm = props => {
   );
 };
 
+const validate = values => {
+  const errors = {};
+
+  const requiredFields = ['fullName', 'email', 'phoneNumber', 'dateOfBirth'];
+  requiredFields.forEach(field => {
+    if (!values[field]) errors[field] = 'Required';
+  });
+
+  return errors;
+};
+
 export default reduxForm({
-  form: 'studentForm'
+  form: 'studentForm',
+  validate
 })(StudentForm);
