@@ -100,12 +100,14 @@ let CourseForm = props => {
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
       <Field
+        type='text'
         name='courseCode'
         component={Textfield}
         label='Course Code'
         fullWidth
       />
       <Field
+        type='text'
         name='courseName'
         component={Textfield}
         label='Course Name'
