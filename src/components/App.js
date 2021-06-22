@@ -13,8 +13,8 @@ import Schedule from '../pages/Schedule';
 import CourseShowContainer from '../containers/courses/CourseShowContainer';
 import SigninContainer from '../containers/SigninContainer';
 import SignupContainer from '../containers/SignupContainer';
-import React from 'react';
 import StudentsContainer from '../containers/students/StudentsContainer';
+import StudentShowContainer from '../containers/students/StudentShowContainer';
 
 class App extends Component {
   componentDidMount() {
@@ -42,6 +42,11 @@ class App extends Component {
           component={CourseShowContainer}
         />
         <Route exact path='/students' component={StudentsContainer} />
+        <Route
+          exact
+          path='/students/:studentId'
+          component={StudentShowContainer}
+        />
         <Route path='/assignments' component={Assignments} />
         <Route path='/schedule' component={Schedule} />
       </>
