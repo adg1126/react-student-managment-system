@@ -6,18 +6,19 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import {
   EditingState,
-  IntegratedEditing
+  IntegratedEditing,
+  ViewState
 } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   MonthView,
   Appointments,
   AppointmentTooltip,
-  DragDropProvider
+  Toolbar,
+  DateNavigator
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import TakeAttendanceContainer from '../containers/attendance/TakeAttendanceContainer';
 import NotificationContainer from '../containers/NotificationContainer';
@@ -53,76 +54,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Attendance = ({
-  fetchAttendanceStart,
-  setCurrentCourse,
-  setCurrentDate,
-  currentCourse,
-  CourseDates,
-  status
-}) => {
+const Attendance = ({ setCurrentDate, courseDates, status }) => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const [data, setData] = React.useState(CourseDates);
-  const [addedAppointment, setAddedAppointment] = React.useState({});
-  const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
-    React.useState(false);
-  const [editingOptions, setEditingOptions] = React.useState({
-    allowAdding: true,
-    allowDeleting: true,
-    allowUpdating: true,
-    allowDragging: true,
-    allowResizing: true
-  });
-
-  const {
-    allowAdding,
-    allowDeleting,
-    allowUpdating,
-    allowResizing,
-    allowDragging
-  } = editingOptions;
-
-  const onCommitChanges = React.useCallback(
-    ({ added, changed, deleted }) => {
-      if (added) {
-        const startingAddedId =
-          data.length > 0 ? data[data.length - 1].id + 1 : 0;
-        setData([...data, { id: startingAddedId, ...added }]);
-      }
-      if (changed) {
-        setData(
-          data.map(appointment =>
-            changed[appointment.id]
-              ? { ...appointment, ...changed[appointment.id] }
-              : appointment
-          )
-        );
-      }
-      if (deleted !== undefined) {
-        setData(data.filter(appointment => appointment.id !== deleted));
-      }
-      setIsAppointmentBeingCreated(false);
-    },
-    [setData, setIsAppointmentBeingCreated, data]
-  );
-  const onAddedAppointmentChange = React.useCallback(appointment => {
-    setAddedAppointment(appointment);
-    setIsAppointmentBeingCreated(true);
-  });
-
-  const TimeTableCell = React.useCallback(
-    React.memo(({ onDoubleClick, ...restProps }) => (
-      <MonthView.TimeTableCell
-        {...restProps}
-        onDoubleClick={undefined}
-        // onDoubleClick={allowAdding ? onDoubleClick : undefined}
-      />
-    )),
-    [allowAdding]
-  );
 
   const AppointmentTooltipHeader = ({ appointmentData }) => {
     return (
@@ -132,23 +67,9 @@ const Attendance = ({
             <EditIcon />
           </IconButton>
         </Grid>
-        <Grid item>
-          <IconButton onClick={() => setCurrentDate(appointmentData)}>
-            <DeleteIcon />
-          </IconButton>
-        </Grid>
       </Grid>
     );
   };
-
-  const allowDrag = React.useCallback(
-    () => allowDragging && allowUpdating,
-    [allowDragging, allowUpdating]
-  );
-  const allowResize = React.useCallback(
-    () => allowResizing && allowUpdating,
-    [allowResizing, allowUpdating]
-  );
 
   return (
     <Grid
@@ -160,39 +81,31 @@ const Attendance = ({
       <Grid
         className={classes.col}
         container
-        direction={matchesSM ? 'column' : 'row'}
+        direction={matchesSM ? 'column-reverse' : 'row'}
         alignItems={matchesSM ? 'center' : 'flex-start'}
         spacing={4}
       >
         <Grid item style={{ width: matchesSM ? '100%' : '60%' }}>
-          <Paper>
-            <Scheduler data={CourseDates}>
-              <EditingState
-                onCommitChanges={onCommitChanges}
-                addedAppointment={addedAppointment}
-                onAddedAppointmentChange={onAddedAppointmentChange}
-              />
+          <Paper elevation={3} style={{ padding: '1em' }}>
+            <Scheduler data={courseDates}>
+              <ViewState defaultCurrentDate={new Date()} />
+              <EditingState />
               <IntegratedEditing />
-              <MonthView
-                startDayHour={9}
-                endDayHour={19}
-                timeTableCellComponent={TimeTableCell}
-              />
+              <MonthView />
+              <Toolbar />
+              <DateNavigator />
               <Appointments />
               <AppointmentTooltip
                 showOpenButton
-                showDeleteButton={allowDeleting}
                 headerComponent={AppointmentTooltipHeader}
-              />
-              <DragDropProvider
-                allowDrag={allowDrag}
-                allowResize={allowResize}
               />
             </Scheduler>
           </Paper>
         </Grid>
         <Grid style={{ width: matchesSM ? '95%' : '40%' }}>
-          <TakeAttendanceContainer />
+          <Paper elevation={3}>
+            <TakeAttendanceContainer />
+          </Paper>
         </Grid>
         <NotificationContainer status={status} />
       </Grid>
