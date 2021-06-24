@@ -10,7 +10,6 @@ import {
   selectStudentsErrMessage
 } from '../../redux/student/studentSelectors';
 import {
-  selectCoursesStatus,
   selectCourseListForPreview,
   selectIsCoursesFetching,
   selectCoursesErrMessage
