@@ -170,7 +170,6 @@ let CourseForm = props => {
               variant='outlined'
               className={classes.redButton}
               onClick={() => setModalOpen(modalName, false)}
-              color='primary'
             >
               Cancel
             </Button>
@@ -182,7 +181,6 @@ let CourseForm = props => {
             type='submit'
             variant='outlined'
             className={classes.greenButton}
-            color='primary'
           >
             Submit
           </Button>

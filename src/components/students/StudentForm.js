@@ -127,18 +127,6 @@ const StudentForm = props => {
   );
 };
 
-const validate = values => {
-  const errors = {};
-
-  const requiredFields = ['fullName', 'email', 'phoneNumber', 'dateOfBirth'];
-  requiredFields.forEach(field => {
-    if (!values[field]) errors[field] = 'Required';
-  });
-
-  return errors;
-};
-
 export default reduxForm({
-  form: 'studentForm',
-  validate
+  form: 'studentForm'
 })(StudentForm);
