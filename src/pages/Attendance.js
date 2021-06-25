@@ -32,25 +32,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
-  },
-  formControl: {
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.common.grey800
-    },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.common.grey800
-    },
-    '& .Mui-focused': {
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'blue'
-      }
-    },
-    '& label.Mui-focused': {
-      color: 'blue'
-    }
-  },
-  greyButton: {
-    ...theme.button
   }
 }));
 
