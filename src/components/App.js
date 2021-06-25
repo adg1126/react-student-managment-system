@@ -5,7 +5,6 @@ import theme from '../ui/Theme';
 import history from '../history';
 
 import AppbarContainer from '../containers/appbar/AppbarContainer';
-import Dashboard from '../pages/Dashboard';
 import AttendanceContainer from '../containers/attendance/AttendanceContainer';
 import CoursesContainer from '../containers/courses/CoursesContainer';
 import ScheduleContainer from '../containers/schedule/ScheduleContainer';
@@ -32,7 +31,6 @@ class App extends Component {
     return (
       <>
         <AppbarContainer />
-        <Route exact path='/' component={Dashboard} />
         <Route path='/attendance' component={AttendanceContainer} />
         <Route exact path='/courses' component={CoursesContainer} />
         <Route
@@ -62,14 +60,14 @@ class App extends Component {
               exact
               path='/signin'
               render={() =>
-                currentUser ? <Redirect to='/' /> : <SigninContainer />
+                currentUser ? <Redirect to='/courses' /> : <SigninContainer />
               }
             />
             <Route
               exact
               path='/signup'
               render={() =>
-                currentUser ? <Redirect to='/' /> : <SignupContainer />
+                currentUser ? <Redirect to='/courses' /> : <SignupContainer />
               }
             />
             {currentUser ? (
