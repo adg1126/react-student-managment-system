@@ -11,7 +11,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
 import StudentListContainer from '../../containers/attendance/StudentListContainer';
+import ConvertToExcelContainer from '../../containers/attendance/ConvertToExcelContainer';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -85,6 +87,11 @@ const TakeAttendance = ({
             </FormControl>
           </Grid>
         </Grid>
+        {!_.isEmpty(currentCourse) ? (
+          <Grid item>
+            <ConvertToExcelContainer />
+          </Grid>
+        ) : null}
         <Grid
           item
           container

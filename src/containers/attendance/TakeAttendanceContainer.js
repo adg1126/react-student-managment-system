@@ -5,6 +5,7 @@ import {
   selectCurrentCourse,
   selectCurrentDate
 } from '../../redux/attendance/attendanceSelectors';
+
 import { setCurrentCourse } from '../../redux/attendance/attendanceActions';
 
 import TakeAttendance from '../../components/attendance/TakeAttendance';
