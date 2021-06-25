@@ -62,22 +62,58 @@ const attendanceReducer = (state = INITIAL_STATE, action) => {
           ...state.courseList,
           [action.key]: {
             ...state.courseList[action.key],
-            classDates: state.currentCourse.classDates.map(date =>
+            classDates: state.courseList[action.key].classDates.map(date =>
               date.id === state.currentDate.id
                 ? {
                     ...date,
-                    students: state.currentDate.students.map(student =>
-                      _.isEmpty(action.value[student.docId])
-                        ? student
-                        : {
-                            ...student,
-                            attendanceStatus: action.value[student.docId].status
-                          }
-                    )
+                    students: !_.isEmpty(action.value)
+                      ? _.compact(
+                          _.flattenDeep(
+                            date.students.map(({ docId, fullName }) =>
+                              Object.entries(action.value).map(([k, v]) =>
+                                docId === k
+                                  ? {
+                                      docId,
+                                      fullName,
+                                      attendanceStatus: v.status
+                                    }
+                                  : null
+                              )
+                            )
+                          )
+                        )
+                      : date.students
                   }
                 : date
             )
           }
+        },
+        currentCourse: {
+          ...state.courseList[action.key],
+          classDates: state.courseList[action.key].classDates.map(date =>
+            date.id === state.currentDate.id
+              ? {
+                  ...date,
+                  students: !_.isEmpty(action.value)
+                    ? _.compact(
+                        _.flattenDeep(
+                          date.students.map(({ docId, fullName }) =>
+                            Object.entries(action.value).map(([k, v]) =>
+                              docId === k
+                                ? {
+                                    docId,
+                                    fullName,
+                                    attendanceStatus: v.status
+                                  }
+                                : null
+                            )
+                          )
+                        )
+                      )
+                    : date.students
+                }
+              : date
+          )
         }
       };
     case UPDATE_STUDENT_ATTENDANCE_STATUS_SUCCESS:
