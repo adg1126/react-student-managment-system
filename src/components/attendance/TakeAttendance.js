@@ -4,7 +4,6 @@ import moment from 'moment';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -51,71 +50,69 @@ const TakeAttendance = ({
   };
 
   return (
-    <Paper style={{ padding: '1em' }}>
-      <Grid container direction='column' spacing={3}>
-        <Grid
-          item
-          container
-          direction='row'
-          alignItems='center'
-          spacing={matchesXS ? undefined : 3}
-        >
-          <Grid item>
-            <Typography variant='body1'>Attendance for</Typography>
-          </Grid>
-          <Grid item>
-            <FormControl variant='outlined' className={classes.formControl}>
-              <InputLabel>Course</InputLabel>
-              <Select
-                value={
-                  currentCourse && !_.isEmpty(currentCourse)
-                    ? currentCourse.courseCode
-                    : ''
-                }
-                onChange={handleChangeCourse}
-                label='Course'
-              >
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                {courseList.map(({ courseCode }) => (
-                  <MenuItem key={courseCode} value={courseCode}>
-                    {courseCode}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        {!_.isEmpty(currentCourse) ? (
-          <Grid item>
-            <ConvertToExcelContainer />
-          </Grid>
-        ) : null}
-        <Grid
-          item
-          container
-          direction='row'
-          alignItems='center'
-          spacing={matchesXS ? undefined : 3}
-        >
-          <Grid item>
-            {!_.isEmpty(currentDate) && (
-              <Typography variant='body1'>{`On ${
-                !_.isEmpty(currentDate) &&
-                moment(currentDate.startDate).format('llll')
-              }`}</Typography>
-            )}
-          </Grid>
+    <Grid container direction='column' spacing={3}>
+      <Grid
+        item
+        container
+        direction='row'
+        alignItems='center'
+        spacing={matchesXS ? undefined : 3}
+      >
+        <Grid item>
+          <Typography variant='body1'>Attendance for</Typography>
         </Grid>
         <Grid item>
-          <Divider />
-        </Grid>
-        <Grid item container direction='column' spacing={3}>
-          <StudentListContainer />
+          <FormControl variant='outlined' className={classes.formControl}>
+            <InputLabel>Course</InputLabel>
+            <Select
+              value={
+                currentCourse && !_.isEmpty(currentCourse)
+                  ? currentCourse.courseCode
+                  : ''
+              }
+              onChange={handleChangeCourse}
+              label='Course'
+            >
+              <MenuItem value=''>
+                <em>None</em>
+              </MenuItem>
+              {courseList.map(({ courseCode }) => (
+                <MenuItem key={courseCode} value={courseCode}>
+                  {courseCode}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
-    </Paper>
+      {!_.isEmpty(currentCourse) ? (
+        <Grid item>
+          <ConvertToExcelContainer />
+        </Grid>
+      ) : null}
+      <Grid
+        item
+        container
+        direction='row'
+        alignItems='center'
+        spacing={matchesXS ? undefined : 3}
+      >
+        <Grid item>
+          {!_.isEmpty(currentDate) && (
+            <Typography variant='body1'>{`On ${
+              !_.isEmpty(currentDate) &&
+              moment(currentDate.startDate).format('llll')
+            }`}</Typography>
+          )}
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Divider />
+      </Grid>
+      <Grid item container direction='column' spacing={3}>
+        <StudentListContainer />
+      </Grid>
+    </Grid>
   );
 };
 

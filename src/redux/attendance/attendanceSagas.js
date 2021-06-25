@@ -177,6 +177,7 @@ export function* updateAttendanceInFirebase() {
             let newClassDates;
 
             newClassDates = newDates.reduce((res, newDate) => {
+              // console.log(res);
               return courseAttendance.classDates.some(
                 courseAttendanceDate =>
                   newDate.startDate.toString() ===
@@ -215,12 +216,27 @@ export function* updateAttendanceInFirebase() {
             try {
               yield courseAttendanceSnapshot.forEach(async doc => {
                 await doc.ref.update({
-                  classDates: newClassDates
+                  classDates: newClassDates.filter(ncDate =>
+                    newDates.some(
+                      nDate =>
+                        ncDate.startDate.toString() ===
+                        nDate.startDate.toString()
+                    )
+                  )
                 });
               });
 
               yield put(
-                updateAttendanceSuccess(courseAttendance.docId, newClassDates)
+                updateAttendanceSuccess(
+                  courseAttendance.docId,
+                  newClassDates.filter(ncDate =>
+                    newDates.some(
+                      nDate =>
+                        ncDate.startDate.toString() ===
+                        nDate.startDate.toString()
+                    )
+                  )
+                )
               );
             } catch (err) {}
           }

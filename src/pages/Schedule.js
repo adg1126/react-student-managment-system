@@ -1,66 +1,68 @@
 import React from 'react';
 import moment from 'moment';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import {
   Scheduler,
   WeekView,
   Appointments
 } from '@devexpress/dx-react-scheduler-material-ui';
+import ReusableCard from '../components/ReusableCard';
 
 const useStyles = makeStyles(theme => ({
-  mainContainer: {
-    marginTop: '1em'
+  mainContainer: { width: '100vw' },
+  col: {
+    width: '70%',
+    [theme.breakpoints.down('md')]: { width: '90%' },
+    [theme.breakpoints.down('sm')]: { width: '95%' }
   }
 }));
 
-const Schedule = () => {
+const Schedule = ({ courseList }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
-  const getDates = () => {
-    let classDates = [];
-    var day = moment().startOf('month').day('Sunday');
+  const startDate = moment().day(0).toDate(),
+    endDate = moment().day(6).toDate();
 
-    if (day.date() > 7) day.add(7, 'd');
+  const getDatesForWeek = () => {
+    let dates = [];
 
-    var month = day.month();
+    courseList.forEach(({ classDates }) =>
+      classDates.forEach(date => {
+        if (date.startDate >= startDate && date.startDate <= endDate)
+          dates.push(date);
+      })
+    );
 
-    while (month === day.month()) {
-      // console.log(day.format('YYYY-MM-DD'));
-      classDates.push({
-        startDate: moment(`${day.format('YYYY-MM-DD')} 11:30`).toDate()
-      });
-      day.add(7, 'd');
-    }
-
-    console.log(classDates);
+    return dates;
   };
 
-  getDates();
+  const cardContent = {
+    header: <Typography variant='h5'>Schedule</Typography>,
+    content: (
+      <Paper>
+        <Scheduler data={getDatesForWeek()} height={660}>
+          <WeekView startDayHour={6} endDayHour={23} />
+          <Appointments />
+        </Scheduler>
+      </Paper>
+    ),
+    actions: <></>
+  };
 
   return (
     <Grid
-      className={classes.mainContainer}
       container
-      direction={matchesMD ? 'column' : 'row'}
+      direction='column'
+      alignItems='center'
+      className={classes.mainContainer}
     >
-      <Grid item>
-        <Paper>
-          <Scheduler
-            // data={appointments}
-            height={660}
-          >
-            <WeekView startDayHour={7} endDayHour={19} />
-            <Appointments />
-          </Scheduler>
-        </Paper>
+      <Grid className={classes.col} container>
+        <ReusableCard {...cardContent} />
       </Grid>
-      <Grid item></Grid>
     </Grid>
   );
 };

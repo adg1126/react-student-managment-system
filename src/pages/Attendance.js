@@ -20,6 +20,7 @@ import {
 
 import EditIcon from '@material-ui/icons/Edit';
 
+import ReusableCard from '../components/ReusableCard';
 import TakeAttendanceContainer from '../containers/attendance/TakeAttendanceContainer';
 import NotificationContainer from '../containers/NotificationContainer';
 
@@ -52,6 +53,34 @@ const Attendance = ({ setCurrentDate, courseDates, status }) => {
     );
   };
 
+  const schedulerCard = {
+    header: <></>,
+    content: (
+      <Paper>
+        <Scheduler data={courseDates}>
+          <ViewState defaultCurrentDate={new Date()} />
+          <EditingState />
+          <IntegratedEditing />
+          <MonthView />
+          <Toolbar />
+          <DateNavigator />
+          <Appointments />
+          <AppointmentTooltip
+            showOpenButton
+            headerComponent={AppointmentTooltipHeader}
+          />
+        </Scheduler>
+      </Paper>
+    ),
+    actions: <></>
+  };
+
+  const takeAttendanceCard = {
+    header: <></>,
+    content: <TakeAttendanceContainer />,
+    actions: <></>
+  };
+
   return (
     <Grid
       container
@@ -67,26 +96,10 @@ const Attendance = ({ setCurrentDate, courseDates, status }) => {
         spacing={4}
       >
         <Grid item style={{ width: matchesSM ? '100%' : '60%' }}>
-          <Paper elevation={3} style={{ padding: '1em' }}>
-            <Scheduler data={courseDates}>
-              <ViewState defaultCurrentDate={new Date()} />
-              <EditingState />
-              <IntegratedEditing />
-              <MonthView />
-              <Toolbar />
-              <DateNavigator />
-              <Appointments />
-              <AppointmentTooltip
-                showOpenButton
-                headerComponent={AppointmentTooltipHeader}
-              />
-            </Scheduler>
-          </Paper>
+          <ReusableCard {...schedulerCard} />
         </Grid>
         <Grid style={{ width: matchesSM ? '95%' : '40%' }}>
-          <Paper elevation={3}>
-            <TakeAttendanceContainer />
-          </Paper>
+          <ReusableCard {...takeAttendanceCard} />
         </Grid>
         <NotificationContainer status={status} />
       </Grid>
