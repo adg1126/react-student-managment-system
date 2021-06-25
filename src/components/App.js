@@ -1,18 +1,29 @@
-import { Component } from 'react';
+import { Component, lazy } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from '../ui/Theme';
 import history from '../history';
 
 import AppbarContainer from '../containers/appbar/AppbarContainer';
-import AttendanceContainer from '../containers/attendance/AttendanceContainer';
 import CoursesContainer from '../containers/courses/CoursesContainer';
-import ScheduleContainer from '../containers/schedule/ScheduleContainer';
-import CourseShowContainer from '../containers/courses/CourseShowContainer';
 import SigninContainer from '../containers/SigninContainer';
 import SignupContainer from '../containers/SignupContainer';
-import StudentsContainer from '../containers/students/StudentsContainer';
-import StudentShowContainer from '../containers/students/StudentShowContainer';
+
+const AttendanceContainer = lazy(() =>
+    import('../containers/appbar/AppbarContainer')
+  ),
+  ScheduleContainer = lazy(() =>
+    import('../containers/schedule/ScheduleContainer')
+  ),
+  CourseShowContainer = lazy(() =>
+    import('../containers/courses/CourseShowContainer')
+  ),
+  StudentsContainer = lazy(() =>
+    import('../containers/students/StudentsContainer')
+  ),
+  StudentShowContainer = lazy(() =>
+    import('../containers/students/StudentShowContainer')
+  );
 
 class App extends Component {
   componentDidMount() {
