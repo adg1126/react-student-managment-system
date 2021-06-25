@@ -12,7 +12,6 @@ import PieChartIcon from '@material-ui/icons/PieChart';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import ClassIcon from '@material-ui/icons/Class';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PeopleIcon from '@material-ui/icons/People';
 
 const useStyles = makeStyles(theme => ({
@@ -113,22 +112,6 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
           ),
           route: '/attendance',
           index: 4
-        },
-
-        {
-          name: 'Assignments',
-          icon: () => (
-            <AssignmentIndIcon
-              style={{
-                fill:
-                  tabIndex === 5
-                    ? theme.palette.common.highlightedIndigo
-                    : 'white'
-              }}
-            />
-          ),
-          route: '/assignments',
-          index: 5
         }
       ]
     }
