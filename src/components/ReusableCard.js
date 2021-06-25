@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -26,9 +27,11 @@ const ReusableCard = ({ header, content, actions }) => {
 
   return (
     <Card className={classes.cardContainer}>
-      <CardHeader className={classes.cardHeader} title={header} />
-      <CardContent>{content}</CardContent>
-      <CardActions>{actions}</CardActions>
+      {!_.isEmpty(header) ? (
+        <CardHeader className={classes.cardHeader} title={header} />
+      ) : null}
+      {!_.isEmpty(content) ? <CardContent>{content}</CardContent> : null}
+      {!_.isEmpty(actions.length) ? <CardActions>{actions}</CardActions> : null}
     </Card>
   );
 };

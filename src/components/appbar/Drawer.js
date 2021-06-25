@@ -41,7 +41,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen, currentUser, signOutStart }) => {
           alignItems='center'
           justify='space-around'
         >
-          <Button onClick={() => history.push('/')}>
+          <Button onClick={() => history.push('/courses')}>
             <Grid item>
               <img alt='company logo' style={{ width: 50 }} src={logo} />
             </Grid>

@@ -50,7 +50,7 @@ const Schedule = ({ courseList }) => {
         </Scheduler>
       </Paper>
     ),
-    actions: <></>
+    actions: ''
   };
 
   return (

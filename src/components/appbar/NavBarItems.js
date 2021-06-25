@@ -8,7 +8,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
-import PieChartIcon from '@material-ui/icons/PieChart';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import ClassIcon from '@material-ui/icons/Class';
 import ScheduleIcon from '@material-ui/icons/Schedule';
@@ -26,26 +25,6 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
 
   const ROUTES = [
     {
-      section: 'Overview',
-      routes: [
-        {
-          name: 'Dashboard',
-          icon: () => (
-            <PieChartIcon
-              style={{
-                fill:
-                  tabIndex === 0
-                    ? theme.palette.common.highlightedIndigo
-                    : 'white'
-              }}
-            />
-          ),
-          route: '/',
-          index: 0
-        }
-      ]
-    },
-    {
       section: 'Manage',
       routes: [
         {
@@ -54,19 +33,34 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
             <ClassIcon
               style={{
                 fill:
-                  tabIndex === 1
+                  tabIndex === 0
                     ? theme.palette.common.highlightedIndigo
                     : 'white'
               }}
             />
           ),
           route: '/courses',
-          index: 1
+          index: 0
         },
         {
           name: 'Students',
           icon: () => (
             <PeopleIcon
+              style={{
+                fill:
+                  tabIndex === 1
+                    ? theme.palette.common.highlightedIndigo
+                    : 'white'
+              }}
+            />
+          ),
+          route: '/students',
+          index: 1
+        },
+        {
+          name: 'Schedule',
+          icon: () => (
+            <ScheduleIcon
               style={{
                 fill:
                   tabIndex === 2
@@ -75,23 +69,8 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
               }}
             />
           ),
-          route: '/students',
-          index: 2
-        },
-        {
-          name: 'Schedule',
-          icon: () => (
-            <ScheduleIcon
-              style={{
-                fill:
-                  tabIndex === 3
-                    ? theme.palette.common.highlightedIndigo
-                    : 'white'
-              }}
-            />
-          ),
           route: '/schedule',
-          index: 3
+          index: 2
         }
       ]
     },
@@ -104,14 +83,14 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
             <PlaylistAddCheckIcon
               style={{
                 fill:
-                  tabIndex === 4
+                  tabIndex === 3
                     ? theme.palette.common.highlightedIndigo
                     : 'white'
               }}
             />
           ),
           route: '/attendance',
-          index: 4
+          index: 3
         }
       ]
     }

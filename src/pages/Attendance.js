@@ -54,7 +54,7 @@ const Attendance = ({ setCurrentDate, courseDates, status }) => {
   };
 
   const schedulerCard = {
-    header: <></>,
+    header: '',
     content: (
       <Paper>
         <Scheduler data={courseDates}>
@@ -72,13 +72,13 @@ const Attendance = ({ setCurrentDate, courseDates, status }) => {
         </Scheduler>
       </Paper>
     ),
-    actions: <></>
+    actions: ''
   };
 
   const takeAttendanceCard = {
-    header: <></>,
+    header: '',
     content: <TakeAttendanceContainer />,
-    actions: <></>
+    actions: ''
   };
 
   return (
