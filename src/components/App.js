@@ -8,8 +8,7 @@ import AppbarContainer from '../containers/appbar/AppbarContainer';
 import Dashboard from '../pages/Dashboard';
 import AttendanceContainer from '../containers/attendance/AttendanceContainer';
 import CoursesContainer from '../containers/courses/CoursesContainer';
-import Assignments from '../pages/Assignments';
-import Schedule from '../pages/Schedule';
+import ScheduleContainer from '../containers/schedule/ScheduleContainer';
 import CourseShowContainer from '../containers/courses/CourseShowContainer';
 import SigninContainer from '../containers/SigninContainer';
 import SignupContainer from '../containers/SignupContainer';
@@ -47,8 +46,7 @@ class App extends Component {
           path='/students/:studentId'
           component={StudentShowContainer}
         />
-        <Route path='/assignments' component={Assignments} />
-        <Route path='/schedule' component={Schedule} />
+        <Route path='/schedule' component={ScheduleContainer} />
       </>
     );
   };
