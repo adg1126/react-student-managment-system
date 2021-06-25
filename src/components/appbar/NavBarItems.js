@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
+const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex, setDrawerOpen }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -155,6 +155,7 @@ const NavBarItems = ({ drawerOpen, tabIndex, setTabIndex }) => {
           key={name}
           onClick={() => {
             setTabIndex(index);
+            setDrawerOpen(false);
           }}
           selected={tabIndex === index}
           classes={{ selected: classes.drawerItemSelected }}
